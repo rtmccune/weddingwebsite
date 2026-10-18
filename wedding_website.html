@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elizabeth Rader & Ryan McCune | Fall Wedding</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond for romantic serif headers, Plus Jakarta Sans for clean body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: '#F9F6F0',
+                        oatmeal: '#EFECE6',
+                        forest: {
+                            DEFAULT: '#1E3528',
+                            dark: '#14241B',
+                            light: '#2D4C3B'
+                        },
+                        sage: {
+                            DEFAULT: '#6B7D65',
+                            light: '#A3B19B',
+                            muted: '#E2E7DF'
+                        },
+                        cherry: {
+                            DEFAULT: '#4A1222',
+                            light: '#6D1D34',
+                            dark: '#330B16'
+                        },
+                        earth: {
+                            terracotta: '#B85D3B',
+                            ochre: '#C89B57',
+                            taupe: '#8C7A6B',
+                            espresso: '#2B2320'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom subtle scrollbars and animations */
+        body {
+            background-color: #F9F6F0;
+            color: #2B2320;
+            overflow-x: hidden;
+        }
+        .tab-page {
+            display: none;
+            animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .tab-page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .arch-image {
+            border-top-left-radius: 9999px;
+            border-top-right-radius: 9999px;
+        }
+        /* Custom decorative leaf pattern background tint */
+        .bg-botanical-pattern {
+            background-image: radial-gradient(#6B7D65 0.65px, transparent 0.65px), radial-gradient(#B85D3B 0.65px, #F9F6F0 0.65px);
+            background-size: 36px 36px;
+            background-position: 0 0, 18px 18px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-cherry selection:text-parchment min-h-screen flex flex-col">
+
+    <!-- Top Announcement / Save the Date Banner -->
+    <div class="bg-cherry text-parchment text-xs sm:text-sm py-2.5 px-4 text-center tracking-widest uppercase font-medium">
+        <span>October 23, 2027 &bull; Autumn in the Carolina Foothills </span>
+    </div>
+
+    <!-- Sticky Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-parchment/95 backdrop-blur-md border-b border-earth-taupe/20 shadow-sm transition-all">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Monogram / Brand -->
+                <button onclick="switchPage('couple')" class="text-left group focus:outline-none">
+                    <span class="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-forest group-hover:text-cherry transition-colors">
+                        E <span class="italic font-normal text-earth-ochre">&amp;</span> R
+                    </span>
+                    <span class="hidden sm:inline-block ml-3 pl-3 border-l border-earth-taupe/30 text-xs uppercase tracking-widest text-earth-taupe">
+                        10.24.2026
+                    </span>
+                </button>
+
+                <!-- Desktop Navigation Links (Multi-page Tab Switcher + Scroll Option) -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2" aria-label="Main Navigation">
+                    <button onclick="switchPage('couple')" id="nav-couple" class="nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide transition-all bg-forest text-parchment shadow-sm">
+                        The Couple
+                    </button>
+                    <button onclick="switchPage('party')" id="nav-party" class="nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide text-earth-espresso hover:text-cherry hover:bg-oatmeal transition-all">
+                        Wedding Party
+                    </button>
+                    <button onclick="switchPage('venues')" id="nav-venues" class="nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide text-earth-espresso hover:text-cherry hover:bg-oatmeal transition-all">
+                        Venues &amp; Schedule
+                    </button>
+                    <button onclick="switchPage('registry')" id="nav-registry" class="nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide text-earth-espresso hover:text-cherry hover:bg-oatmeal transition-all">
+                        Registry
+                    </button>
+                </nav>
+
+                <!-- View Mode Toggle & RSVP Button -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <button onclick="toggleAllPagesView()" id="view-mode-btn" title="Switch between single scrollable page or separate tabs" class="text-xs uppercase tracking-wider text-sage hover:text-forest px-3 py-1.5 rounded-full border border-sage/40 hover:border-forest transition-all">
+                        View Mode: Tabs
+                    </button>
+                    <button onclick="openRsvpModal()" class="bg-cherry hover:bg-cherry-light text-parchment font-medium text-sm px-5 py-2.5 rounded-full shadow-sm hover:shadow transition-all tracking-wide">
+                        RSVP
+                    </button>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="flex md:hidden items-center space-x-2">
+                    <button onclick="openRsvpModal()" class="bg-cherry text-parchment text-xs uppercase tracking-wider px-3.5 py-2 rounded-full font-medium">
+                        RSVP
+                    </button>
+                    <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="p-2 rounded-lg text-forest hover:bg-oatmeal focus:outline-none" aria-label="Toggle Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-parchment border-b border-earth-taupe/20 px-4 pt-2 pb-5 space-y-2">
+            <button onclick="switchPage('couple'); toggleMobileMenu()" id="mnav-couple" class="mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium bg-forest text-parchment">
+                The Couple &amp; Our Story
+            </button>
+            <button onclick="switchPage('party'); toggleMobileMenu()" id="mnav-party" class="mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-earth-espresso hover:bg-oatmeal">
+                The Wedding Party
+            </button>
+            <button onclick="switchPage('venues'); toggleMobileMenu()" id="mnav-venues" class="mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-earth-espresso hover:bg-oatmeal">
+                Venues &amp; Schedule (Ceremony &amp; Reception)
+            </button>
+            <button onclick="switchPage('registry'); toggleMobileMenu()" id="mnav-registry" class="mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-earth-espresso hover:bg-oatmeal">
+                Gift Registry
+            </button>
+            <div class="pt-2 border-t border-earth-taupe/20 flex justify-between items-center px-2">
+                <span class="text-xs text-earth-taupe">Prefer scrolling all at once?</span>
+                <button onclick="toggleAllPagesView(); toggleMobileMenu()" id="m-view-mode-btn" class="text-xs font-semibold text-cherry underline">
+                    Show All on One Page
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- ==========================================
+             PAGE 1: INTRODUCING THE COUPLE
+             ========================================== -->
+        <section id="page-couple" class="tab-page active">
+            
+            <!-- Hero Banner -->
+            <div class="relative bg-forest text-parchment overflow-hidden">
+                <!-- Decorative Fall Foliage SVG Background Overlay -->
+                <div class="absolute inset-0 opacity-15 pointer-events-none">
+                    <svg class="w-full h-full object-cover" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="150" cy="100" r="240" fill="#4A1222"/>
+                        <circle cx="1050" cy="480" r="300" fill="#B85D3B"/>
+                        <circle cx="600" cy="300" r="400" stroke="#C89B57" stroke-width="1.5" stroke-dasharray="8 8"/>
+                        <path d="M0 500 Q300 400 600 500 T1200 450" stroke="#6B7D65" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        
+                        <!-- Left Text Column -->
+                        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-forest-light/80 border border-sage/30 text-earth-ochre text-xs uppercase tracking-widest">
+                                <span>Together with their families</span>
+                            </div>
+
+                            <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl font-normal tracking-tight leading-none text-parchment">
+                                Elizabeth Rader
+                                <span class="block font-serif italic text-3xl sm:text-4xl text-earth-ochre my-3">&amp;</span>
+                                Ryan McCune
+                            </h1>
+
+                            <p class="text-sage-light text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Invite you to share in the joy of their autumn marriage celebration surrounded by crisp mountain air, fall foliage, and dear friends.
+                            </p>
+
+                            <!-- Date & Location Pill -->
+                            <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-10 h-10 rounded-full bg-cherry flex items-center justify-center text-earth-ochre">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </span>
+                                    <div class="text-left">
+                                        <p class="text-xs uppercase tracking-wider text-sage-light">Saturday</p>
+                                        <p class="font-serif text-xl text-parchment">October 23, 2027</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-10 h-10 rounded-full bg-cherry flex items-center justify-center text-earth-ochre">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </span>
+                                    <div class="text-left">
+                                        <p class="text-xs uppercase tracking-wider text-sage-light">Ceremony &amp; Reception</p>
+                                        <p class="font-serif text-xl text-parchment">York, Pennsylvania</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Action Buttons -->
+                            <div class="pt-4 flex flex-wrap justify-center lg:justify-start gap-4">
+                                <button onclick="switchPage('venues')" class="px-7 py-3.5 rounded-full bg-earth-terracotta hover:bg-earth-ochre text-parchment font-medium text-sm tracking-wide transition-all shadow-lg">
+                                    Explore Venues &amp; Schedule
+                                </button>
+                                <button onclick="switchPage('party')" class="px-7 py-3.5 rounded-full bg-transparent border border-sage-light/50 hover:border-parchment text-parchment font-medium text-sm tracking-wide transition-all">
+                                    Meet the Wedding Party
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Arch Portrait Frame -->
+                        <div class="lg:col-span-5 flex justify-center">
+                            <div class="relative w-72 sm:w-80 md:w-96">
+                                <!-- Decorative Offset Arch -->
+                                <div class="absolute -inset-3 arch-image border-2 border-earth-ochre/50 translate-x-3 translate-y-3 pointer-events-none"></div>
+                                <div class="arch-image overflow-hidden border-4 border-parchment/20 shadow-2xl bg-cherry-dark aspect-[3/4] relative">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" 
+                                        onerror="this.src='https://placehold.co/600x800/4A1222/F9F6F0?text=Elizabeth+%26+Ryan'"
+                                        alt="Elizabeth Rader and Ryan McCune" 
+                                        class="w-full h-full object-cover object-center sepia-[.15] contrast-[1.03]"
+                                    >
+                                    <div class="absolute inset-0 bg-gradient-to-t from-cherry-dark/80 via-transparent to-transparent"></div>
+                                    <div class="absolute bottom-5 left-0 right-0 text-center px-4">
+                                        <p class="font-serif italic text-lg text-parchment/90">"Omnia vincit amor, et nos cedamus amori."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botanical Divider Banner -->
+            <div class="bg-oatmeal border-y border-earth-taupe/20 py-6">
+                <div class="max-w-4xl mx-auto px-4 flex flex-wrap items-center justify-around gap-4 text-center">
+                    <div>
+                        <span class="block font-serif text-2xl sm:text-3xl text-cherry font-semibold" id="countdown-days">189</span>
+                        <span class="text-xs uppercase tracking-widest text-earth-taupe">Days to Go</span>
+                    </div>
+                    <span class="text-earth-ochre text-xl">&bull;</span>
+                    <div>
+                        <span class="block font-serif text-2xl sm:text-3xl text-forest font-semibold">2 Venues</span>
+                        <span class="text-xs uppercase tracking-widest text-earth-taupe">Chapel &amp; Estate</span>
+                    </div>
+                    <span class="text-earth-ochre text-xl">&bull;</span>
+                    <div>
+                        <span class="block font-serif text-2xl sm:text-3xl text-earth-terracotta font-semibold">4:00 PM</span>
+                        <span class="text-xs uppercase tracking-widest text-earth-taupe">Ceremony Prelude</span>
+                    </div>
+                    <span class="text-earth-ochre text-xl">&bull;</span>
+                    <div>
+                        <span class="block font-serif text-2xl sm:text-3xl text-sage font-semibold">Black Tie Optional</span>
+                        <span class="text-xs uppercase tracking-widest text-earth-taupe">Autumnal Attire</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Introducing The Couple Bios -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-xs uppercase tracking-widest text-earth-terracotta font-semibold">Chapter One</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl text-forest mt-2 mb-4">Introducing the Couple</h2>
+                    <div class="flex items-center justify-center space-x-3 text-earth-ochre">
+                        <span class="h-px w-12 bg-earth-ochre/50"></span>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        <span class="h-px w-12 bg-earth-ochre/50"></span>
+                    </div>
+                    <p class="mt-4 text-earth-taupe text-sm sm:text-base leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.
+                    </p>
+                </div>
+
+                <!-- Individual Cards for Elizabeth & Ryan -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+                    
+                    <!-- The Bride: Elizabeth Rader -->
+                    <div class="bg-oatmeal/70 rounded-3xl p-6 sm:p-8 border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" 
+                                    onerror="this.src='https://placehold.co/300x300/4A1222/F9F6F0?text=Elizabeth+Rader'"
+                                    alt="Elizabeth Rader" 
+                                    class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-cherry shadow-md flex-shrink-0"
+                                >
+                                <div class="text-center sm:text-left">
+                                    <span class="inline-block px-3 py-1 rounded-full bg-cherry/10 text-cherry text-xs font-semibold uppercase tracking-widest mb-2">
+                                        The Bride
+                                    </span>
+                                    <h3 class="font-serif text-3xl text-forest font-semibold">Elizabeth Rader</h3>
+                                    <p class="text-xs text-earth-terracotta uppercase tracking-wider mt-1">Coffee Enthusiast &bull; Autumn Lover</p>
+                                </div>
+                            </div>
+                            <p class="text-earth-espresso/80 text-sm sm:text-base leading-relaxed mb-4">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+                            <p class="text-earth-espresso/80 text-sm sm:text-base leading-relaxed">
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-earth-taupe/20 flex items-center justify-between text-xs text-earth-taupe">
+                            <span>Favorite Fall Tradition: Apple Orchard Trips</span>
+                            <span class="text-cherry font-serif italic text-base">"Forever starts in October"</span>
+                        </div>
+                    </div>
+
+                    <!-- The Groom: Ryan McCune -->
+                    <div class="bg-oatmeal/70 rounded-3xl p-6 sm:p-8 border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" 
+                                    onerror="this.src='https://placehold.co/300x300/1E3528/F9F6F0?text=Ryan+McCune'"
+                                    alt="Ryan McCune" 
+                                    class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-forest shadow-md flex-shrink-0"
+                                >
+                                <div class="text-center sm:text-left">
+                                    <span class="inline-block px-3 py-1 rounded-full bg-forest/10 text-forest text-xs font-semibold uppercase tracking-widest mb-2">
+                                        The Groom
+                                    </span>
+                                    <h3 class="font-serif text-3xl text-forest font-semibold">Ryan McCune</h3>
+                                    <p class="text-xs text-sage uppercase tracking-wider mt-1">Trail Hiker &bull; Amateur Chef</p>
+                                </div>
+                            </div>
+                            <p class="text-earth-espresso/80 text-sm sm:text-base leading-relaxed mb-4">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+                            <p class="text-earth-espresso/80 text-sm sm:text-base leading-relaxed">
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-earth-taupe/20 flex items-center justify-between text-xs text-earth-taupe">
+                            <span>Favorite Fall Tradition: Campfire Cider</span>
+                            <span class="text-forest font-serif italic text-base">"Found my compass in her"</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Our Story Timeline -->
+                <div class="mt-20 bg-forest text-parchment rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl relative overflow-hidden">
+                    <div class="text-center max-w-xl mx-auto mb-12">
+                        <span class="text-xs uppercase tracking-widest text-earth-ochre">How We Got Here</span>
+                        <h3 class="font-serif text-3xl sm:text-4xl mt-1">Our Story</h3>
+                        <p class="text-sage-light text-sm mt-2">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque점 faucibus ex sapien vitae pellentesque sem placerat.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                        <!-- Milestone 1 -->
+                        <div class="bg-forest-light/60 border border-sage/30 rounded-2xl p-6 relative">
+                            <span class="inline-block px-3 py-1 rounded-full bg-cherry text-earth-ochre text-xs font-semibold tracking-wider mb-3">
+                                Autumn 2021
+                            </span>
+                            <h4 class="font-serif text-2xl text-parchment mb-2">The First Meeting</h4>
+                            <p class="text-sage-light text-sm leading-relaxed">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                            </p>
+                        </div>
+
+                        <!-- Milestone 2 -->
+                        <div class="bg-forest-light/60 border border-sage/30 rounded-2xl p-6 relative">
+                            <span class="inline-block px-3 py-1 rounded-full bg-earth-terracotta text-parchment text-xs font-semibold tracking-wider mb-3">
+                                November 2024
+                            </span>
+                            <h4 class="font-serif text-2xl text-parchment mb-2">The Proposal</h4>
+                            <p class="text-sage-light text-sm leading-relaxed">
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
+                            </p>
+                        </div>
+
+                        <!-- Milestone 3 -->
+                        <div class="bg-forest-light/60 border border-sage/30 rounded-2xl p-6 relative">
+                            <span class="inline-block px-3 py-1 rounded-full bg-earth-ochre text-forest-dark text-xs font-semibold tracking-wider mb-3">
+                                October 2027
+                            </span>
+                            <h4 class="font-serif text-2xl text-parchment mb-2">Walking Down the Aisle</h4>
+                            <p class="text-sage-light text-sm leading-relaxed">
+                                Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 2: THE WEDDING PARTY
+             ========================================== -->
+        <section id="page-party" class="tab-page">
+            <!-- Section Header Banner -->
+            <div class="bg-cherry text-parchment py-16 px-4 text-center relative overflow-hidden">
+                <div class="max-w-3xl mx-auto relative z-10">
+                    <span class="text-xs uppercase tracking-widest text-earth-ochre font-semibold">Standing By Our Side</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl mt-2 mb-4">The Wedding Party</h2>
+                    <p class="text-parchment/80 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Meet the cherished friends and family members celebrating with Elizabeth and Ryan.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                
+                <!-- Filter Pills for Wedding Party -->
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex p-1.5 rounded-full bg-oatmeal border border-earth-taupe/20">
+                        <button onclick="filterParty('all')" id="party-filter-all" class="party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium bg-cherry text-parchment shadow-sm transition-all">
+                            Everyone
+                        </button>
+                        <button onclick="filterParty('bride')" id="party-filter-bride" class="party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-earth-espresso hover:text-cherry transition-all">
+                            Bride's Side
+                        </button>
+                        <button onclick="filterParty('groom')" id="party-filter-groom" class="party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-earth-espresso hover:text-forest transition-all">
+                            Groom's Side
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bride's Party Group -->
+                <div id="party-group-bride" class="mb-16">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <span class="px-3.5 py-1 rounded-full bg-cherry text-parchment text-xs uppercase tracking-widest font-medium">Elizabeth's Side</span>
+                        <h3 class="font-serif text-3xl text-cherry">Bridesmaids</h3>
+                        <div class="flex-grow h-px bg-cherry/20"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Maid of Honor -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-cherry-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/4A1222/F9F6F0?text=Maid+of+Honor'" alt="Claire Rader" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-cherry text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Maid of Honor
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Claire Rader</h4>
+                                    <p class="text-xs text-earth-terracotta uppercase tracking-wider mb-3">Sister of the Bride</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bridesmaid 2 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-cherry-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/6B7D65/F9F6F0?text=Bridesmaid'" alt="Hannah Vance" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-earth-terracotta text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Bridesmaid
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Hannah Vance</h4>
+                                    <p class="text-xs text-earth-terracotta uppercase tracking-wider mb-3">College Roommate</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bridesmaid 3 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-cherry-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/B85D3B/F9F6F0?text=Bridesmaid'" alt="Sophia Lin" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-earth-terracotta text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Bridesmaid
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Sophia Lin</h4>
+                                    <p class="text-xs text-earth-terracotta uppercase tracking-wider mb-3">Childhood Best Friend</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bridesmaid 4 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-cherry-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/4A1222/F9F6F0?text=Bridesmaid'" alt="Amelia McCune" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-earth-terracotta text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Bridesmaid
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Amelia McCune</h4>
+                                    <p class="text-xs text-earth-terracotta uppercase tracking-wider mb-3">Sister of the Groom</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed ut perspiciatis.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Groom's Party Group -->
+                <div id="party-group-groom">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <span class="px-3.5 py-1 rounded-full bg-forest text-parchment text-xs uppercase tracking-widest font-medium">Ryan's Side</span>
+                        <h3 class="font-serif text-3xl text-forest">Groomsmen</h3>
+                        <div class="flex-grow h-px bg-forest/20"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Best Man -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-forest-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/1E3528/F9F6F0?text=Best+Man'" alt="Lucas McCune" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-forest text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Best Man
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Lucas McCune</h4>
+                                    <p class="text-xs text-sage uppercase tracking-wider mb-3">Brother of the Groom</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Groomsman 2 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-forest-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/6B7D65/F9F6F0?text=Groomsman'" alt="Marcus Sterling" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-sage text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Groomsman
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Marcus Sterling</h4>
+                                    <p class="text-xs text-sage uppercase tracking-wider mb-3">lifelong Friend</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Groomsman 3 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-forest-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/1E3528/F9F6F0?text=Groomsman'" alt="Evan Rader" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-sage text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Groomsman
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Evan Rader</h4>
+                                    <p class="text-xs text-sage uppercase tracking-wider mb-3">Brother of the Bride</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Groomsman 4 -->
+                        <div class="bg-oatmeal/70 rounded-2xl overflow-hidden border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col">
+                            <div class="h-56 bg-forest-dark relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80" onerror="this.src='https://placehold.co/400x400/6B7D65/F9F6F0?text=Groomsman'" alt="Nolan Brooks" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 bg-sage text-parchment text-[11px] uppercase tracking-wider px-3 py-1 rounded-full font-medium">
+                                    Groomsman
+                                </span>
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between">
+                                <div>
+                                    <h4 class="font-serif text-2xl text-forest font-semibold">Nolan Brooks</h4>
+                                    <p class="text-xs text-sage uppercase tracking-wider mb-3">Grad School Cohort</p>
+                                    <p class="text-earth-espresso/80 text-xs sm:text-sm leading-relaxed">
+                                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed ut perspiciatis.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 3: VENUES & SCHEDULE (BOTH LOCATIONS ON ONE PAGE)
+             ========================================== -->
+        <section id="page-venues" class="tab-page">
+            <!-- Section Header -->
+            <div class="bg-forest text-parchment py-16 px-4 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <span class="text-xs uppercase tracking-widest text-earth-ochre font-semibold">Ceremony &amp; Reception Details</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl mt-2 mb-4">Venues &amp; Schedule</h2>
+                    <p class="text-sage-light text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                        Our ceremony and reception will take place at two distinct autumn locations located just 15 minutes apart through a scenic tree-lined parkway drive. Everything you need to navigate both venues is consolidated below.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                
+                <!-- Side-by-Side Comparison of the Two Locations -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                    
+                    <!-- LOCATION 1: THE CEREMONY VENUE -->
+                    <div class="bg-oatmeal rounded-3xl overflow-hidden border-2 border-forest/20 shadow-md flex flex-col justify-between">
+                        <div>
+                            <!-- Top Image & Badge -->
+                            <div class="h-64 relative bg-forest-dark">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=80" 
+                                    onerror="this.src='https://placehold.co/800x450/1E3528/F9F6F0?text=St.+Luke+Stone+Chapel'"
+                                    alt="Ceremony Chapel Venue" 
+                                    class="w-full h-full object-cover"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-forest-dark/90 via-forest-dark/30 to-transparent"></div>
+                                <div class="absolute top-4 left-4">
+                                    <span class="px-4 py-1.5 rounded-full bg-forest text-parchment text-xs uppercase tracking-widest font-semibold shadow">
+                                        Part I &bull; The Ceremony
+                                    </span>
+                                </div>
+                                <div class="absolute bottom-4 left-6 right-6 text-parchment">
+                                    <p class="text-xs uppercase tracking-widest text-earth-ochre">4:00 PM – 5:00 PM</p>
+                                    <h3 class="font-serif text-3xl sm:text-4xl">St. Luke's Historic Stone Chapel</h3>
+                                </div>
+                            </div>
+
+                            <!-- Venue Content -->
+                            <div class="p-6 sm:p-8 space-y-6">
+                                <div class="flex items-start space-x-3.5">
+                                    <div class="w-9 h-9 rounded-full bg-forest/10 text-forest flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="text-xs uppercase tracking-widest text-earth-taupe font-semibold">Ceremony Address</h4>
+                                        <p class="font-serif text-xl text-forest font-semibold mt-0.5" id="ceremony-address">412 Sycamore Ridge Road, York, Pennsylvania 17406</p>
+                                        <button onclick="copyAddress('ceremony-address', 'Ceremony address copied!')" class="mt-1.5 inline-flex items-center text-xs font-medium text-cherry hover:underline">
+                                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                            Copy Address
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="text-earth-espresso/80 text-sm leading-relaxed">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Surrounded by century-old red oaks and stained glass windows, doors open at 3:30 PM for acoustic string prelude music.
+                                </p>
+
+                                <!-- Details Grid -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                    <div class="bg-parchment p-4 rounded-2xl border border-earth-taupe/15">
+                                        <span class="text-[11px] uppercase tracking-wider text-sage font-semibold block">Arrival Time</span>
+                                        <span class="font-serif text-lg text-forest font-semibold">Seated by 3:45 PM</span>
+                                        <p class="text-xs text-earth-taupe mt-1">Processional begins promptly at 4:00 PM.</p>
+                                    </div>
+                                    <div class="bg-parchment p-4 rounded-2xl border border-earth-taupe/15">
+                                        <span class="text-[11px] uppercase tracking-wider text-sage font-semibold block">Parking &amp; Access</span>
+                                        <span class="font-serif text-lg text-forest font-semibold">North Gravel Lot</span>
+                                        <p class="text-xs text-earth-taupe mt-1">Complimentary attendant parking &amp; step-free entry.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-8 pt-2">
+                            <a href="https://maps.google.com/?q=Asheville+NC" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-full bg-forest hover:bg-forest-light text-parchment text-sm font-medium transition-all shadow-sm">
+                                <span>Open Ceremony Map in Google Maps</span>
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- LOCATION 2: THE RECEPTION VENUE -->
+                    <div class="bg-oatmeal rounded-3xl overflow-hidden border-2 border-cherry/20 shadow-md flex flex-col justify-between">
+                        <div>
+                            <!-- Top Image & Badge -->
+                            <div class="h-64 relative bg-cherry-dark">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80" 
+                                    onerror="this.src='https://placehold.co/800x450/4A1222/F9F6F0?text=Black+Cherry+Orchard+conservatory'"
+                                    alt="Reception Estate Venue" 
+                                    class="w-full h-full object-cover"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-cherry-dark/90 via-cherry-dark/30 to-transparent"></div>
+                                <div class="absolute top-4 left-4">
+                                    <span class="px-4 py-1.5 rounded-full bg-cherry text-parchment text-xs uppercase tracking-widest font-semibold shadow">
+                                        Part II &bull; Cocktail Hour &amp; Reception
+                                    </span>
+                                </div>
+                                <div class="absolute bottom-4 left-6 right-6 text-parchment">
+                                    <p class="text-xs uppercase tracking-widest text-earth-ochre">5:30 PM – 11:00 PM</p>
+                                    <h3 class="font-serif text-3xl sm:text-4xl">The Conservatory at Black Cherry Estate</h3>
+                                </div>
+                            </div>
+
+                            <!-- Venue Content -->
+                            <div class="p-6 sm:p-8 space-y-6">
+                                <div class="flex items-start space-x-3.5">
+                                    <div class="w-9 h-9 rounded-full bg-cherry/10 text-cherry flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="text-xs uppercase tracking-widest text-earth-taupe font-semibold">Reception Address</h4>
+                                        <p class="font-serif text-xl text-cherry font-semibold mt-0.5" id="reception-address">1890 Copper Leaf Parkway, York, PA 17406</p>
+                                        <button onclick="copyAddress('reception-address', 'Reception address copied!')" class="mt-1.5 inline-flex items-center text-xs font-medium text-forest hover:underline">
+                                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                            Copy Address
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p class="text-earth-espresso/80 text-sm leading-relaxed">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Enjoy outdoor terrace cocktails around fire pits overlooking the autumn valley, followed by a candlelit harvest dinner and dancing inside the glass conservatory.
+                                </p>
+
+                                <!-- Details Grid -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                    <div class="bg-parchment p-4 rounded-2xl border border-earth-taupe/15">
+                                        <span class="text-[11px] uppercase tracking-wider text-cherry font-semibold block">Cocktail Hour</span>
+                                        <span class="font-serif text-lg text-cherry font-semibold">Starts at 5:30 PM</span>
+                                        <p class="text-xs text-earth-taupe mt-1">Dinner seated at 6:45 PM; sparkler send-off at 10:45 PM.</p>
+                                    </div>
+                                    <div class="bg-parchment p-4 rounded-2xl border border-earth-taupe/15">
+                                        <span class="text-[11px] uppercase tracking-wider text-cherry font-semibold block">Shuttle &amp; Valet</span>
+                                        <span class="font-serif text-lg text-cherry font-semibold">Valet at Main Gate</span>
+                                        <p class="text-xs text-earth-taupe mt-1">Shuttles depart the chapel at 5:05 PM &amp; return to hotels.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 sm:px-8 pb-8 pt-2">
+                            <a href="https://maps.google.com/?q=Asheville+NC" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-sm font-medium transition-all shadow-sm">
+                                <span>Open Reception Map in Google Maps</span>
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Transit Banner Between Ceremony & Reception -->
+                <div class="mt-12 bg-sage-muted border border-sage/30 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-start sm:items-center space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-forest text-earth-ochre flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-forest font-semibold">Getting From Ceremony to Reception</span>
+                            <h4 class="font-serif text-2xl text-forest font-semibold">15-Minute Scenic Drive (6.4 Miles)</h4>
+                            <p class="text-sm text-earth-espresso/80 mt-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Head south on Sycamore Ridge Rd and turn left onto Copper Leaf Parkway. Guests may drive their own vehicles (overnight parking allowed at the estate) or hop aboard our complimentary autumn coach shuttles.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Day-Of Timeline -->
+                <div class="mt-16">
+                    <div class="text-center max-w-xl mx-auto mb-10">
+                        <span class="text-xs uppercase tracking-widest text-earth-terracotta font-semibold">Order of Events</span>
+                        <h3 class="font-serif text-3xl sm:text-4xl text-forest mt-1">Wedding Day Timeline</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="bg-oatmeal p-5 rounded-2xl border border-earth-taupe/20 text-center">
+                            <span class="inline-block px-3 py-1 rounded-full bg-forest/10 text-forest text-xs font-semibold mb-2">3:30 PM</span>
+                            <h4 class="font-serif text-xl text-forest font-semibold">Chapel Doors Open</h4>
+                            <p class="text-xs text-earth-taupe mt-1">St. Luke's Stone Chapel &bull; String Quartet Prelude</p>
+                        </div>
+                        <div class="bg-oatmeal p-5 rounded-2xl border border-earth-taupe/20 text-center">
+                            <span class="inline-block px-3 py-1 rounded-full bg-forest text-parchment text-xs font-semibold mb-2">4:00 PM</span>
+                            <h4 class="font-serif text-xl text-forest font-semibold">The Ceremony</h4>
+                            <p class="text-xs text-earth-taupe mt-1">St. Luke's Stone Chapel &bull; Exchange of Vows</p>
+                        </div>
+                        <div class="bg-oatmeal p-5 rounded-2xl border border-earth-taupe/20 text-center">
+                            <span class="inline-block px-3 py-1 rounded-full bg-earth-terracotta text-parchment text-xs font-semibold mb-2">5:30 PM</span>
+                            <h4 class="font-serif text-xl text-cherry font-semibold">Cocktail Hour</h4>
+                            <p class="text-xs text-earth-taupe mt-1">Black Cherry Estate Terrace &bull; Cider &amp; Canapés</p>
+                        </div>
+                        <div class="bg-oatmeal p-5 rounded-2xl border border-earth-taupe/20 text-center">
+                            <span class="inline-block px-3 py-1 rounded-full bg-cherry text-parchment text-xs font-semibold mb-2">6:45 PM</span>
+                            <h4 class="font-serif text-xl text-cherry font-semibold">Dinner &amp; Toasts</h4>
+                            <p class="text-xs text-earth-taupe mt-1">Estate Conservatory &bull; Autumn Harvest Feast</p>
+                        </div>
+                        <div class="bg-oatmeal p-5 rounded-2xl border border-earth-taupe/20 text-center sm:col-span-2 lg:col-span-1">
+                            <span class="inline-block px-3 py-1 rounded-full bg-earth-ochre text-forest-dark text-xs font-semibold mb-2">10:45 PM</span>
+                            <h4 class="font-serif text-xl text-forest font-semibold">Grand Send-Off</h4>
+                            <p class="text-xs text-earth-taupe mt-1">Conservatory Courtyard &bull; Sparkler Farewell</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PAGE 4: REGISTRY
+             ========================================== -->
+        <section id="page-registry" class="tab-page">
+            <!-- Section Header -->
+            <div class="bg-cherry text-parchment py-16 px-4 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <span class="text-xs uppercase tracking-widest text-earth-ochre font-semibold">Warmest Wishes</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl mt-2 mb-4">Gift Registry</h2>
+                    <p class="text-parchment/80 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Your presence at our fall celebration is the greatest gift of all. However, if you wish to honor us with a gift, we have registered at the stores below.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                
+                <!-- Registry Store Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Registry 1: Crate & Barrel -->
+                    <div class="bg-oatmeal rounded-3xl p-8 border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between text-center">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-forest text-earth-ochre mx-auto flex items-center justify-center mb-6 shadow-sm">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs uppercase tracking-widest text-sage font-semibold">Kitchen &amp; Tableware</span>
+                            <h3 class="font-serif text-3xl text-forest font-semibold mt-1 mb-3">Crate &amp; Barrel</h3>
+                            <p class="text-earth-espresso/80 text-sm leading-relaxed mb-6">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+                            </p>
+                        </div>
+                        <a href="#registry-link" onclick="showToast('Opening Crate & Barrel Registry (Demo Link)'); return false;" class="w-full py-3.5 px-6 rounded-full bg-forest hover:bg-forest-light text-parchment text-sm font-medium transition-all">
+                            View Crate &amp; Barrel List
+                        </a>
+                    </div>
+
+                    <!-- Registry 2: Williams Sonoma -->
+                    <div class="bg-oatmeal rounded-3xl p-8 border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between text-center">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-cherry text-earth-ochre mx-auto flex items-center justify-center mb-6 shadow-sm">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs uppercase tracking-widest text-cherry font-semibold">Cookware &amp; Hosting</span>
+                            <h3 class="font-serif text-3xl text-forest font-semibold mt-1 mb-3">Williams Sonoma</h3>
+                            <p class="text-earth-espresso/80 text-sm leading-relaxed mb-6">
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                            </p>
+                        </div>
+                        <a href="#registry-link" onclick="showToast('Opening Williams Sonoma Registry (Demo Link)'); return false;" class="w-full py-3.5 px-6 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-sm font-medium transition-all">
+                            View Williams Sonoma List
+                        </a>
+                    </div>
+
+                    <!-- Registry 3: Autumn Honeymoon Fund -->
+                    <div class="bg-oatmeal rounded-3xl p-8 border border-earth-taupe/20 shadow-sm hover:shadow-md transition-all flex flex-col justify-between text-center">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-earth-terracotta text-parchment mx-auto flex items-center justify-center mb-6 shadow-sm">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-xs uppercase tracking-widest text-earth-terracotta font-semibold">Experiences &amp; Travel</span>
+                            <h3 class="font-serif text-3xl text-forest font-semibold mt-1 mb-3">Honeymoon Fund</h3>
+                            <p class="text-earth-espresso/80 text-sm leading-relaxed mb-6">
+                                Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Help us celebrate with an autumn rail adventure.
+                            </p>
+                        </div>
+                        <a href="#registry-link" onclick="showToast('Opening Honeymoon Fund (Demo Link)'); return false;" class="w-full py-3.5 px-6 rounded-full bg-earth-terracotta hover:bg-earth-ochre text-parchment text-sm font-medium transition-all">
+                            Contribute to Honeymoon
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Shipping Note Box -->
+                <div class="mt-14 bg-forest text-parchment rounded-3xl p-8 sm:p-10 text-center max-w-3xl mx-auto shadow-lg">
+                    <h4 class="font-serif text-2xl sm:text-3xl text-earth-ochre mb-2">A Note on Gift Shipping</h4>
+                    <p class="text-sage-light text-sm sm:text-base leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. For your convenience, all registries are configured to ship directly to Elizabeth &amp; Ryan's home address.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-forest-dark text-parchment border-t border-sage/20 py-14 px-4">
+        <div class="max-w-5xl mx-auto text-center space-y-6">
+            <div class="font-serif text-3xl sm:text-4xl tracking-wide text-parchment">
+                Elizabeth Rader <span class="italic text-earth-ochre">&amp;</span> Ryan McCune
+            </div>
+            <p class="text-xs uppercase tracking-widest text-sage-light">
+                October 23, 2027 &bull; York, Pennsylvania
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm text-parchment/80 pt-2">
+                <button onclick="switchPage('couple')" class="hover:text-earth-ochre transition-colors">The Couple</button>
+                <button onclick="switchPage('party')" class="hover:text-earth-ochre transition-colors">Wedding Party</button>
+                <button onclick="switchPage('venues')" class="hover:text-earth-ochre transition-colors">Venues &amp; Schedule</button>
+                <button onclick="switchPage('registry')" class="hover:text-earth-ochre transition-colors">Registry</button>
+                <button onclick="openRsvpModal()" class="hover:text-earth-ochre transition-colors">Online RSVP</button>
+            </div>
+            <p class="text-xs text-sage/70 pt-4">
+                Crafted with love for Elizabeth &amp; Ryan's Autumn Celebration.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         RSVP MODAL
+         ========================================== -->
+    <div id="rsvp-modal" class="fixed inset-0 z-50 hidden bg-earth-espresso/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-parchment border-2 border-cherry/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-[fadeIn_0.25s_ease-out]">
+            <button onclick="closeRsvpModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-oatmeal hover:bg-cherry hover:text-parchment text-earth-espresso flex items-center justify-center transition-colors" aria-label="Close RSVP Modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <span class="text-xs uppercase tracking-widest text-cherry font-semibold">Kindly Reply by September 15, 2026</span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-forest font-semibold mt-1 mb-2">RSVP</h3>
+            <p class="text-xs sm:text-sm text-earth-taupe mb-6">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Let us know if you can join us for the ceremony and reception.
+            </p>
+
+            <form id="rsvp-form" onsubmit="submitRsvp(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-forest font-semibold mb-1">Full Name(s)</label>
+                    <input type="text" required placeholder="e.g. Jordan & Taylor Smith" class="w-full px-4 py-2.5 rounded-xl bg-oatmeal border border-earth-taupe/30 focus:outline-none focus:border-cherry text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-forest font-semibold mb-1">Will You Attend?</label>
+                        <select required class="w-full px-4 py-2.5 rounded-xl bg-oatmeal border border-earth-taupe/30 focus:outline-none focus:border-cherry text-sm">
+                            <option value="yes">Joyfully Accepts (Both Venues)</option>
+                            <option value="ceremony">Ceremony Only</option>
+                            <option value="reception">Reception Only</option>
+                            <option value="no">Regretfully Declines</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-forest font-semibold mb-1">Number of Guests</label>
+                        <select class="w-full px-4 py-2.5 rounded-xl bg-oatmeal border border-earth-taupe/30 focus:outline-none focus:border-cherry text-sm">
+                            <option value="1">1 Guest</option>
+                            <option value="2" selected>2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-forest font-semibold mb-1">Dietary Notes or Song Request</label>
+                    <textarea rows="2" placeholder="Lorem ipsum dolor sit amet..." class="w-full px-4 py-2.5 rounded-xl bg-oatmeal border border-earth-taupe/30 focus:outline-none focus:border-cherry text-sm"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeRsvpModal()" class="px-5 py-2.5 rounded-full text-sm font-medium text-earth-taupe hover:text-earth-espresso">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-7 py-2.5 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-sm font-medium shadow-md transition-all">
+                        Send RSVP
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification Box (No alert() calls) -->
+    <div id="toast-box" class="fixed bottom-6 right-6 z-50 hidden bg-forest text-parchment px-5 py-3.5 rounded-2xl shadow-xl border border-earth-ochre/40 flex items-center space-x-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-earth-ochre"></span>
+        <span id="toast-message" class="text-sm font-medium">Notification</span>
+    </div>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        let allPagesVisible = false;
+
+        // Switch between pages (Couple, Party, Venues, Registry)
+        function switchPage(pageKey) {
+            if (allPagesVisible) {
+                const targetSection = document.getElementById('page-' + pageKey);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+                updateActiveNavStyles(pageKey);
+                return;
+            }
+
+            const pages = ['couple', 'party', 'venues', 'registry'];
+            pages.forEach(key => {
+                const section = document.getElementById('page-' + key);
+                if (section) {
+                    if (key === pageKey) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                }
+            });
+
+            updateActiveNavStyles(pageKey);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateActiveNavStyles(activeKey) {
+            const pages = ['couple', 'party', 'venues', 'registry'];
+            pages.forEach(key => {
+                const desktopBtn = document.getElementById('nav-' + key);
+                const mobileBtn = document.getElementById('mnav-' + key);
+
+                if (desktopBtn) {
+                    if (key === activeKey) {
+                        desktopBtn.className = 'nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide transition-all bg-forest text-parchment shadow-sm';
+                    } else {
+                        desktopBtn.className = 'nav-btn px-4 py-2 rounded-full text-sm font-medium tracking-wide text-earth-espresso hover:text-cherry hover:bg-oatmeal transition-all';
+                    }
+                }
+
+                if (mobileBtn) {
+                    if (key === activeKey) {
+                        mobileBtn.className = 'mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium bg-forest text-parchment';
+                    } else {
+                        mobileBtn.className = 'mnav-btn w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-earth-espresso hover:bg-oatmeal';
+                    }
+                }
+            });
+        }
+
+        // Toggle between multi-page tabs vs continuous single-page scroll
+        function toggleAllPagesView() {
+            allPagesVisible = !allPagesVisible;
+            const pages = ['couple', 'party', 'venues', 'registry'];
+            const modeBtn = document.getElementById('view-mode-btn');
+            const mModeBtn = document.getElementById('m-view-mode-btn');
+
+            if (allPagesVisible) {
+                pages.forEach(key => {
+                    document.getElementById('page-' + key).classList.add('active');
+                });
+                if (modeBtn) modeBtn.textContent = 'View Mode: All-in-One Scroll';
+                if (mModeBtn) mModeBtn.textContent = 'Switch to Separate Tabs';
+                showToast('Showing all sections on one continuous page');
+            } else {
+                switchPage('couple');
+                if (modeBtn) modeBtn.textContent = 'View Mode: Tabs';
+                if (mModeBtn) mModeBtn.textContent = 'Show All on One Page';
+                showToast('Switched to multi-page tab navigation');
+            }
+        }
+
+        // Filter Wedding Party (All, Bride's Side, Groom's Side)
+        function filterParty(side) {
+            const brideGroup = document.getElementById('party-group-bride');
+            const groomGroup = document.getElementById('party-group-groom');
+            const btnAll = document.getElementById('party-filter-all');
+            const btnBride = document.getElementById('party-filter-bride');
+            const btnGroom = document.getElementById('party-filter-groom');
+
+            const inactiveClass = 'party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium text-earth-espresso hover:text-cherry transition-all';
+            const activeCherry = 'party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium bg-cherry text-parchment shadow-sm transition-all';
+            const activeForest = 'party-filter-btn px-5 py-2 rounded-full text-xs sm:text-sm font-medium bg-forest text-parchment shadow-sm transition-all';
+
+            btnAll.className = inactiveClass;
+            btnBride.className = inactiveClass;
+            btnGroom.className = inactiveClass;
+
+            if (side === 'all') {
+                brideGroup.style.display = 'block';
+                groomGroup.style.display = 'block';
+                btnAll.className = activeCherry;
+            } else if (side === 'bride') {
+                brideGroup.style.display = 'block';
+                groomGroup.style.display = 'none';
+                btnBride.className = activeCherry;
+            } else if (side === 'groom') {
+                brideGroup.style.display = 'none';
+                groomGroup.style.display = 'block';
+                btnGroom.className = activeForest;
+            }
+        }
+
+        // Mobile Navigation Drawer Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Copy Venue Address helper using execCommand for iframe compatibility
+        function copyAddress(elementId, successMessage) {
+            const text = document.getElementById(elementId).innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(successMessage);
+        }
+
+        // RSVP Modal Controls
+        function openRsvpModal() {
+            document.getElementById('rsvp-modal').classList.remove('hidden');
+        }
+
+        function closeRsvpModal() {
+            document.getElementById('rsvp-modal').classList.add('hidden');
+        }
+
+        function submitRsvp(event) {
+            event.preventDefault();
+            closeRsvpModal();
+            document.getElementById('rsvp-form').reset();
+            showToast('Thank you! Your RSVP for Elizabeth & Ryan\'s wedding has been recorded.');
+        }
+
+        // Custom Toast Notification
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast-box');
+            const msg = document.getElementById('toast-message');
+            msg.textContent = message;
+            toast.classList.remove('hidden');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3400);
+        }
+    </script>
+</body>
+</html>
