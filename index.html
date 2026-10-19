@@ -1,44 +1,55 @@
 <!DOCTYPE html>
+<!-- The root HTML element, setting the language to English and enabling smooth scrolling for anchor links -->
 <html lang="en" class="scroll-smooth">
 <head>
+    <!-- Sets the character encoding to UTF-8 to support standard characters and emojis -->
     <meta charset="UTF-8">
+    <!-- Ensures the website is responsive and scales properly on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The title of the page that appears in the browser tab -->
     <title>Liz & Ryan Wedding</title>
-    <!-- Tailwind CSS -->
+    
+    <!-- Loads Tailwind CSS directly via CDN for utility-class styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cormorant Garamond for romantic serif headers, Plus Jakarta Sans for clean body text -->
+    
+    <!-- Google Fonts Preconnect: Speeds up the loading of fonts by pre-connecting to Google's servers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Loads 'Cormorant Garamond' (serif) for headers and 'Plus Jakarta Sans' (sans-serif) for body text -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS Custom Configuration -->
     <script>
+        // Customizes the default Tailwind theme
         tailwind.config = {
             theme: {
                 extend: {
+                    // Defines a custom color palette tailored to the wedding's theme
                     colors: {
-                        parchment: '#FCF9F6', // Dominant warm ivory / alabaster
-                        cream: '#F5EFE6',     // Strong nostalgic warm cream
-                        oatmeal: '#EFE9DF',   // Soft linen ribbon tone
+                        parchment: '#FCF9F6', // The main background color (warm ivory)
+                        cream: '#F5EFE6',     // Slightly darker cream for accents
+                        oatmeal: '#EFE9DF',   // Soft linen tone for borders or backgrounds
                         forest: {
-                            DEFAULT: '#5A6E32', // Willow & fern moss green
-                            dark: '#3F4F21',    // Deep moss for crisp readability & primary stems
-                            light: '#788E49'    // Sunlit willow leaf highlight
+                            DEFAULT: '#5A6E32', // Base green for the willow theme
+                            dark: '#3F4F21',    // Darker moss green for readability
+                            light: '#788E49'    // Lighter green for highlights
                         },
                         sage: {
-                            DEFAULT: '#1E3022', // Deep botanical pine (used sparingly for text)
-                            light: '#A3B86C',   // Soft chartreuse accent
-                            mist: '#EBF0E6'     // Whisper-light airy willow wash
+                            DEFAULT: '#1E3022', // Deep pine green for high-contrast text
+                            light: '#A3B86C',   // Chartreuse accent color
+                            mist: '#EBF0E6'     // Very light green for subtle backgrounds
                         },
                         cherry: {
                             DEFAULT: '#3B0918', // Nostalgic autumn black cherry
-                            light: '#5E162B',   // Rich wine highlight
-                            muted: '#7A2E43'    // Softened berry accent
+                            light: '#5E162B',   // Lighter cherry for hover effects
+                            muted: '#7A2E43'    // Softened cherry color
                         },
                         earth: {
-                            taupe: '#6E655F',   // Warm stone neutral
-                            espresso: '#232824' // Softened charcoal-pine for body text
+                            taupe: '#6E655F',   // Brownish-grey neutral text color
+                            espresso: '#232824' // Almost black (very dark green/brown) for body text
                         }
                     },
+                    // Assigns our loaded Google fonts to Tailwind's 'font-serif' and 'font-sans' classes
                     fontFamily: {
                         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
                         sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
@@ -48,26 +59,30 @@
         }
     </script>
 
+    <!-- Custom CSS Styles -->
     <style>
+        /* Sets global defaults for the body */
         body {
             background-color: #FCF9F6;
             color: #232824;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevents horizontal scrolling */
         }
+        /* Rounds the top corners of the arch image specifically to create a perfect dome */
         .arch-image {
             border-top-left-radius: 9999px;
             border-top-right-radius: 9999px;
         }
-        /* Subtle paper warmth via radial washes */
+        /* Creates a subtle textured/painted background effect using radial gradients */
         .airy-canvas {
             background-image: 
                 radial-gradient(circle at 12% 8%, rgba(235, 240, 230, 0.6) 0%, transparent 45%),
                 radial-gradient(circle at 88% 75%, rgba(245, 239, 230, 0.75) 0%, transparent 50%);
         }
-        /* Delicate nav link underline animation in Black Cherry */
+        /* Sets up the relative positioning needed for the underline animation on nav links */
         .nav-link {
             position: relative;
         }
+        /* Creates the underline bar that expands on hover */
         .nav-link::after {
             content: '';
             position: absolute;
@@ -79,23 +94,26 @@
             transition: all 0.35s ease;
             transform: translateX(-50%);
         }
+        /* Expands the underline to 100% width on hover or if the link is active */
         .nav-link.active-nav::after,
         .nav-link:hover::after {
             width: 100%;
         }
-        /* Gentle willow breeze animation */
+        /* Defines the gentle swaying animation for the decorative top-right willow branch */
         @keyframes willowSwayReverse {
             0%, 100% { transform: rotate(0deg); }
             50% { transform: rotate(-1.1deg); }
         }
+        /* Applies the animation to the designated elements */
         .willow-sway-reverse {
             transform-origin: top center;
             animation: willowSwayReverse 11s ease-in-out infinite;
         }
+        /* Ensures that clicking an anchor link leaves space for the sticky navbar */
         section {
             scroll-margin-top: 5.5rem;
         }
-        /* Full-page willow cascade (drawn by the script at the bottom of the page) */
+        /* Styles the canvas element that runs the JavaScript physics engine for the interactive willow */
         #willow-cascade {
             position: absolute;
             left: 0;
@@ -104,10 +122,11 @@
             user-select: none;
             opacity: 0.88;
         }
-        /* Softer where the margin is narrow and the willow sits behind text */
+        /* Fades the interactive canvas slightly on medium screens */
         @media (max-width: 1359px) {
             #willow-cascade { opacity: 0.68; }
         }
+        /* Fades the interactive canvas further on mobile screens to maintain legibility */
         @media (max-width: 639px) {
             #willow-cascade { opacity: 0.45; }
         }
@@ -117,6 +136,7 @@
 
     <!-- =================================================================
          MASTER BOTANICAL WEEPING WILLOW SVG DEFINITIONS
+         Hidden SVG container used purely to define shapes that can be reused later
          ================================================================= -->
     <svg xmlns="http://www.w3.org/2000/svg" class="hidden" aria-hidden="true">
         <defs>
@@ -139,6 +159,7 @@
                 <path d="M 110,155 C 116,182 122,210 123,242 C 124,274 120,308 114,342 C 108,376 101,408 94,438" stroke="#3F4F21" stroke-width="2.2" stroke-linecap="round" fill="none" />
                 <path d="M 116,182 C 134,204 148,228 156,258 C 162,284 162,312 157,342" stroke="#3F4F21" stroke-width="1.5" stroke-linecap="round" fill="none" />
 
+                <!-- Lightly colored leaves placed over the bough -->
                 <g fill="#788E49" opacity="0.85">
                     <use href="#wl-l" transform="translate(102,126) rotate(22) scale(0.88)" />
                     <use href="#wl-r" transform="translate(74,162) rotate(-14) scale(0.95)" />
@@ -162,6 +183,7 @@
                     <use href="#wl-sr" transform="translate(160,300) rotate(-14) scale(0.86)" />
                 </g>
 
+                <!-- Darker colored leaves providing shadow and depth to the bough -->
                 <g fill="#3F4F21">
                     <use href="#wl-l" transform="translate(114,116) rotate(32) scale(0.82)" />
                     <use href="#wl-sl" transform="translate(88,142) rotate(25) scale(0.92)" />
@@ -240,53 +262,62 @@
         </defs>
     </svg>
 
-    <!-- Whisper-Light Willow Mist Announcement Bar -->
+    <!-- Top Announcement Bar: Sits above the navigation, providing quick important details -->
     <div class="bg-sage-mist text-forest-dark text-[10px] sm:text-[11px] py-2.5 px-4 text-center tracking-[0.28em] uppercase font-normal border-b border-forest/15">
         <span>October 23, 2027 &bull; Autumn in Central Pennsylvania</span>
     </div>
 
-    <!-- Airy Ivory Centered Editorial Navigation Bar -->
+    <!-- Main Sticky Navigation Bar: Stays at the top of the screen as the user scrolls -->
     <header class="sticky top-0 z-40 bg-parchment/95 backdrop-blur-md text-earth-espresso border-b border-forest/15 transition-all">
+        <!-- Container controlling maximum width and side paddings -->
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Flexbox to arrange the nav content horizontally with vertical centering -->
             <div class="flex items-center justify-between h-20">
                 
-                <!-- Left Desktop Navigation Links -->
+                <!-- Left-side Navigation Links (Hidden on mobile) -->
                 <nav class="hidden md:flex items-center space-x-10 flex-1" aria-label="Primary Navigation Left">
+                    <!-- Smooth scroll anchor link to 'The Couple' section -->
                     <a href="#couple" data-section="couple" class="nav-link active-nav py-1 text-[11px] uppercase tracking-[0.22em] text-cherry font-medium transition-all">
                         The Couple
                     </a>
+                    <!-- Smooth scroll anchor link to 'Wedding Party' section -->
                     <a href="#party" data-section="party" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
                         Wedding Party
                     </a>
                 </nav>
 
-                <!-- Centered Monogram / Brand -->
+                <!-- Center Logo/Monogram: Clicking it returns the user to the top -->
                 <a href="#couple" class="text-center group focus:outline-none px-4">
                     <span class="font-serif text-3xl sm:text-4xl font-normal tracking-wider text-sage group-hover:text-cherry transition-colors">
                         E <span class="italic font-light text-cherry text-2xl sm:text-3xl mx-0.5">&amp;</span> R
                     </span>
                 </a>
 
-                <!-- Right Desktop Navigation Links + Airy Outlined RSVP Button -->
+                <!-- Right-side Navigation Links & Action Button (Hidden on mobile) -->
                 <div class="hidden md:flex items-center justify-end space-x-8 flex-1">
                     <nav class="flex items-center space-x-10" aria-label="Primary Navigation Right">
+                        <!-- Smooth scroll anchor link to 'Venues' section -->
                         <a href="#venues" data-section="venues" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
                             Venues &amp; Schedule
                         </a>
+                        <!-- Smooth scroll anchor link to 'Registry' section -->
                         <a href="#registry" data-section="registry" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
                             Registry
                         </a>
                     </nav>
+                    <!-- Button triggering the JavaScript function to open the RSVP modal popup -->
                     <button onclick="openRsvpModal()" class="border border-forest/50 hover:border-cherry hover:bg-cherry text-earth-espresso hover:text-parchment text-[11px] uppercase tracking-[0.22em] px-6 py-2 rounded-full transition-all duration-300">
                         RSVP
                     </button>
                 </div>
 
-                <!-- Mobile Controls -->
+                <!-- Mobile Header Controls (Visible ONLY on small screens) -->
                 <div class="flex md:hidden items-center space-x-3">
+                    <!-- Mobile RSVP Button -->
                     <button onclick="openRsvpModal()" class="border border-cherry/60 text-cherry text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full">
                         RSVP
                     </button>
+                    <!-- Hamburger Menu Button to toggle dropdown -->
                     <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="p-2 text-earth-espresso hover:text-cherry focus:outline-none" aria-label="Toggle Menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -296,8 +327,9 @@
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
+        <!-- Mobile Dropdown Menu: Hidden by default, toggled via JavaScript -->
         <div id="mobile-menu" class="hidden md:hidden bg-parchment border-b border-forest/20 px-6 pt-3 pb-6 space-y-3 shadow-sm">
+            <!-- Mobile Navigation Links; clicking one hides the menu -->
             <a href="#couple" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-cherry font-medium border-b border-forest/15">
                 The Couple
             </a>
@@ -313,47 +345,54 @@
         </div>
     </header>
 
-    <!-- Main Single-Page Content Container -->
+    <!-- Main Content wrapper holding all the primary sections -->
     <main class="flex-grow">
 
         <!-- ==========================================
-             SECTION 1: AIRY WILLOW HERO & THE COUPLE
+             SECTION 1: HERO & THE COUPLE
              ========================================== -->
+        <!-- 'relative' allows absolute elements inside; 'airy-canvas' provides the background texture -->
         <section id="couple" class="relative airy-canvas overflow-hidden">
             
-            <!-- The top-left weeping willow is drawn by the cascade script and trails down the whole page -->
-
-            <!-- Top-Right Subtle Secondary Willow Canopy Drape -->
+            <!-- Decorative Static Willow Bough tucked in the top right corner -->
+            <!-- We reference the full SVG path drawn inside the <defs> at the top of the file -->
             <div class="pointer-events-none select-none hidden xl:block absolute -top-4 right-4 w-60 opacity-45 willow-sway-reverse">
                 <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
                     <use href="#willow-bough-cascade" />
                 </svg>
             </div>
 
-            <div class="py-14 sm:py-20 lg:py-24 relative z-10">
+            <!-- 
+                Hero Content Wrapper
+                NOTE: Spacing adjusted here. pt-6, pt-8, pt-10 to pull the text closer to the menu bar. 
+            -->
+            <div class="pt-6 pb-14 sm:pt-8 sm:pb-20 lg:pt-10 lg:pb-24 relative z-10">
                 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     
-                    <!-- Centered Section Crest with Small Weeping Willow Tree -->
-
+                    <!-- A 2-column grid layout on large screens -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
                         
-                        <!-- Left Editorial Text Column -->
+                        <!-- LEFT COLUMN: The primary typography and invitation text -->
                         <div class="lg:col-span-6 text-center space-y-7 px-2 sm:px-6">
+                            
+                            <!-- Introduction text -->
                             <p class="font-serif italic text-xl sm:text-2xl text-earth-espresso/85">
                                 Together with their families,
                             </p>
 
+                            <!-- The Couple's Names as an H1 Header -->
                             <h1 class="font-serif text-5xl sm:text-6xl lg:text-[4.35rem] italic font-normal tracking-tight leading-[1.08] text-cherry">
                                 Elizabeth Rader
                                 <span class="block font-serif italic font-light text-3xl sm:text-4xl text-forest my-2.5">&amp;</span>
                                 Ryan McCune
                             </h1>
 
+                            <!-- Short greeting/description -->
                             <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto font-light leading-relaxed">
                                 Joyfully invite you to share in their autumn marriage celebration beneath the willow tree in Central Pennsylvania.
                             </p>
 
-                            <!-- Clean Nostalgic Date & Location Callout -->
+                            <!-- The prominent Date and Location -->
                             <div class="pt-3 space-y-1">
                                 <p class="font-serif text-2xl sm:text-[1.65rem] text-earth-espresso">
                                     Saturday, October 23, 2027
@@ -363,7 +402,7 @@
                                 </p>
                             </div>
 
-                            <!-- Delicate Divider with Bride & Groom Titles -->
+                            <!-- Split box identifying the Bride and the Groom side-by-side -->
                             <div class="pt-4 max-w-sm mx-auto grid grid-cols-2 gap-6 border-t border-forest/20">
                                 <div class="pt-4">
                                     <span class="text-[10px] uppercase tracking-[0.25em] text-forest block">The Bride</span>
@@ -375,35 +414,40 @@
                                 </div>
                             </div>
 
-                            <!-- Airy Action Buttons -->
+                            <!-- Buttons allowing users to immediately interact from the Hero section -->
                             <div class="pt-4 flex flex-wrap justify-center gap-5 items-center">
+                                <!-- Triggers the RSVP popup -->
                                 <button onclick="openRsvpModal()" class="px-8 py-3 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-[11px] uppercase tracking-[0.22em] transition-all shadow-sm">
                                     RSVP Online
                                 </button>
+                                <!-- Jumps to the Venue info -->
                                 <a href="#venues" class="px-5 py-3 rounded-full border border-forest/40 hover:border-cherry text-[11px] uppercase tracking-[0.22em] text-forest-dark hover:text-cherry transition-all bg-parchment/60">
                                     Venue &amp; Details
                                 </a>
                             </div>
                         </div>
 
-                        <!-- Right Arch Portrait Frame (Clean Double-Line Arch Without Overlapping Branches) -->
+                        <!-- RIGHT COLUMN: An elegant portrait photo inside an arched frame -->
                         <div class="lg:col-span-6 flex justify-center">
+                            <!-- Container controlling the size of the arch -->
                             <div class="relative w-72 sm:w-80 md:w-[23rem]">
                                 
-                                <!-- Fine Double-Line Arch Wireframe Borders -->
+                                <!-- Decorative outer border lines that create the wireframe effect -->
                                 <div class="absolute -inset-3 arch-image border border-forest/45 pointer-events-none"></div>
                                 <div class="absolute -inset-1.5 arch-image border border-cherry/20 pointer-events-none"></div>
                                 
-                                <!-- Main Arch Image Container -->
+                                <!-- The actual container clipping the image into the arch shape -->
                                 <div class="arch-image overflow-hidden shadow-md bg-cream aspect-[3/4] relative border border-forest/20 z-10">
+                                    <!-- The photo, including an automatic fallback image via placeholder if 'couple.jpg' is missing -->
                                     <img 
                                         src="couple.jpg" 
                                         onerror="this.onerror=null; this.src='https://placehold.co/600x800/F5EFE6/3B0918?text=Elizabeth+%26+Ryan'"
                                         alt="Elizabeth Rader and Ryan McCune" 
                                         class="w-full h-full object-cover object-center sepia-[.05] brightness-[1.02]"
                                     >
-                                    <!-- Soft Bottom Veil for Quote -->
+                                    <!-- A dark gradient overlay at the bottom so the text quote remains legible -->
                                     <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-sage/75 via-sage/30 to-transparent"></div>
+                                    <!-- A romantic latin quote placed over the image -->
                                     <div class="absolute bottom-5 left-0 right-0 text-center px-6">
                                         <p class="font-serif italic text-base sm:text-lg text-parchment tracking-wide">
                                             "Omnia vincit amor, et nos cedamus amori."
@@ -417,22 +461,26 @@
                 </div>
             </div>
 
-            <!-- Light, Nostalgic Cream At-A-Glance Ribbon -->
+            <!-- At-A-Glance Info Bar: Shows the live countdown and key wedding details in a horizontal ribbon -->
             <div class="bg-cream/90 border-y border-forest/25 py-7 px-4 relative">
                 <div class="relative z-10 max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center items-center">
+                    <!-- Column 1: Live JS Countdown -->
                     <div class="space-y-0.5">
                         <span class="font-serif italic text-2xl sm:text-3xl text-cherry" id="countdown-days">--</span>
                         <span class="font-serif italic text-lg sm:text-xl text-earth-espresso ml-1">Days to Go</span>
                         <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Until We Say I Do</span>
                     </div>
+                    <!-- Column 2: Date -->
                     <div class="space-y-0.5 md:border-l md:border-forest/20">
                         <span class="block font-serif italic text-2xl sm:text-3xl text-earth-espresso">October 23, 2027</span>
                         <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Autumn Celebration</span>
                     </div>
+                    <!-- Column 3: Location -->
                     <div class="space-y-0.5 md:border-l md:border-forest/20">
                         <span class="block font-serif italic text-2xl sm:text-3xl text-earth-espresso">York, PA</span>
                         <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Where Our Journey Began</span>
                     </div>
+                    <!-- Column 4: Attire -->
                     <div class="space-y-0.5 md:border-l md:border-forest/20">
                         <span class="block font-serif italic text-2xl sm:text-3xl text-cherry">Formal</span>
                         <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Autumnal Attire</span>
@@ -442,12 +490,15 @@
         </section>
 
         <!-- ==========================================
-             SECTION 2: THE WEDDING PARTY (UNDER CONSTRUCTION)
+             SECTION 2: THE WEDDING PARTY
              ========================================== -->
+        <!-- Future area for groomsmen/bridesmaids photos -->
         <section id="party" class="py-20 sm:py-28 bg-parchment border-b border-forest/15">
             <div class="relative z-10 max-w-3xl mx-auto px-4 text-center space-y-5">
+                <!-- Eyebrow text -->
                 <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Standing By Our Side</span>
                 <h2 class="font-serif text-4xl sm:text-5xl text-earth-espresso font-normal">The Wedding Party</h2>
+                <!-- Decorative tree icon between two horizontal lines -->
                 <div class="flex items-center justify-center space-x-3">
                     <span class="h-px w-12 bg-forest/30"></span>
                     <svg viewBox="0 0 220 190" class="w-11 h-10 opacity-90">
@@ -455,11 +506,13 @@
                     </svg>
                     <span class="h-px w-12 bg-forest/30"></span>
                 </div>
+                <!-- 'Under Construction' badge -->
                 <div class="pt-2">
                     <span class="inline-block px-5 py-2 rounded-full border border-forest/35 bg-sage-mist/60 text-forest-dark text-[11px] uppercase tracking-[0.24em]">
                         Under Construction &bull; Details Forthcoming
                     </span>
                 </div>
+                <!-- Explanatory text -->
                 <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2 font-light">
                     We are currently gathering photos and introductions for the friends and family standing beside us. Please check back soon.
                 </p>
@@ -467,8 +520,9 @@
         </section>
 
         <!-- ==========================================
-             SECTION 3: VENUES & SCHEDULE (UNDER CONSTRUCTION)
+             SECTION 3: VENUES & SCHEDULE
              ========================================== -->
+        <!-- Future area for mapping/hotel blocks/times -->
         <section id="venues" class="py-20 sm:py-28 bg-sage-mist/45 border-b border-forest/15">
             <div class="relative z-10 max-w-3xl mx-auto px-4 text-center space-y-5">
                 <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Ceremony &amp; Reception</span>
@@ -492,8 +546,9 @@
         </section>
 
         <!-- ==========================================
-             SECTION 4: REGISTRY (UNDER CONSTRUCTION)
+             SECTION 4: REGISTRY
              ========================================== -->
+        <!-- Future area for external registry links (Zola, Target, etc.) -->
         <section id="registry" class="py-20 sm:py-28 bg-parchment">
             <div class="relative z-10 max-w-3xl mx-auto px-4 text-center space-y-5">
                 <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Warmest Wishes</span>
@@ -518,10 +573,10 @@
 
     </main>
 
-    <!-- Airy Warm Cream & Weeping Willow Footer -->
+    <!-- Footer Area -->
     <footer class="bg-cream text-earth-espresso py-16 px-4 border-t border-forest/25 relative overflow-hidden">
         
-        <!-- Subtle Cascading Willow Corner Bough in Footer (the left side is where the page-long cascade comes to rest) -->
+        <!-- Another decorative branch SVG on the right side of the footer -->
         <div class="pointer-events-none select-none hidden sm:block absolute -top-3 right-0 w-40 opacity-35">
             <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
                 <use href="#willow-bough-cascade" />
@@ -530,20 +585,27 @@
 
         <div class="max-w-4xl mx-auto text-center space-y-5 relative z-10">
             
-            <!-- Weeping Willow Tree Crest Above Names -->
+            <!-- Tree logo crowning the footer -->
             <div class="flex justify-center">
                 <svg viewBox="0 0 220 190" class="w-20 h-16">
                     <use href="#willow-tree-emblem" />
                 </svg>
             </div>
 
+            <!-- Stylized names summarizing the site -->
             <div class="font-serif text-3xl sm:text-5xl font-normal tracking-wide text-cherry">
                 Elizabeth Rader <span class="italic font-light text-forest">&amp;</span> Ryan McCune
             </div>
+            
+            <!-- Final reminder of date and location -->
             <p class="text-[11px] uppercase tracking-[0.28em] text-forest-dark">
                 October 23, 2027 &bull; Yorktowne Farms &bull; York, PA
             </p>
+            
+            <!-- Small dividing line -->
             <div class="w-12 h-px bg-forest/35 mx-auto"></div>
+            
+            <!-- Footer navigation links repeating the main menu for convenience -->
             <div class="flex flex-wrap justify-center gap-6 sm:gap-10 text-[11px] uppercase tracking-[0.2em] text-earth-espresso/75 pt-2">
                 <a href="#couple" class="hover:text-cherry transition-colors">The Couple</a>
                 <a href="#party" class="hover:text-cherry transition-colors">Wedding Party</a>
@@ -551,6 +613,8 @@
                 <a href="#registry" class="hover:text-cherry transition-colors">Registry</a>
                 <button onclick="openRsvpModal()" class="hover:text-cherry transition-colors uppercase tracking-[0.2em]">RSVP</button>
             </div>
+            
+            <!-- Closing sign-off note -->
             <p class="font-serif italic text-base text-earth-taupe pt-4">
                 Crafted with love for our autumn celebration beneath the willow.
             </p>
@@ -558,33 +622,42 @@
     </footer>
 
     <!-- ==========================================
-         RSVP MODAL (LIVE BACKEND READY)
+         RSVP MODAL (Hidden by default, overlays screen when active)
          ========================================== -->
     <div id="rsvp-modal" class="fixed inset-0 z-50 hidden bg-earth-espresso/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <!-- The white modal box container -->
         <div class="bg-parchment border border-forest/30 max-w-lg w-full p-8 sm:p-10 shadow-xl relative">
+            <!-- X button to close the modal -->
             <button onclick="closeRsvpModal()" class="absolute top-6 right-6 text-earth-taupe hover:text-cherry transition-colors" aria-label="Close RSVP Modal">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
 
+            <!-- Modal header text -->
             <div class="text-center mb-8">
                 <span class="text-[10px] uppercase tracking-[0.28em] text-forest font-medium">Kindly Reply by September 15, 2027</span>
                 <h3 class="font-serif text-4xl text-cherry italic font-normal mt-1">RSVP</h3>
             </div>
 
+            <!-- The HTML Form that handles guest inputs -->
             <form id="rsvp-form" onsubmit="submitRsvp(event)" class="space-y-5">
+                
+                <!-- Full Name Input Field -->
                 <div>
                     <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Full Name(s)</label>
                     <input type="text" name="names" required placeholder="e.g. Jordan & Taylor Smith" class="w-full px-3 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                 </div>
 
+                <!-- Email Input Field -->
                 <div>
                     <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Email Address</label>
                     <input type="email" name="email" required placeholder="For confirmation details" class="w-full px-3 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                 </div>
 
+                <!-- 2-column layout for Attendance Dropdown and Party Size Dropdown -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Attendance Selector -->
                     <div>
                         <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Attendance</label>
                         <select name="attendance" required class="w-full px-2 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
@@ -594,6 +667,7 @@
                             <option value="Regretfully Declines">Regretfully Declines</option>
                         </select>
                     </div>
+                    <!-- Party Size Selector -->
                     <div>
                         <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Party Size</label>
                         <select name="guests" class="w-full px-2 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
@@ -605,15 +679,18 @@
                     </div>
                 </div>
 
+                <!-- Open text area for dietary restrictions or notes -->
                 <div>
                     <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Dietary Notes or Song Request</label>
                     <textarea name="notes" rows="2" placeholder="Optional notes..." class="w-full px-3 py-2 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm"></textarea>
                 </div>
 
+                <!-- Submit / Cancel Form controls -->
                 <div class="pt-4 flex justify-end space-x-4 items-center">
                     <button type="button" onclick="closeRsvpModal()" class="text-xs uppercase tracking-[0.18em] text-earth-taupe hover:text-earth-espresso">
                         Cancel
                     </button>
+                    <!-- Triggers the form submission event -->
                     <button type="submit" id="rsvp-submit-btn" class="px-8 py-3 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-[11px] uppercase tracking-[0.22em] transition-all">
                         Send Reply
                     </button>
@@ -622,81 +699,97 @@
         </div>
     </div>
 
-    <!-- Custom Toast Notification Box -->
+    <!-- Small pop-up box (toast) that appears in the bottom right when a form is submitted -->
     <div id="toast-box" class="fixed bottom-6 right-6 z-50 hidden bg-parchment text-earth-espresso px-6 py-3.5 shadow-xl border border-cherry/40 flex items-center space-x-3">
+        <!-- Decorative dot -->
         <span class="w-2 h-2 rounded-full bg-cherry"></span>
+        <!-- Text container populated by JS -->
         <span id="toast-message" class="text-xs uppercase tracking-widest">Notification</span>
     </div>
 
-    <!-- Interactive JavaScript -->
+    <!-- JavaScript block handling interactivity, data submission, and complex animations -->
     <script>
-        // Paste your Formspree or Google Apps Script Web App URL here when ready:
+        // API endpoint where RSVP form data will be sent (currently empty)
         const RSVP_ENDPOINT_URL = ""; 
 
-        // Automatic Countdown Calculator to October 23, 2027
+        // Function calculating the number of days left until the wedding date
         function updateCountdown() {
-            const weddingDate = new Date('October 23, 2027 00:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
+            const weddingDate = new Date('October 23, 2027 00:00:00').getTime(); // Target Date
+            const now = new Date().getTime(); // Current Time
+            const distance = weddingDate - now; // Time difference in milliseconds
 
             const daysElement = document.getElementById('countdown-days');
             if (daysElement) {
+                // If the wedding already happened, set it to 0
                 if (distance < 0) {
                     daysElement.textContent = '0';
                 } else {
+                    // Convert milliseconds into full days
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     daysElement.textContent = days;
                 }
             }
         }
+        // Initialize the countdown immediately
         updateCountdown();
+        // Update the countdown once every hour
         setInterval(updateCountdown, 1000 * 60 * 60);
 
-        // Automatic ScrollSpy for Light Editorial Navigation Links
+        // Adds a scroll listener to highlight the correct nav link based on the user's scroll position
         window.addEventListener('scroll', () => {
             const sections = ['couple', 'party', 'venues', 'registry'];
-            let currentSection = 'couple';
+            let currentSection = 'couple'; // Default section
 
+            // Determine which section is currently at the top of the viewport
             sections.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     const rect = element.getBoundingClientRect();
+                    // 180px threshold to trigger the active state before perfectly crossing the line
                     if (rect.top <= 180) {
                         currentSection = id;
                     }
                 }
             });
 
+            // Update the CSS classes on the nav links to highlight the active section
             document.querySelectorAll('.nav-link').forEach(link => {
                 if (link.dataset.section === currentSection) {
+                    // Add 'active' classes
                     link.classList.add('active-nav', 'text-cherry', 'font-medium');
                     link.classList.remove('text-earth-espresso/70');
                 } else {
+                    // Remove 'active' classes
                     link.classList.remove('active-nav', 'text-cherry', 'font-medium');
                     link.classList.add('text-earth-espresso/70');
                 }
             });
         });
 
+        // Toggles the visibility of the mobile menu dropdown
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
+        // Un-hides the RSVP modal pop-up
         function openRsvpModal() {
             document.getElementById('rsvp-modal').classList.remove('hidden');
         }
 
+        // Hides the RSVP modal pop-up
         function closeRsvpModal() {
             document.getElementById('rsvp-modal').classList.add('hidden');
         }
 
+        // Handles the submission of the RSVP form data asynchronously
         async function submitRsvp(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevents the browser from reloading the page
             const form = document.getElementById('rsvp-form');
             const submitBtn = document.getElementById('rsvp-submit-btn');
-            const formData = new FormData(form);
+            const formData = new FormData(form); // Packages the input values
 
+            // If no backend endpoint URL is configured, fake a successful submission
             if (!RSVP_ENDPOINT_URL) {
                 closeRsvpModal();
                 form.reset();
@@ -704,79 +797,93 @@
                 return;
             }
 
+            // Temporarily disable the button to prevent duplicate submissions
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
 
             try {
+                // Send the data to the server
                 const response = await fetch(RSVP_ENDPOINT_URL, {
                     method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
                 });
 
+                // Check if the server responded successfully
                 if (response.ok) {
                     closeRsvpModal();
-                    form.reset();
+                    form.reset(); // Clear the form
                     showToast('Thank you! Your RSVP has been recorded.');
                 } else {
+                    // Alert the user if the server threw an error
                     showToast('Oops! Something went wrong. Please try again.');
                 }
             } catch (error) {
+                // Catch network/connection errors
                 showToast('Network error. Please try again.');
             } finally {
+                // Re-enable the submit button regardless of success/failure
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Reply';
             }
         }
 
+        // Manages displaying the popup Toast notification box at the bottom right
         let toastTimeout;
         function showToast(message) {
             const toast = document.getElementById('toast-box');
             const msg = document.getElementById('toast-message');
-            msg.textContent = message;
-            toast.classList.remove('hidden');
+            msg.textContent = message; // Set the message text
+            toast.classList.remove('hidden'); // Make it visible
+            
+            // Clear any existing timeout so toasts don't prematurely disappear if triggered rapidly
             clearTimeout(toastTimeout);
+            // Hide the toast after 3.6 seconds
             toastTimeout = setTimeout(() => {
                 toast.classList.add('hidden');
             }, 3600);
         }
 
         // =================================================================
-        // FULL-PAGE WEEPING WILLOW CASCADE
-        // Each hanging strand is modelled as a hanging chain: it leaves the bough
-        // with some stiffness (an elastica-style arch), then hangs under gravity.
-        // Its sway is the sum of the chain's natural vibration modes (Bessel J0
-        // shapes), driven by a breeze that travels down the page and by the cursor.
-        // Long strands therefore sway slowly with large, smooth arcs while short
-        // sprigs flutter quickly, the way a real willow moves.
+        // FULL-PAGE WEEPING WILLOW CASCADE PHYSICS & ANIMATION
+        // Wrapped in an IIFE (Immediately Invoked Function Expression) to keep variables scoped
         // =================================================================
         (function () {
+            // Locate bounding elements to figure out how large the canvas should be
             const hero = document.getElementById('couple');
             const footer = document.querySelector('footer');
-            if (!hero || !footer) return;
+            if (!hero || !footer) return; // Exit if elements are missing
 
+            // Create and inject a `<canvas>` element into the body
             const canvas = document.createElement('canvas');
             canvas.id = 'willow-cascade';
-            canvas.setAttribute('aria-hidden', 'true');
+            canvas.setAttribute('aria-hidden', 'true'); // Hide from screen readers
             document.body.appendChild(canvas);
             const ctx = canvas.getContext('2d');
 
+            // Detect if the user has requested OS-level "reduced motion" for accessibility
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const BESSEL_ZEROS = [2.4048, 5.5201, 8.6537, 11.7915, 14.9309, 18.0711];
-            const G = 2274;    // effective gravity (px/s^2): a 3000px strand sways with a ~6s period
-            const DS = 6;      // node spacing along each strand (px)
-            const COLORS = ['#3F4F21', '#5A6E32', '#788E49', '#A3B86C', '#A8914A'];
-            const LAYER_TONES = [   // cumulative colour weights per depth layer (back -> front)
+            
+            // Mathematical Constants for physics wave simulation
+            const BESSEL_ZEROS = [2.4048, 5.5201, 8.6537, 11.7915, 14.9309, 18.0711]; // Defines resonant frequencies
+            const G = 2274;    // Gravity constant defining how fast strands swing
+            const DS = 6;      // Physical distance between simulated nodes on a strand
+            const COLORS = ['#3F4F21', '#5A6E32', '#788E49', '#A3B86C', '#A8914A']; // Palette for leaves
+            const LAYER_TONES = [   // Weighted array determining leaf color probabilities based on depth
                 [0.62, 0.92, 0.99, 0.995, 1],
                 [0.38, 0.70, 0.93, 0.96, 1],
                 [0.22, 0.52, 0.86, 0.93, 1]
             ];
-            const LAYER_ALPHA = [0.72, 0.88, 1];
+            const LAYER_ALPHA = [0.72, 0.88, 1]; // Opacities per layer depth
 
+            // State variables tracking canvas dimensions and simulation data
             let W = 0, H = 0, top = 0, k = 1, dpr = 1;
             let strands = [], limbs = [], built = false, lastSig = '';
+            
+            // Mouse pointer state for the "cursor breeze" interaction
             const pointer = { x: -1e4, y: -1e4, vx: 0, active: false };
 
+            // Pseudo-random number generator ensuring the tree grows exactly the same way every refresh
             function rng(seed) {
                 return function () {
                     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -785,6 +892,8 @@
                     return ((t ^ t >>> 14) >>> 0) / 4294967296;
                 };
             }
+            
+            // Computes the zeroth-order Bessel function of the first kind (used for hanging chain physics)
             function J0(x) {
                 let sum = 1, term = 1;
                 const q = -(x * x) / 4;
@@ -795,6 +904,8 @@
                 }
                 return sum;
             }
+            
+            // Computes cubic bezier curve coordinates for rendering boughs
             function bez(p, t) {
                 const u = 1 - t;
                 return [
@@ -803,18 +914,19 @@
                 ];
             }
 
-            // --- Build one strand: rest shape + vibration modes + leaves ------------------
+            // Constructor for individual hanging strands (stems + leaves)
             function makeStrand(R, opts) {
                 const { ax, ay, L, theta0, lambda, layer, parent, parentIdx, wobble } = opts;
-                const n = Math.max(3, Math.round(L / DS) + 1);
+                const n = Math.max(3, Math.round(L / DS) + 1); // Number of physics nodes
                 const x = new Float32Array(n), y = new Float32Array(n);
                 const tx = new Float32Array(n), ty = new Float32Array(n);
                 const wa = wobble ? wobble.a : 0, wp = wobble ? wobble.p : 1, wph = wobble ? wobble.ph : 0;
+                
                 x[0] = ax; y[0] = ay;
+                // Generate the resting shape of the strand
                 for (let i = 0; i < n; i++) {
                     const s = i * DS;
-                    // Stiff near the bough, relaxing exponentially into a free hang,
-                    // with a faint long-wave meander so long strands never look ruled.
+                    // Formula making the stem exit stiffly from the branch and gradually droop
                     const th = theta0 * Math.exp(-s / lambda)
                         + wa * Math.sin(2 * Math.PI * s / wp + wph) * (1 - Math.exp(-s / 260))
                         + wa * 0.45 * Math.sin(2 * Math.PI * s / (wp * 0.43) + wph * 1.7) * (1 - Math.exp(-s / 260));
@@ -822,6 +934,8 @@
                     tx[i] = dx; ty[i] = dy;
                     if (i > 0) { x[i] = x[i - 1] + dx * DS; y[i] = y[i - 1] + dy * DS; }
                 }
+                
+                // Calculate mode shapes/frequencies for the sway animation
                 const len = (n - 1) * DS;
                 const nm = len > 900 ? 6 : len > 260 ? 4 : 3;
                 const omega = [], zeta = [], phi = [], q = new Float32Array(nm), qd = new Float32Array(nm);
@@ -835,25 +949,28 @@
                     }
                     phi.push(f);
                 }
-                // Coarse samples used to project the breeze onto each mode
+                
+                // Creates a coarser sample array to optimize physics processing
                 const stride = Math.max(1, Math.floor(n / 48));
                 const samp = [];
                 for (let i = 0; i < n; i += stride) samp.push(i);
                 if (samp[samp.length - 1] !== n - 1) samp.push(n - 1);
                 const norm = phi.map(f => samp.reduce((a, i) => a + f[i] * f[i], 0));
-                const ampAt1 = (3 + 11 * Math.sqrt(len / 3000)) / len;   // tip travel per unit breeze
+                const ampAt1 = (3 + 11 * Math.sqrt(len / 3000)) / len;
 
-                // Leaves: slender, alternating, angled down along the twig, smaller at the tip
+                // Generates the geometry for the leaves branching off the stem
                 const leaves = [];
                 const kk = Math.max(0.62, Math.min(1, k));
                 const spacing = 6.4 * kk;
                 const tones = LAYER_TONES[layer];
-                let side = R() < 0.5 ? 1 : -1;
+                let side = R() < 0.5 ? 1 : -1; // Alternating left/right sides
+                
+                // Loop to walk down the stem and spawn leaves
                 for (let s = parent ? 2 : 10; s < len - 2; s += spacing * (0.8 + R() * 0.45)) {
                     side = -side;
                     const taper = 0.42 + 0.58 * Math.min(1, (len - s) / 130);
                     const r = R();
-                    let c = 0; while (r > tones[c]) c++;
+                    let c = 0; while (r > tones[c]) c++; // Pick a color based on layer weighting
                     leaves.push({
                         s: s / DS, side,
                         off: side * (0.2 + R() * 0.42),
@@ -862,32 +979,37 @@
                         c, ph: R() * 6.283, fr: 1.4 + R() * 1.8
                     });
                 }
+                
                 return {
                     n, x, y, tx, ty, len, nm, omega, zeta, phi, q, qd, samp, norm, ampAt1,
                     leaves, layer, parent: parent || null, parentIdx: parentIdx || 0,
-                    stemW: (parent ? 0.7 : 1.15) * Math.max(0.7, k),
-                    u: new Float32Array(n), v: new Float32Array(n)
+                    stemW: (parent ? 0.7 : 1.15) * Math.max(0.7, k), // Stem thickness
+                    u: new Float32Array(n), v: new Float32Array(n)   // Displacement arrays
                 };
             }
 
+            // Orchestrates the generation of the entire tree framework and configures the canvas
             function build() {
+                // Calculate display metrics
                 const vw = window.innerWidth;
-                W = vw < 640 ? 150 : vw < 1024 ? 180 : vw < 1360 ? 220 : 300;
-                k = W / 300;
-                top = hero.getBoundingClientRect().top + window.scrollY;
-                H = Math.ceil(footer.getBoundingClientRect().bottom + window.scrollY - top);
-                dpr = Math.min(window.devicePixelRatio || 1, 2);
-                while (H * dpr > 30000 && dpr > 1) dpr -= 0.25;
+                W = vw < 640 ? 150 : vw < 1024 ? 180 : vw < 1360 ? 220 : 300; // Left offset width
+                k = W / 300; // Scaling factor
+                top = hero.getBoundingClientRect().top + window.scrollY; // Top Y coord
+                H = Math.ceil(footer.getBoundingClientRect().bottom + window.scrollY - top); // Total scrollable height
+                dpr = Math.min(window.devicePixelRatio || 1, 2); // Handles retina screens safely
+                while (H * dpr > 30000 && dpr > 1) dpr -= 0.25; // Prevents massive canvas memory crashes on long pages
 
+                // Apply CSS styles and attributes to the Canvas
                 canvas.style.top = top + 'px';
                 canvas.style.width = W + 'px';
                 canvas.style.height = H + 'px';
                 canvas.width = Math.round(W * dpr);
                 canvas.height = Math.round(H * dpr);
 
-                const R = rng(20271023);
+                const R = rng(20271023); // Seed for deterministic tree generation
                 const S = (pt) => [pt[0] * k, pt[1] * k];
-                // Bough geometry (design space is 300px wide); limbs enter from above the hero
+                
+                // Calculate the thick main branch limbs curving from the top left corner
                 const L1 = [[276, -16], [222, 28], [166, 60], [96, 156]].map(S);
                 const a2 = bez(L1, 0.34), a3 = bez(L1, 0.62);
                 const L2 = [a2, [a2[0] - 40 * k, a2[1] + 6 * k], [70 * k, 74 * k], [24 * k, 118 * k]];
@@ -900,7 +1022,8 @@
 
                 strands = [];
                 const kc = Math.max(0.7, k);
-                // Canopy: many short-to-medium branchlets along each limb
+                
+                // Spawn hundreds of short/medium strands filling out the top canopy
                 const limbPlan = [[0, 0.16, 1, 22], [1, 0.12, 1, 13], [2, 0.12, 1, 10]];
                 for (const [li, t0, t1, count] of limbPlan) {
                     for (let j = 0; j < count; j++) {
@@ -911,9 +1034,9 @@
                         const theta = 0.9 + R() * 1.1, lam = (18 + R() * 40) * kc;
                         const layer = R() < 0.4 ? 0 : R() < 0.6 ? 1 : 2;
                         const wob = { a: 0.02 + R() * 0.03, p: 300 + R() * 400, ph: R() * 6.28 };
-                        // Keep the curtain inside the margin: clear of the canvas edges and,
-                        // below the bough, clear of the headline column.
+                        
                         let st;
+                        // Brute force logic ensuring strands do not obscure text on narrow screens
                         for (let tries = 0; tries < 6; tries++) {
                             st = makeStrand(R, { ax, ay, L, theta0: out * theta, lambda: lam, layer, wobble: wob });
                             let bad = -1;
@@ -923,12 +1046,13 @@
                             }
                             if (bad < 0) break;
                             if (tries === 0 && out > 0) { out = -1; continue; }
-                            L = Math.max(40, bad * DS - 20);
+                            L = Math.max(40, bad * DS - 20); // Trim if necessary
                         }
                         strands.push(st);
                     }
                 }
-                // Long strands that trail the full height of the page
+                
+                // Spawn 6 massive strands that drape all the way down to the footer
                 const longPlan = [
                     { li: 1, t: 0.78, f: 1.0, th: -0.55 },
                     { li: 0, t: 0.97, f: 0.94, th: 0.5 },
@@ -942,7 +1066,7 @@
                     const [ax, ay] = bez(limbs[lp.li].p, lp.t);
                     let a = 0.018 + R() * 0.016;
                     const wob = { a, p: 820 + R() * 620, ph: R() * 6.28 };
-                    const L = Math.max(300, (H - ay - 26) * lp.f);
+                    const L = Math.max(300, (H - ay - 26) * lp.f); // Reaches the bottom
                     let st;
                     for (let tries = 0; tries < 5; tries++) {
                         st = makeStrand(R, {
@@ -957,7 +1081,8 @@
                     strands.push(st);
                     longs.push(st);
                 }
-                // Side sprigs along the long strands so the lower cascade stays lush
+                
+                // Spawn small side sprigs connected to the long strands to make the lower page look lush
                 for (const p of longs) {
                     let s = 260 + R() * 140;
                     while (s < p.len - 120) {
@@ -974,33 +1099,42 @@
                         s += 140 + R() * 210;
                     }
                 }
-                // Draw back layers first
+                
+                // Sort array to draw background strands first, foreground strands last
                 strands.sort((a, b) => a.layer - b.layer);
                 built = true;
             }
 
-            // --- Physics -----------------------------------------------------------------
+            // Function generating continuous Perlin-like noise waves to represent wind
             function breeze(y, t) {
                 return 0.16
                     + 0.55 * Math.sin(0.23 * t) + 0.3 * Math.sin(0.51 * t + 1.3) + 0.15 * Math.sin(1.13 * t + 0.4)
                     + 0.38 * Math.sin(0.9 * t - y / 420) + 0.2 * Math.sin(1.7 * t - y / 190 + 2);
             }
+            
+            // Reused temporary memory buffers (prevents Garbage Collection lag)
             const tmpF = new Float32Array(64), tmpU = new Float32Array(64);
+            
+            // Runs physics integration step for one "tick" of time
             function step(dt, t) {
                 const pvx = Math.max(-1, Math.min(1, pointer.vx / 1400));
                 for (const st of strands) {
                     const sm = st.samp, ns = sm.length;
                     const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
+                    
+                    // Sample forces (wind + mouse movement) affecting the strand
                     for (let j = 0; j < ns; j++) {
                         const i = sm[j];
                         let f = breeze(st.y[i], t);
+                        // Add mouse gust force
                         if (pointer.active) {
                             const dx = st.x[i] + ox - pointer.x, dy = st.y[i] - pointer.y;
                             f += pvx * 5 * Math.exp(-(dx * dx + dy * dy) / 9000);
                         }
                         tmpF[j] = f;
                     }
-                    // Hanging chain under side load: slope at s = mean load below s
+                    
+                    // Integrate forces down the chain to compute bending moments
                     let acc = 0;
                     for (let j = ns - 1; j >= 0; j--) { acc += tmpF[j]; tmpF[j] = acc / (ns - j); }
                     let u = 0;
@@ -1009,6 +1143,8 @@
                         u += tmpF[j] * segLen;
                         tmpU[j] = u * st.ampAt1;
                     }
+                    
+                    // Solve equations of motion using Semi-Implicit Euler
                     for (let m = 0; m < st.nm; m++) {
                         const f = st.phi[m];
                         let proj = 0;
@@ -1016,25 +1152,29 @@
                         proj /= st.norm[m];
                         const w = st.omega[m];
                         const acc2 = w * w * (proj - st.q[m]) - 2 * st.zeta[m] * w * st.qd[m];
-                        st.qd[m] += acc2 * dt;           // semi-implicit Euler
+                        st.qd[m] += acc2 * dt;           
                         st.q[m] += st.qd[m] * dt;
                     }
                 }
             }
 
-            // --- Rendering (only the band of the canvas that is on screen) ---------------
+            // Determines the displacement (U) of a specific point on the tree
             function modeU(st, i) {
                 let s = 0;
                 for (let m = 0; m < st.nm; m++) s += st.q[m] * st.phi[m][i];
                 return s;
             }
+
+            // Draw the current state of the physics engine onto the canvas 
             function render(y0, y1, t) {
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Scale for high-res displays
                 ctx.save();
+                
+                // Clip rendering strictly to the viewport area for performance
                 ctx.beginPath(); ctx.rect(0, y0, W, y1 - y0); ctx.clip();
                 ctx.clearRect(0, y0, W, y1 - y0);
 
-                // Boughs
+                // Render thick background boughs
                 ctx.fillStyle = '#3F4F21';
                 for (const lb of limbs) {
                     const left = [], right = [];
@@ -1052,40 +1192,46 @@
                     ctx.closePath(); ctx.fill();
                 }
 
-                const lo = y0 - 30, hi = y1 + 30;
+                const lo = y0 - 30, hi = y1 + 30; // Padding to prevent leaves popping in at edges
+                // Iterate through the three Z-layers (background -> foreground)
                 for (let layer = 0; layer < 3; layer++) {
                     ctx.globalAlpha = LAYER_ALPHA[layer];
                     const paths = COLORS.map(() => new Path2D());
                     ctx.strokeStyle = '#3F4F21';
                     ctx.lineCap = 'round';
+                    
                     for (const st of strands) {
                         if (st.layer !== layer) continue;
                         const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
                         const { x, y, tx, ty, u, v, n, nm, q, qd, phi } = st;
-                        // visible node range
+                        
+                        // Discover which nodes of this strand are currently visible on screen
                         let iA = -1, iB = -1;
                         for (let i = 0; i < n; i++) {
                             if (y[i] >= lo && y[i] <= hi) { if (iA < 0) iA = i; iB = i; }
                         }
-                        if (iA < 0) continue;
+                        if (iA < 0) continue; // Skip if fully off-screen
                         iA = Math.max(0, iA - 1); iB = Math.min(n - 1, iB + 1);
+                        
                         for (let i = iA; i <= iB; i++) {
                             let uu = 0, vv = 0;
                             for (let m = 0; m < nm; m++) { uu += q[m] * phi[m][i]; vv += qd[m] * phi[m][i]; }
                             u[i] = uu + ox; v[i] = vv;
                         }
-                        // Stem: tapered, drawn in short runs
+                        
+                        // Draw Stem Lines
                         const run = 30;
                         for (let a = iA; a < iB; a += run) {
                             const b = Math.min(iB, a + run);
                             const frac = (a * DS) / st.len;
-                            ctx.lineWidth = st.stemW * (1 - 0.65 * frac);
+                            ctx.lineWidth = st.stemW * (1 - 0.65 * frac); // Stems get thinner at the tips
                             ctx.beginPath();
                             ctx.moveTo(x[a] + u[a], y[a]);
                             for (let i = a + 1; i <= b; i++) ctx.lineTo(x[i] + u[i], y[i]);
                             ctx.stroke();
                         }
-                        // Leaves
+                        
+                        // Draw Leaves along the visible stem section
                         for (const lf of st.leaves) {
                             const i = Math.floor(lf.s);
                             if (i < iA || i >= iB) continue;
@@ -1095,6 +1241,7 @@
                             const ip = Math.max(iA, i - 1), inx = Math.min(iB, i + 2);
                             let dx = tx[i] + (u[inx] - u[ip]) / ((inx - ip) * DS) - v[i] * 0.0035;
                             let dy = ty[i];
+                            // Apply micro-fluttering rotation based on wind/time unless reduced-motion is requested
                             const ang = lf.off + (reduceMotion ? 0 : 0.11 * Math.sin(t * lf.fr + lf.ph));
                             const ca = Math.cos(ang), sa = Math.sin(ang);
                             let ex = dx * ca - dy * sa, ey = dx * sa + dy * ca;
@@ -1102,70 +1249,96 @@
                             const L = lf.len, hw = L * lf.hw * 2;
                             const nx = -ey, ny = ex;
                             const cx = px + ex * L * 0.42, cy = py + ey * L * 0.42;
+                            
+                            // Map the curve commands into the Path2D object matching its designated color
                             const p = paths[lf.c];
                             p.moveTo(px, py);
                             p.quadraticCurveTo(cx + nx * hw, cy + ny * hw, px + ex * L, py + ey * L);
                             p.quadraticCurveTo(cx - nx * hw, cy - ny * hw, px, py);
                         }
                     }
+                    // Efficiently blast out the accumulated geometry data grouped by color
                     for (let c = 0; c < COLORS.length; c++) { ctx.fillStyle = COLORS[c]; ctx.fill(paths[c]); }
                 }
                 ctx.globalAlpha = 1;
                 ctx.restore();
             }
 
+            // Figure out which horizontal slice of the canvas needs updating
             function visibleBand() {
-                const a = window.scrollY - top - 160;
-                return [Math.max(0, a), Math.min(H, a + window.innerHeight + 320)];
+                const a = window.scrollY - top - 160; // Include a 160px buffer above
+                return [Math.max(0, a), Math.min(H, a + window.innerHeight + 320)]; // Include a 320px buffer below
             }
 
+            // Wipes the existing geometry and recreates it (useful for window resizing)
             function rebuild(force) {
                 const sig = window.innerWidth + 'x' + Math.round(hero.getBoundingClientRect().top + window.scrollY) + 'x' +
                     Math.round(footer.getBoundingClientRect().bottom + window.scrollY);
-                if (!force && sig === lastSig) return;
+                if (!force && sig === lastSig) return; // Prevent rebuilding if bounds haven't shifted
                 lastSig = sig;
                 build();
+                
                 const t = performance.now() / 1000;
-                // let the breeze settle so the first frame is already in a natural pose
+                // Run the physics forward invisibly to let the breeze settle so it doesn't "snap" on load
                 for (let i = 0; i < 240; i++) step(1 / 60, t - 4 + i / 60);
+                // Zero out motion completely if accessibility settings request it
                 if (reduceMotion) for (const st of strands) { st.q.fill(0); st.qd.fill(0); }
-                render(0, H, t);
+                
+                render(0, H, t); // Initial render
             }
 
+            // Main rendering loop requested by the browser at 60fps
             let last = performance.now();
             function frame(now) {
-                const dt = Math.min(0.05, (now - last) / 1000);
+                const dt = Math.min(0.05, (now - last) / 1000); // Cap max delta time to prevent physics explosions on lag
                 last = now;
                 const t = now / 1000;
-                pointer.vx *= Math.pow(0.04, dt);   // cursor gust fades within about a second
+                
+                // Exponential decay on mouse wind velocity
+                pointer.vx *= Math.pow(0.04, dt);   
+                
+                // Sub-stepping physics resolution for stability
                 const sub = Math.ceil(dt / (1 / 120));
                 for (let i = 0; i < sub; i++) step(dt / sub, t - dt + (i + 1) * dt / sub);
+                
+                // Request rendering only for the on-screen portion
                 const [a, b] = visibleBand();
                 if (b > a) render(a, b, t);
-                requestAnimationFrame(frame);
+                
+                requestAnimationFrame(frame); // Recursively request next frame
             }
 
+            // Event Listeners tracking mouse movements for the cursor "breeze" effect
             let lastPX = null, lastPT = 0;
             window.addEventListener('pointermove', (e) => {
                 const now = performance.now();
                 const docX = e.clientX, docY = e.clientY + window.scrollY - top;
                 if (lastPX !== null && now > lastPT) {
+                    // Compute instantaneous mouse velocity
                     const inst = (docX - lastPX) / ((now - lastPT) / 1000);
-                    pointer.vx = pointer.vx * 0.6 + inst * 0.4;
+                    pointer.vx = pointer.vx * 0.6 + inst * 0.4; // Smooth it out slightly
                 }
                 lastPX = docX; lastPT = now;
                 pointer.x = docX; pointer.y = docY; pointer.active = true;
             }, { passive: true });
+            
+            // Disable wind effect when mouse leaves window
             document.addEventListener('pointerleave', () => { pointer.active = false; });
 
+            // Detect window resizing or DOM layout shifts and schedule a rebuild 120ms after it stops changing
             let resizeTimer;
             const schedule = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => rebuild(false), 120); };
             window.addEventListener('resize', schedule);
             if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
+            
+            // Full rebuild on final page load or when fonts load (which causes layout shifts)
             window.addEventListener('load', () => rebuild(false));
             if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => rebuild(false));
 
+            // Run the initial setup sequence
             rebuild(true);
+            
+            // Only start the constant animation loop if the user allows motion
             if (!reduceMotion) requestAnimationFrame(frame);
         })();
     </script>
