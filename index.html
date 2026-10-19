@@ -9,35 +9,34 @@
     <!-- Google Fonts: Cormorant Garamond for romantic serif headers, Plus Jakarta Sans for clean body text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        parchment: '#FCF9F6', // Soft warm alabaster/lily white
-                        oatmeal: '#F4EFEA',   // Subtle warm silk
+                        parchment: '#FCF9F6', // Dominant warm ivory / alabaster
+                        cream: '#F5EFE6',     // Strong nostalgic warm cream
+                        oatmeal: '#EFE9DF',   // Soft linen ribbon tone
                         forest: {
-                            DEFAULT: '#5A6E32', // Primary: Richer moss/amaranthus green
-                            dark: '#3F4F21',    // Deep moss
-                            light: '#788E49'    // Chartreuse-moss highlight
+                            DEFAULT: '#5A6E32', // Willow & fern moss green
+                            dark: '#3F4F21',    // Deep moss for crisp readability & primary stems
+                            light: '#788E49'    // Sunlit willow leaf highlight
                         },
                         sage: {
-                            DEFAULT: '#162819', // Deep botanical pine for lush dark sections
-                            light: '#A3B86C',   // Softened chartreuse accent
-                            muted: '#E8EFE2'    // Uniform soft botanical green wash
+                            DEFAULT: '#1E3022', // Deep botanical pine (used sparingly for text)
+                            light: '#A3B86C',   // Soft chartreuse accent
+                            mist: '#EBF0E6'     // Whisper-light airy willow wash
                         },
                         cherry: {
-                            DEFAULT: '#3B0918', // Primary: Deep burgundy/plum from the dark blooms
+                            DEFAULT: '#3B0918', // Nostalgic autumn black cherry
                             light: '#5E162B',   // Rich wine highlight
-                            dark: '#24040D'     // Velvety dark plum
+                            muted: '#7A2E43'    // Softened berry accent
                         },
                         earth: {
-                            terracotta: '#9E5867', // Vintage mauve rose
-                            ochre: '#E0B0BD',      // Soft blush petal pink
-                            taupe: '#6E6563',      // Warm neutral
-                            espresso: '#1C221D'    // Deepest pine-charcoal for body text
+                            taupe: '#6E655F',   // Warm stone neutral
+                            espresso: '#232824' // Softened charcoal-pine for body text
                         }
                     },
                     fontFamily: {
@@ -52,14 +51,20 @@
     <style>
         body {
             background-color: #FCF9F6;
-            color: #1C221D;
+            color: #232824;
             overflow-x: hidden;
         }
         .arch-image {
             border-top-left-radius: 9999px;
             border-top-right-radius: 9999px;
         }
-        /* Nav link underline animation */
+        /* Subtle paper warmth via radial washes */
+        .airy-canvas {
+            background-image: 
+                radial-gradient(circle at 12% 8%, rgba(235, 240, 230, 0.6) 0%, transparent 45%),
+                radial-gradient(circle at 88% 75%, rgba(245, 239, 230, 0.75) 0%, transparent 50%);
+        }
+        /* Delicate nav link underline animation in Black Cherry */
         .nav-link {
             position: relative;
         }
@@ -70,72 +75,298 @@
             left: 50%;
             width: 0;
             height: 1px;
-            background-color: #A3B86C;
-            transition: all 0.3s ease;
+            background-color: #3B0918;
+            transition: all 0.35s ease;
             transform: translateX(-50%);
         }
         .nav-link.active-nav::after,
         .nav-link:hover::after {
             width: 100%;
         }
-        /* Offset scroll position for sticky header */
+        /* Gentle willow breeze animation */
+        @keyframes willowSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(1.1deg); }
+        }
+        @keyframes willowSwayReverse {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-1.1deg); }
+        }
+        .willow-sway {
+            transform-origin: top center;
+            animation: willowSway 10s ease-in-out infinite;
+        }
+        .willow-sway-reverse {
+            transform-origin: top center;
+            animation: willowSwayReverse 11s ease-in-out infinite;
+        }
         section {
-            scroll-margin-top: 5rem;
+            scroll-margin-top: 5.5rem;
         }
     </style>
 </head>
-<body class="font-sans font-light antialiased selection:bg-forest selection:text-parchment min-h-screen flex flex-col">
+<body class="font-sans font-light antialiased selection:bg-cherry selection:text-parchment min-h-screen flex flex-col">
 
-    <!-- Top Announcement Bar in Primary Moss Green -->
-    <div class="bg-forest text-parchment text-[11px] py-2.5 px-4 text-center tracking-[0.25em] uppercase font-normal border-b border-sage-light/25">
+    <!-- =================================================================
+         MASTER BOTANICAL WEEPING WILLOW SVG DEFINITIONS
+         ================================================================= -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="hidden" aria-hidden="true">
+        <defs>
+            <!-- Slender lanceolate willow leaf curving left (petiole at 0,0) -->
+            <path id="wl-l" d="M 0,0 C -3,9 -9,22 -11,38 C -12,49 -10,59 -8,68 C -6,57 -4,45 -2,32 C 0,19 1,8 0,0 Z" />
+            <!-- Slender lanceolate willow leaf curving right (petiole at 0,0) -->
+            <path id="wl-r" d="M 0,0 C 3,9 9,22 11,38 C 12,49 10,59 8,68 C 6,57 4,45 2,32 C 0,19 -1,8 0,0 Z" />
+            <!-- Long weeping center willow leaf with subtle S-taper (petiole at 0,0) -->
+            <path id="wl-c" d="M 0,0 C -3,12 -4,27 -3,44 C -2,55 0,64 2,74 C 3,62 3,48 2,34 C 1,19 1,8 0,0 Z" />
+            <!-- Sweeping S-curve willow leaf left (petiole at 0,0) -->
+            <path id="wl-sl" d="M 0,0 C 2,10 3,22 -1,36 C -4,48 -9,58 -15,67 C -8,56 -2,44 2,31 C 4,18 2,7 0,0 Z" />
+            <!-- Sweeping S-curve willow leaf right (petiole at 0,0) -->
+            <path id="wl-sr" d="M 0,0 C -2,10 -3,22 1,36 C 4,48 9,58 15,67 C 8,56 2,44 -2,31 C -4,18 -2,7 0,0 Z" />
+
+            <!-- 1. LARGE CASCADING WILLOW BOUGH (Corner Canopy Drape) -->
+            <symbol id="willow-bough-cascade" viewBox="0 0 260 490">
+                <path d="M 192,-6 C 162,38 134,82 112,126 C 107,136 105,148 108,162 L 112,161 C 110,148 112,137 117,128 C 140,85 169,41 200,-6 Z" fill="#3F4F21" />
+                <path d="M 122,110 C 102,126 88,142 74,162 C 60,182 52,204 46,230 C 40,256 38,284 37,312 C 36,340 36,368 38,396" stroke="#3F4F21" stroke-width="2.1" stroke-linecap="round" fill="none" />
+                <path d="M 74,162 C 79,186 84,210 85,236 C 86,262 83,288 78,316" stroke="#3F4F21" stroke-width="1.4" stroke-linecap="round" fill="none" />
+                <path d="M 110,155 C 116,182 122,210 123,242 C 124,274 120,308 114,342 C 108,376 101,408 94,438" stroke="#3F4F21" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path d="M 116,182 C 134,204 148,228 156,258 C 162,284 162,312 157,342" stroke="#3F4F21" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+                <g fill="#788E49" opacity="0.85">
+                    <use href="#wl-l" transform="translate(102,126) rotate(22) scale(0.88)" />
+                    <use href="#wl-r" transform="translate(74,162) rotate(-14) scale(0.95)" />
+                    <use href="#wl-sl" transform="translate(59,195) rotate(18) scale(1.0)" />
+                    <use href="#wl-r" transform="translate(46,230) rotate(-18) scale(0.95)" />
+                    <use href="#wl-l" transform="translate(41,270) rotate(15) scale(0.92)" />
+                    <use href="#wl-r" transform="translate(37,312) rotate(-12) scale(0.9)" />
+                    <use href="#wl-sl" transform="translate(37,354) rotate(12) scale(0.85)" />
+                    <use href="#wl-l" transform="translate(82,198) rotate(16) scale(0.88)" />
+                    <use href="#wl-r" transform="translate(85,236) rotate(-15) scale(0.9)" />
+                    <use href="#wl-c" transform="translate(82,276) rotate(12) scale(0.85)" />
+                    <use href="#wl-l" transform="translate(110,155) rotate(24) scale(0.95)" />
+                    <use href="#wl-r" transform="translate(120,198) rotate(-20) scale(1.0)" />
+                    <use href="#wl-l" transform="translate(123,242) rotate(18) scale(1.02)" />
+                    <use href="#wl-sr" transform="translate(122,275) rotate(-14) scale(0.98)" />
+                    <use href="#wl-l" transform="translate(118,310) rotate(16) scale(0.95)" />
+                    <use href="#wl-r" transform="translate(111,358) rotate(-12) scale(0.92)" />
+                    <use href="#wl-l" transform="translate(102,398) rotate(14) scale(0.88)" />
+                    <use href="#wl-r" transform="translate(136,206) rotate(-24) scale(0.9)" />
+                    <use href="#wl-l" transform="translate(156,258) rotate(14) scale(0.92)" />
+                    <use href="#wl-sr" transform="translate(160,300) rotate(-14) scale(0.86)" />
+                </g>
+
+                <g fill="#3F4F21">
+                    <use href="#wl-l" transform="translate(114,116) rotate(32) scale(0.82)" />
+                    <use href="#wl-sl" transform="translate(88,142) rotate(25) scale(0.92)" />
+                    <use href="#wl-c" transform="translate(88,142) rotate(-5) scale(0.88)" />
+                    <use href="#wl-l" transform="translate(74,162) rotate(28) scale(0.98)" />
+                    <use href="#wl-sr" transform="translate(65,178) rotate(-18) scale(0.92)" />
+                    <use href="#wl-l" transform="translate(53,206) rotate(22) scale(1.0)" />
+                    <use href="#wl-c" transform="translate(46,230) rotate(4) scale(0.96)" />
+                    <use href="#wl-sl" transform="translate(42,256) rotate(20) scale(0.95)" />
+                    <use href="#wl-r" transform="translate(39,284) rotate(-16) scale(0.94)" />
+                    <use href="#wl-l" transform="translate(37,312) rotate(18) scale(0.92)" />
+                    <use href="#wl-c" transform="translate(36,340) rotate(-6) scale(0.9)" />
+                    <use href="#wl-sl" transform="translate(37,368) rotate(15) scale(0.86)" />
+                    <use href="#wl-r" transform="translate(37,368) rotate(-12) scale(0.82)" />
+                    <use href="#wl-c" transform="translate(38,396) rotate(3) scale(0.8)" />
+                    <use href="#wl-l" transform="translate(38,396) rotate(16) scale(0.75)" />
+
+                    <use href="#wl-r" transform="translate(79,184) rotate(-20) scale(0.88)" />
+                    <use href="#wl-l" transform="translate(84,212) rotate(18) scale(0.9)" />
+                    <use href="#wl-c" transform="translate(85,236) rotate(2) scale(0.92)" />
+                    <use href="#wl-sl" transform="translate(85,260) rotate(18) scale(0.88)" />
+                    <use href="#wl-r" transform="translate(82,288) rotate(-14) scale(0.85)" />
+                    <use href="#wl-c" transform="translate(78,316) rotate(5) scale(0.8)" />
+                    <use href="#wl-l" transform="translate(78,316) rotate(18) scale(0.74)" />
+
+                    <use href="#wl-r" transform="translate(110,155) rotate(-18) scale(0.92)" />
+                    <use href="#wl-l" transform="translate(116,182) rotate(24) scale(0.98)" />
+                    <use href="#wl-c" transform="translate(121,214) rotate(4) scale(1.0)" />
+                    <use href="#wl-sr" transform="translate(123,242) rotate(-20) scale(1.0)" />
+                    <use href="#wl-sl" transform="translate(123,268) rotate(20) scale(0.98)" />
+                    <use href="#wl-c" transform="translate(121,294) rotate(-4) scale(0.96)" />
+                    <use href="#wl-l" transform="translate(117,324) rotate(20) scale(0.95)" />
+                    <use href="#wl-r" transform="translate(114,342) rotate(-18) scale(0.94)" />
+                    <use href="#wl-sl" transform="translate(109,370) rotate(18) scale(0.92)" />
+                    <use href="#wl-c" transform="translate(104,394) rotate(-6) scale(0.9)" />
+                    <use href="#wl-r" transform="translate(99,416) rotate(-16) scale(0.85)" />
+                    <use href="#wl-l" transform="translate(99,416) rotate(16) scale(0.86)" />
+                    <use href="#wl-c" transform="translate(94,438) rotate(4) scale(0.82)" />
+                    <use href="#wl-sl" transform="translate(94,438) rotate(18) scale(0.75)" />
+
+                    <use href="#wl-r" transform="translate(128,196) rotate(-28) scale(0.86)" />
+                    <use href="#wl-l" transform="translate(144,222) rotate(12) scale(0.9)" />
+                    <use href="#wl-sr" transform="translate(152,242) rotate(-22) scale(0.92)" />
+                    <use href="#wl-c" transform="translate(156,258) rotate(-4) scale(0.92)" />
+                    <use href="#wl-l" transform="translate(160,284) rotate(16) scale(0.88)" />
+                    <use href="#wl-r" transform="translate(161,310) rotate(-16) scale(0.85)" />
+                    <use href="#wl-c" transform="translate(157,342) rotate(0) scale(0.8)" />
+                    <use href="#wl-sr" transform="translate(157,342) rotate(-15) scale(0.74)" />
+                </g>
+            </symbol>
+
+            <!-- 2. MATURE WEEPING WILLOW TREE EMBLEM (For Section Headings & Footer) -->
+            <symbol id="willow-tree-emblem" viewBox="0 0 220 190">
+                <!-- Soft Sunlit Background Canopy & Cascading Curtain Tresses -->
+                <g fill="#788E49" opacity="0.45">
+                    <!-- Upper overarching dome -->
+                    <path d="M 110,16 C 68,16 32,42 26,82 C 23,104 26,128 30,148 C 35,126 39,102 45,86 C 50,112 52,134 55,152 C 61,128 65,102 72,82 C 77,104 79,124 82,140 C 87,116 92,90 98,74 C 105,64 115,64 122,74 C 128,90 133,116 138,140 C 141,124 143,104 148,82 C 155,102 159,128 165,152 C 168,134 170,112 175,86 C 181,102 185,126 190,148 C 194,128 197,104 194,82 C 188,42 152,16 110,16 Z" />
+                </g>
+
+                <!-- Sturdy Gnarled Trunk, Root Flare & Overarching Limbs -->
+                <path d="M 74,172 C 88,170 95,162 98,144 C 100,128 101,108 100,90 C 90,74 74,62 54,58 C 72,56 89,64 101,78 C 96,60 84,46 68,40 C 84,41 97,52 104,68 C 106,52 102,38 94,28 C 104,35 110,48 111,64 C 116,48 124,35 134,28 C 126,38 120,52 118,68 C 126,52 138,41 154,40 C 138,46 126,60 120,78 C 132,64 148,56 166,58 C 146,62 130,74 120,90 C 118,108 119,128 122,144 C 125,162 132,170 146,172 C 130,173 118,171 110,168 C 102,171 90,173 74,172 Z" fill="#3F4F21" />
+                
+                <!-- Delicate Ground Root Line -->
+                <path d="M 60,172 Q 110,169 160,172" stroke="#3F4F21" stroke-width="1.6" stroke-linecap="round" fill="none" />
+
+                <!-- Cascading Weeping Willow Stems (Hanging Vertically from the Crown) -->
+                <g stroke="#3F4F21" stroke-width="1.35" stroke-linecap="round" fill="none">
+                    <!-- Left Outer Drapes -->
+                    <path d="M 54,58 C 40,74 34,102 33,144" />
+                    <path d="M 68,40 C 52,58 46,92 46,150" />
+                    <path d="M 82,34 C 66,54 60,88 60,142" />
+                    <!-- Left Inner Drapes -->
+                    <path d="M 94,28 C 80,48 75,80 75,130" />
+                    <path d="M 104,32 C 92,52 88,78 88,116" />
+                    <!-- Right Inner Drapes -->
+                    <path d="M 116,32 C 128,52 132,78 132,116" />
+                    <path d="M 126,28 C 140,48 145,80 145,130" />
+                    <!-- Right Outer Drapes -->
+                    <path d="M 138,34 C 154,54 160,88 160,142" />
+                    <path d="M 152,40 C 168,58 174,92 174,150" />
+                    <path d="M 166,58 C 180,74 186,102 187,144" />
+                </g>
+
+                <!-- Mid-Tone Sunlit Hanging Willow Fronds -->
+                <g fill="#788E49" opacity="0.9">
+                    <use href="#wl-l" transform="translate(36,78) rotate(8) scale(0.55)" />
+                    <use href="#wl-c" transform="translate(33,108) rotate(2) scale(0.55)" />
+                    <use href="#wl-r" transform="translate(48,68) rotate(-6) scale(0.58)" />
+                    <use href="#wl-l" transform="translate(46,104) rotate(6) scale(0.58)" />
+                    <use href="#wl-c" transform="translate(61,74) rotate(3) scale(0.56)" />
+                    <use href="#wl-r" transform="translate(76,66) rotate(-4) scale(0.54)" />
+                    <use href="#wl-l" transform="translate(144,66) rotate(4) scale(0.54)" />
+                    <use href="#wl-c" transform="translate(159,74) rotate(-3) scale(0.56)" />
+                    <use href="#wl-r" transform="translate(174,104) rotate(-6) scale(0.58)" />
+                    <use href="#wl-l" transform="translate(172,68) rotate(6) scale(0.58)" />
+                    <use href="#wl-c" transform="translate(187,108) rotate(-2) scale(0.55)" />
+                    <use href="#wl-r" transform="translate(184,78) rotate(-8) scale(0.55)" />
+                </g>
+
+                <!-- Primary Deep Moss Hanging Willow Leaf Clusters Along Every Curtain -->
+                <g fill="#3F4F21">
+                    <!-- Crown Crest Leaves -->
+                    <use href="#wl-l" transform="translate(94,24) rotate(55) scale(0.48)" />
+                    <use href="#wl-l" transform="translate(76,32) rotate(42) scale(0.52)" />
+                    <use href="#wl-r" transform="translate(126,24) rotate(-55) scale(0.48)" />
+                    <use href="#wl-r" transform="translate(144,32) rotate(-42) scale(0.52)" />
+
+                    <!-- Left Curtain 1 (x ~ 33) -->
+                    <use href="#wl-l" transform="translate(44,68) rotate(18) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(36,92) rotate(4) scale(0.54)" />
+                    <use href="#wl-l" transform="translate(34,116) rotate(8) scale(0.5)" />
+                    <use href="#wl-c" transform="translate(33,134) rotate(0) scale(0.44)" />
+
+                    <!-- Left Curtain 2 (x ~ 46) -->
+                    <use href="#wl-l" transform="translate(56,52) rotate(22) scale(0.54)" />
+                    <use href="#wl-r" transform="translate(49,78) rotate(-8) scale(0.55)" />
+                    <use href="#wl-c" transform="translate(46,104) rotate(2) scale(0.55)" />
+                    <use href="#wl-l" transform="translate(46,126) rotate(6) scale(0.48)" />
+
+                    <!-- Left Curtain 3 (x ~ 60) -->
+                    <use href="#wl-l" transform="translate(68,48) rotate(18) scale(0.54)" />
+                    <use href="#wl-c" transform="translate(62,74) rotate(4) scale(0.55)" />
+                    <use href="#wl-r" transform="translate(60,98) rotate(-6) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(60,120) rotate(0) scale(0.46)" />
+
+                    <!-- Left Curtain 4 (x ~ 75) -->
+                    <use href="#wl-l" transform="translate(82,44) rotate(16) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(76,70) rotate(3) scale(0.52)" />
+                    <use href="#wl-l" transform="translate(75,96) rotate(6) scale(0.48)" />
+
+                    <!-- Inner Arch Left & Right (x ~ 88 & 132) -->
+                    <use href="#wl-c" transform="translate(90,56) rotate(4) scale(0.48)" />
+                    <use href="#wl-l" transform="translate(88,82) rotate(6) scale(0.45)" />
+                    <use href="#wl-c" transform="translate(130,56) rotate(-4) scale(0.48)" />
+                    <use href="#wl-r" transform="translate(132,82) rotate(-6) scale(0.45)" />
+
+                    <!-- Right Curtain 4 (x ~ 145) -->
+                    <use href="#wl-r" transform="translate(138,44) rotate(-16) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(144,70) rotate(-3) scale(0.52)" />
+                    <use href="#wl-r" transform="translate(145,96) rotate(-6) scale(0.48)" />
+
+                    <!-- Right Curtain 3 (x ~ 160) -->
+                    <use href="#wl-r" transform="translate(152,48) rotate(-18) scale(0.54)" />
+                    <use href="#wl-c" transform="translate(158,74) rotate(-4) scale(0.55)" />
+                    <use href="#wl-l" transform="translate(160,98) rotate(6) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(160,120) rotate(0) scale(0.46)" />
+
+                    <!-- Right Curtain 2 (x ~ 174) -->
+                    <use href="#wl-r" transform="translate(164,52) rotate(-22) scale(0.54)" />
+                    <use href="#wl-l" transform="translate(171,78) rotate(8) scale(0.55)" />
+                    <use href="#wl-c" transform="translate(174,104) rotate(-2) scale(0.55)" />
+                    <use href="#wl-r" transform="translate(174,126) rotate(-6) scale(0.48)" />
+
+                    <!-- Right Curtain 1 (x ~ 187) -->
+                    <use href="#wl-r" transform="translate(176,68) rotate(-18) scale(0.52)" />
+                    <use href="#wl-c" transform="translate(184,92) rotate(-4) scale(0.54)" />
+                    <use href="#wl-r" transform="translate(186,116) rotate(-8) scale(0.5)" />
+                    <use href="#wl-c" transform="translate(187,134) rotate(0) scale(0.44)" />
+                </g>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Whisper-Light Willow Mist Announcement Bar -->
+    <div class="bg-sage-mist text-forest-dark text-[10px] sm:text-[11px] py-2.5 px-4 text-center tracking-[0.28em] uppercase font-normal border-b border-forest/15">
         <span>October 23, 2027 &bull; Autumn in Central Pennsylvania</span>
     </div>
 
-    <!-- Solid Deep Botanical Green Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-sage text-parchment border-b border-forest/40 shadow-sm transition-all">
+    <!-- Airy Ivory Centered Editorial Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-parchment/95 backdrop-blur-md text-earth-espresso border-b border-forest/15 transition-all">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Monogram / Brand -->
-                <a href="#couple" class="text-left group focus:outline-none flex items-center">
-                    <span class="font-serif text-3xl sm:text-4xl font-normal tracking-wide text-parchment group-hover:text-sage-light transition-colors">
-                        E <span class="italic font-light text-earth-ochre">&amp;</span> R
-                    </span>
-                    <span class="hidden sm:inline-block ml-4 pl-4 border-l border-forest/60 text-[11px] uppercase tracking-[0.2em] text-sage-light">
-                        10.23.2027
-                    </span>
-                </a>
-
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex items-center space-x-8" aria-label="Main Navigation">
-                    <a href="#couple" data-section="couple" class="nav-link active-nav py-1 text-xs uppercase tracking-[0.18em] text-parchment font-medium transition-all">
+                
+                <!-- Left Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-10 flex-1" aria-label="Primary Navigation Left">
+                    <a href="#couple" data-section="couple" class="nav-link active-nav py-1 text-[11px] uppercase tracking-[0.22em] text-cherry font-medium transition-all">
                         The Couple
                     </a>
-                    <a href="#party" data-section="party" class="nav-link py-1 text-xs uppercase tracking-[0.18em] text-parchment/70 hover:text-parchment transition-all">
+                    <a href="#party" data-section="party" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
                         Wedding Party
-                    </a>
-                    <a href="#venues" data-section="venues" class="nav-link py-1 text-xs uppercase tracking-[0.18em] text-parchment/70 hover:text-parchment transition-all">
-                        Venues &amp; Schedule
-                    </a>
-                    <a href="#registry" data-section="registry" class="nav-link py-1 text-xs uppercase tracking-[0.18em] text-parchment/70 hover:text-parchment transition-all">
-                        Registry
                     </a>
                 </nav>
 
-                <!-- RSVP Button -->
-                <div class="hidden md:flex items-center">
-                    <button onclick="openRsvpModal()" class="border border-forest bg-forest hover:bg-cherry hover:border-cherry text-parchment text-xs uppercase tracking-[0.2em] px-7 py-2.5 rounded-full transition-all duration-300 shadow-sm">
+                <!-- Centered Monogram / Brand -->
+                <a href="#couple" class="text-center group focus:outline-none px-4">
+                    <span class="font-serif text-3xl sm:text-4xl font-normal tracking-wider text-sage group-hover:text-cherry transition-colors">
+                        E <span class="italic font-light text-cherry text-2xl sm:text-3xl mx-0.5">&amp;</span> R
+                    </span>
+                </a>
+
+                <!-- Right Desktop Navigation Links + Airy Outlined RSVP Button -->
+                <div class="hidden md:flex items-center justify-end space-x-8 flex-1">
+                    <nav class="flex items-center space-x-10" aria-label="Primary Navigation Right">
+                        <a href="#venues" data-section="venues" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
+                            Venues &amp; Schedule
+                        </a>
+                        <a href="#registry" data-section="registry" class="nav-link py-1 text-[11px] uppercase tracking-[0.22em] text-earth-espresso/70 hover:text-cherry transition-all">
+                            Registry
+                        </a>
+                    </nav>
+                    <button onclick="openRsvpModal()" class="border border-forest/50 hover:border-cherry hover:bg-cherry text-earth-espresso hover:text-parchment text-[11px] uppercase tracking-[0.22em] px-6 py-2 rounded-full transition-all duration-300">
                         RSVP
                     </button>
                 </div>
 
-                <!-- Mobile Hamburger Button -->
+                <!-- Mobile Controls -->
                 <div class="flex md:hidden items-center space-x-3">
-                    <button onclick="openRsvpModal()" class="bg-forest text-parchment text-[11px] uppercase tracking-[0.18em] px-4 py-2 rounded-full">
+                    <button onclick="openRsvpModal()" class="border border-cherry/60 text-cherry text-[10px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-full">
                         RSVP
                     </button>
-                    <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="p-2 text-parchment hover:text-sage-light focus:outline-none" aria-label="Toggle Menu">
+                    <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="p-2 text-earth-espresso hover:text-cherry focus:outline-none" aria-label="Toggle Menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
@@ -143,17 +374,17 @@
         </div>
 
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-sage border-b border-forest/40 px-6 pt-3 pb-6 space-y-3">
-            <a href="#couple" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-parchment font-medium border-b border-forest/30">
+        <div id="mobile-menu" class="hidden md:hidden bg-parchment border-b border-forest/20 px-6 pt-3 pb-6 space-y-3 shadow-sm">
+            <a href="#couple" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-cherry font-medium border-b border-forest/15">
                 The Couple
             </a>
-            <a href="#party" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-parchment/75 hover:text-sage-light border-b border-forest/30">
-                The Wedding Party
+            <a href="#party" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-earth-espresso/80 hover:text-cherry border-b border-forest/15">
+                Wedding Party
             </a>
-            <a href="#venues" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-parchment/75 hover:text-sage-light border-b border-forest/30">
+            <a href="#venues" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-earth-espresso/80 hover:text-cherry border-b border-forest/15">
                 Venues &amp; Schedule
             </a>
-            <a href="#registry" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-parchment/75 hover:text-sage-light">
+            <a href="#registry" onclick="toggleMobileMenu()" class="block w-full text-left py-2 text-xs uppercase tracking-[0.2em] text-earth-espresso/80 hover:text-cherry">
                 Gift Registry
             </a>
         </div>
@@ -163,89 +394,114 @@
     <main class="flex-grow">
 
         <!-- ==========================================
-             SECTION 1: HERO & THE COUPLE (CONCISE)
+             SECTION 1: AIRY WILLOW HERO & THE COUPLE
              ========================================== -->
-        <section id="couple">
+        <section id="couple" class="relative airy-canvas overflow-hidden">
             
-            <!-- Uniform Soft Botanical Green Wash Hero Section -->
-            <div class="py-16 sm:py-24 bg-sage-muted border-b border-forest/20">
-                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-                        
-                        <!-- Left Text Column -->
-                        <div class="lg:col-span-7 text-center lg:text-left space-y-8">
-                            <div class="space-y-3">
-                                <p class="text-xs uppercase tracking-[0.3em] text-forest font-medium">
-                                    Together with their families
-                                </p>
-                                <div class="w-12 h-px bg-forest/60 mx-auto lg:mx-0"></div>
-                            </div>
+            <!-- Top-Left Cascading Weeping Willow Canopy Bough -->
+            <div class="pointer-events-none select-none absolute -top-2 -left-6 sm:left-2 w-48 sm:w-64 lg:w-72 opacity-80 willow-sway z-10">
+                <svg viewBox="0 0 260 490" class="w-full h-auto">
+                    <use href="#willow-bough-cascade" />
+                </svg>
+            </div>
 
-                            <h1 class="font-serif text-5xl sm:text-7xl lg:text-[5.25rem] font-light tracking-tight leading-[1.05] text-sage">
+            <!-- Top-Right Subtle Secondary Willow Canopy Drape -->
+            <div class="pointer-events-none select-none hidden xl:block absolute -top-4 right-4 w-60 opacity-45 willow-sway-reverse">
+                <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
+                    <use href="#willow-bough-cascade" />
+                </svg>
+            </div>
+
+            <div class="py-14 sm:py-20 lg:py-24 relative z-10">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                    <!-- Centered Section Crest with Small Weeping Willow Tree -->
+                    <div class="text-center mb-10 sm:mb-14">
+                        <span class="font-serif text-2xl sm:text-3xl tracking-[0.18em] uppercase text-cherry font-normal">
+                            The Couple
+                        </span>
+                        <div class="flex items-center justify-center space-x-3 mt-2">
+                            <span class="h-px w-12 bg-forest/30"></span>
+                            <svg viewBox="0 0 220 190" class="w-11 h-10 opacity-90">
+                                <use href="#willow-tree-emblem" />
+                            </svg>
+                            <span class="h-px w-12 bg-forest/30"></span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
+                        
+                        <!-- Left Editorial Text Column -->
+                        <div class="lg:col-span-6 text-center space-y-7 px-2 sm:px-6">
+                            <p class="font-serif italic text-xl sm:text-2xl text-earth-espresso/85">
+                                Together with their families,
+                            </p>
+
+                            <h1 class="font-serif text-5xl sm:text-6xl lg:text-[4.35rem] italic font-normal tracking-tight leading-[1.08] text-cherry">
                                 Elizabeth Rader
-                                <span class="block font-serif italic font-normal text-3xl sm:text-4xl text-cherry my-3">&amp;</span>
+                                <span class="block font-serif italic font-light text-3xl sm:text-4xl text-forest my-2.5">&amp;</span>
                                 Ryan McCune
                             </h1>
 
-                            <p class="text-earth-espresso/80 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-light leading-relaxed">
-                                Invite you to share in the joy of their autumn marriage celebration in Central Pennsylvania.
+                            <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto font-light leading-relaxed">
+                                Joyfully invite you to share in their autumn marriage celebration beneath the willow tree in Central Pennsylvania.
                             </p>
 
-                            <!-- Fine-Line Date & Location Details -->
-                            <div class="pt-4 border-t border-forest/25 max-w-lg mx-auto lg:mx-0 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-12">
-                                <div class="text-center lg:text-left">
-                                    <p class="text-[11px] uppercase tracking-[0.2em] text-forest font-medium">Saturday</p>
-                                    <p class="font-serif text-2xl text-cherry mt-0.5">October 23, 2027</p>
-                                </div>
-
-                                <div class="hidden sm:block h-8 w-px bg-forest/30"></div>
-
-                                <div class="text-center lg:text-left">
-                                    <p class="text-[11px] uppercase tracking-[0.2em] text-forest font-medium">Location</p>
-                                    <p class="font-serif text-2xl text-cherry mt-0.5">York, Pennsylvania</p>
-                                </div>
+                            <!-- Clean Nostalgic Date & Location Callout -->
+                            <div class="pt-3 space-y-1">
+                                <p class="font-serif text-2xl sm:text-[1.65rem] text-earth-espresso">
+                                    Saturday, October 23, 2027
+                                </p>
+                                <p class="font-serif text-xl sm:text-2xl text-forest-dark">
+                                    York, Pennsylvania
+                                </p>
                             </div>
 
-                            <!-- Concise Bride & Groom Pill / Mini-Introduction -->
-                            <div class="pt-2 grid grid-cols-2 gap-6 max-w-md mx-auto lg:mx-0 border-t border-forest/25">
-                                <div class="text-center lg:text-left pt-4">
+                            <!-- Delicate Divider with Bride & Groom Titles -->
+                            <div class="pt-4 max-w-sm mx-auto grid grid-cols-2 gap-6 border-t border-forest/20">
+                                <div class="pt-4">
                                     <span class="text-[10px] uppercase tracking-[0.25em] text-forest block">The Bride</span>
-                                    <p class="font-serif text-2xl text-sage">Elizabeth Rader</p>
+                                    <p class="font-serif text-xl text-earth-espresso mt-0.5">Elizabeth Rader</p>
                                 </div>
-                                <div class="text-center lg:text-left pt-4">
+                                <div class="pt-4 border-l border-forest/20">
                                     <span class="text-[10px] uppercase tracking-[0.25em] text-forest block">The Groom</span>
-                                    <p class="font-serif text-2xl text-sage">Ryan McCune</p>
+                                    <p class="font-serif text-xl text-earth-espresso mt-0.5">Ryan McCune</p>
                                 </div>
                             </div>
 
-                            <!-- Elegant Action Buttons -->
-                            <div class="pt-2 flex flex-wrap justify-center lg:justify-start gap-6 items-center">
-                                <button onclick="openRsvpModal()" class="px-8 py-3.5 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-xs uppercase tracking-[0.2em] transition-all shadow-sm">
+                            <!-- Airy Action Buttons -->
+                            <div class="pt-4 flex flex-wrap justify-center gap-5 items-center">
+                                <button onclick="openRsvpModal()" class="px-8 py-3 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-[11px] uppercase tracking-[0.22em] transition-all shadow-sm">
                                     RSVP Online
                                 </button>
-                                <a href="#venues" class="px-4 py-3.5 text-xs uppercase tracking-[0.2em] text-forest hover:text-cherry border-b border-forest/50 hover:border-cherry transition-all">
-                                    Event Details
+                                <a href="#venues" class="px-5 py-3 rounded-full border border-forest/40 hover:border-cherry text-[11px] uppercase tracking-[0.22em] text-forest-dark hover:text-cherry transition-all bg-parchment/60">
+                                    Venue &amp; Details
                                 </a>
                             </div>
                         </div>
 
-                        <!-- Right Arch Portrait Frame -->
-                        <div class="lg:col-span-5 flex justify-center">
-                            <div class="relative w-72 sm:w-80 md:w-96">
-                                <!-- Delicate Offset Botanical Wireframe Arches -->
-                                <div class="absolute -inset-3 arch-image border border-forest/60 translate-x-3 translate-y-3 pointer-events-none"></div>
-                                <div class="absolute -inset-1.5 arch-image border border-cherry/35 -translate-x-2 -translate-y-2 pointer-events-none"></div>
+                        <!-- Right Arch Portrait Frame (Clean Double-Line Arch Without Overlapping Branches) -->
+                        <div class="lg:col-span-6 flex justify-center">
+                            <div class="relative w-72 sm:w-80 md:w-[23rem]">
                                 
-                                <div class="arch-image overflow-hidden shadow-xl bg-sage aspect-[3/4] relative">
+                                <!-- Fine Double-Line Arch Wireframe Borders -->
+                                <div class="absolute -inset-3 arch-image border border-forest/45 pointer-events-none"></div>
+                                <div class="absolute -inset-1.5 arch-image border border-cherry/20 pointer-events-none"></div>
+                                
+                                <!-- Main Arch Image Container -->
+                                <div class="arch-image overflow-hidden shadow-md bg-cream aspect-[3/4] relative border border-forest/20 z-10">
                                     <img 
-                                        src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" 
-                                        onerror="this.src='https://placehold.co/600x800/162819/FCF9F6?text=Elizabeth+%26+Ryan'"
+                                        src="couple.jpg" 
+                                        onerror="this.src='https://placehold.co/600x800/F5EFE6/3B0918?text=Elizabeth+%26+Ryan'"
                                         alt="Elizabeth Rader and Ryan McCune" 
-                                        class="w-full h-full object-cover object-center sepia-[.06] contrast-[1.02]"
+                                        class="w-full h-full object-cover object-center sepia-[.05] brightness-[1.02]"
                                     >
-                                    <div class="absolute inset-0 bg-gradient-to-t from-sage/80 via-transparent to-transparent"></div>
-                                    <div class="absolute bottom-6 left-0 right-0 text-center px-6">
-                                        <p class="font-serif italic text-lg text-parchment/95 tracking-wide">"Omnia vincit amor, et nos cedamus amori."</p>
+                                    <!-- Soft Bottom Veil for Quote -->
+                                    <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-sage/75 via-sage/30 to-transparent"></div>
+                                    <div class="absolute bottom-5 left-0 right-0 text-center px-6">
+                                        <p class="font-serif italic text-base sm:text-lg text-parchment tracking-wide">
+                                            "Omnia vincit amor, et nos cedamus amori."
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -255,24 +511,25 @@
                 </div>
             </div>
 
-            <!-- Deep Botanical Green At-A-Glance Strip with Dynamic Countdown -->
-            <div class="bg-forest text-parchment py-10 border-b border-sage/20">
-                <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <span class="block font-serif text-3xl sm:text-4xl text-parchment font-normal" id="countdown-days">--</span>
-                        <span class="text-[11px] uppercase tracking-[0.2em] text-sage-muted mt-1 block">Days to Go</span>
+            <!-- Light, Nostalgic Cream At-A-Glance Ribbon -->
+            <div class="bg-cream/90 border-y border-forest/25 py-7 px-4 relative z-10">
+                <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center items-center">
+                    <div class="space-y-0.5">
+                        <span class="font-serif italic text-2xl sm:text-3xl text-cherry" id="countdown-days">--</span>
+                        <span class="font-serif italic text-lg sm:text-xl text-earth-espresso ml-1">Days to Go</span>
+                        <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Until We Say I Do</span>
                     </div>
-                    <div>
-                        <span class="block font-serif text-3xl sm:text-4xl text-parchment font-normal">October 23</span>
-                        <span class="text-[11px] uppercase tracking-[0.2em] text-sage-muted mt-1 block">Autumn 2027</span>
+                    <div class="space-y-0.5 md:border-l md:border-forest/20">
+                        <span class="block font-serif italic text-2xl sm:text-3xl text-earth-espresso">October 23, 2027</span>
+                        <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Autumn Celebration</span>
                     </div>
-                    <div>
-                        <span class="block font-serif text-3xl sm:text-4xl text-parchment font-normal">York, PA</span>
-                        <span class="text-[11px] uppercase tracking-[0.2em] text-sage-muted mt-1 block">Ceremony &amp; Reception</span>
+                    <div class="space-y-0.5 md:border-l md:border-forest/20">
+                        <span class="block font-serif italic text-2xl sm:text-3xl text-earth-espresso">York, PA</span>
+                        <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Where Our Journey Began</span>
                     </div>
-                    <div>
-                        <span class="block font-serif text-3xl sm:text-4xl text-parchment font-normal">Black Tie Opt.</span>
-                        <span class="text-[11px] uppercase tracking-[0.2em] text-sage-muted mt-1 block">Autumnal Attire</span>
+                    <div class="space-y-0.5 md:border-l md:border-forest/20">
+                        <span class="block font-serif italic text-2xl sm:text-3xl text-cherry">Formal</span>
+                        <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Autumnal Attire</span>
                     </div>
                 </div>
             </div>
@@ -281,22 +538,24 @@
         <!-- ==========================================
              SECTION 2: THE WEDDING PARTY (UNDER CONSTRUCTION)
              ========================================== -->
-        <section id="party" class="py-24 sm:py-32 bg-parchment border-b border-forest/20">
-            <div class="max-w-3xl mx-auto px-4 text-center space-y-6">
-                <span class="text-xs uppercase tracking-[0.25em] text-forest font-medium">Standing By Our Side</span>
-                <h2 class="font-serif text-4xl sm:text-5xl text-sage font-normal">The Wedding Party</h2>
-                <div class="flex items-center justify-center space-x-4">
-                    <span class="h-px w-12 bg-forest/40"></span>
-                    <span class="font-serif italic text-lg text-cherry">&sect;</span>
-                    <span class="h-px w-12 bg-forest/40"></span>
+        <section id="party" class="py-20 sm:py-28 bg-parchment border-b border-forest/15">
+            <div class="max-w-3xl mx-auto px-4 text-center space-y-5">
+                <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Standing By Our Side</span>
+                <h2 class="font-serif text-4xl sm:text-5xl text-earth-espresso font-normal">The Wedding Party</h2>
+                <div class="flex items-center justify-center space-x-3">
+                    <span class="h-px w-12 bg-forest/30"></span>
+                    <svg viewBox="0 0 220 190" class="w-11 h-10 opacity-90">
+                        <use href="#willow-tree-emblem" />
+                    </svg>
+                    <span class="h-px w-12 bg-forest/30"></span>
                 </div>
-                <div class="pt-4">
-                    <span class="inline-block px-5 py-2 rounded-full border border-forest/40 bg-sage-muted text-forest text-xs uppercase tracking-[0.25em]">
+                <div class="pt-2">
+                    <span class="inline-block px-5 py-2 rounded-full border border-forest/35 bg-sage-mist/60 text-forest-dark text-[11px] uppercase tracking-[0.24em]">
                         Under Construction &bull; Details Forthcoming
                     </span>
                 </div>
-                <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2">
-                    We are currently gathering photos and introductions for our wedding party. Please check back soon.
+                <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2 font-light">
+                    We are currently gathering photos and introductions for the friends and family standing beside us. Please check back soon.
                 </p>
             </div>
         </section>
@@ -304,22 +563,24 @@
         <!-- ==========================================
              SECTION 3: VENUES & SCHEDULE (UNDER CONSTRUCTION)
              ========================================== -->
-        <section id="venues" class="py-24 sm:py-32 bg-sage-muted border-b border-forest/20">
-            <div class="max-w-3xl mx-auto px-4 text-center space-y-6">
-                <span class="text-xs uppercase tracking-[0.25em] text-forest font-medium">Ceremony &amp; Reception</span>
+        <section id="venues" class="py-20 sm:py-28 bg-sage-mist/45 border-b border-forest/15">
+            <div class="max-w-3xl mx-auto px-4 text-center space-y-5">
+                <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Ceremony &amp; Reception</span>
                 <h2 class="font-serif text-4xl sm:text-5xl text-cherry font-normal">Venues &amp; Schedule</h2>
-                <div class="flex items-center justify-center space-x-4">
-                    <span class="h-px w-12 bg-cherry/30"></span>
-                    <span class="font-serif italic text-lg text-forest">&sect;</span>
-                    <span class="h-px w-12 bg-cherry/30"></span>
+                <div class="flex items-center justify-center space-x-3">
+                    <span class="h-px w-12 bg-cherry/25"></span>
+                    <svg viewBox="0 0 220 190" class="w-11 h-10 opacity-90">
+                        <use href="#willow-tree-emblem" />
+                    </svg>
+                    <span class="h-px w-12 bg-cherry/25"></span>
                 </div>
-                <div class="pt-4">
-                    <span class="inline-block px-5 py-2 rounded-full border border-cherry/30 bg-parchment text-cherry text-xs uppercase tracking-[0.25em]">
+                <div class="pt-2">
+                    <span class="inline-block px-5 py-2 rounded-full border border-cherry/25 bg-parchment text-cherry text-[11px] uppercase tracking-[0.24em]">
                         Under Construction &bull; Details Forthcoming
                     </span>
                 </div>
-                <p class="text-earth-espresso/75 text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2">
-                    Ceremony timing, reception addresses, hotel blocks, and shuttle information for York, Pennsylvania will be posted here as we get closer to October 2027.
+                <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2 font-light">
+                    Ceremony timing beneath the willow tree at Yorktowne Farms, reception details, hotel room blocks, and shuttle information for York, Pennsylvania will be posted here as we get closer to October 2027.
                 </p>
             </div>
         </section>
@@ -327,47 +588,70 @@
         <!-- ==========================================
              SECTION 4: REGISTRY (UNDER CONSTRUCTION)
              ========================================== -->
-        <section id="registry" class="py-24 sm:py-32 bg-parchment">
-            <div class="max-w-3xl mx-auto px-4 text-center space-y-6">
-                <span class="text-xs uppercase tracking-[0.25em] text-forest font-medium">Warmest Wishes</span>
-                <h2 class="font-serif text-4xl sm:text-5xl text-sage font-normal">Gift Registry</h2>
-                <div class="flex items-center justify-center space-x-4">
-                    <span class="h-px w-12 bg-forest/40"></span>
-                    <span class="font-serif italic text-lg text-cherry">&sect;</span>
-                    <span class="h-px w-12 bg-forest/40"></span>
+        <section id="registry" class="py-20 sm:py-28 bg-parchment">
+            <div class="max-w-3xl mx-auto px-4 text-center space-y-5">
+                <span class="text-[11px] uppercase tracking-[0.28em] text-forest font-medium">Warmest Wishes</span>
+                <h2 class="font-serif text-4xl sm:text-5xl text-cherry font-normal">Gift Registry</h2>
+                <div class="flex items-center justify-center space-x-3">
+                    <span class="h-px w-12 bg-cherry/25"></span>
+                    <svg viewBox="0 0 220 190" class="w-11 h-10 opacity-90">
+                        <use href="#willow-tree-emblem" />
+                    </svg>
+                    <span class="h-px w-12 bg-cherry/25"></span>
                 </div>
-                <div class="pt-4">
-                    <span class="inline-block px-5 py-2 rounded-full border border-forest/40 bg-sage-muted text-forest text-xs uppercase tracking-[0.25em]">
+                <div class="pt-2">
+                    <span class="inline-block px-5 py-2 rounded-full border border-cherry/25 bg-cream/70 text-cherry text-[11px] uppercase tracking-[0.24em]">
                         Under Construction &bull; Details Forthcoming
                     </span>
                 </div>
-                <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2">
-                    Your presence at our celebration is the greatest gift of all. Registry links will be shared closer to the wedding date.
+                <p class="text-earth-taupe text-sm sm:text-base max-w-md mx-auto leading-relaxed pt-2 font-light">
+                    Your presence at our celebration in York is the greatest gift of all. Registry details will be shared closer to our wedding date.
                 </p>
             </div>
         </section>
 
     </main>
 
-    <!-- Elegant Footer in Deep Botanical Pine & Moss Green -->
-    <footer class="bg-sage text-parchment py-16 px-4 border-t-4 border-forest">
-        <div class="max-w-4xl mx-auto text-center space-y-6">
-            <div class="font-serif text-3xl sm:text-5xl font-light tracking-wide text-parchment">
-                Elizabeth Rader <span class="italic text-sage-light">&amp;</span> Ryan McCune
+    <!-- Airy Warm Cream & Weeping Willow Footer -->
+    <footer class="bg-cream text-earth-espresso py-16 px-4 border-t border-forest/25 relative overflow-hidden">
+        
+        <!-- Subtle Cascading Willow Corner Boughs in Footer -->
+        <div class="pointer-events-none select-none hidden sm:block absolute -top-3 left-0 w-40 opacity-35">
+            <svg viewBox="0 0 260 490" class="w-full h-auto">
+                <use href="#willow-bough-cascade" />
+            </svg>
+        </div>
+        <div class="pointer-events-none select-none hidden sm:block absolute -top-3 right-0 w-40 opacity-35">
+            <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
+                <use href="#willow-bough-cascade" />
+            </svg>
+        </div>
+
+        <div class="max-w-4xl mx-auto text-center space-y-5 relative z-10">
+            
+            <!-- Weeping Willow Tree Crest Above Names -->
+            <div class="flex justify-center">
+                <svg viewBox="0 0 220 190" class="w-20 h-16">
+                    <use href="#willow-tree-emblem" />
+                </svg>
             </div>
-            <p class="text-[11px] uppercase tracking-[0.25em] text-sage-light">
-                October 23, 2027 &bull; York, Pennsylvania
+
+            <div class="font-serif text-3xl sm:text-5xl font-normal tracking-wide text-cherry">
+                Elizabeth Rader <span class="italic font-light text-forest">&amp;</span> Ryan McCune
+            </div>
+            <p class="text-[11px] uppercase tracking-[0.28em] text-forest-dark">
+                October 23, 2027 &bull; Yorktowne Farms &bull; York, PA
             </p>
-            <div class="w-12 h-px bg-forest mx-auto"></div>
-            <div class="flex flex-wrap justify-center gap-6 sm:gap-10 text-xs uppercase tracking-[0.18em] text-parchment/75 pt-2">
-                <a href="#couple" class="hover:text-sage-light transition-colors">The Couple</a>
-                <a href="#party" class="hover:text-sage-light transition-colors">Wedding Party</a>
-                <a href="#venues" class="hover:text-sage-light transition-colors">Venues &amp; Schedule</a>
-                <a href="#registry" class="hover:text-sage-light transition-colors">Registry</a>
-                <button onclick="openRsvpModal()" class="hover:text-sage-light transition-colors uppercase tracking-[0.18em]">RSVP</button>
+            <div class="w-12 h-px bg-forest/35 mx-auto"></div>
+            <div class="flex flex-wrap justify-center gap-6 sm:gap-10 text-[11px] uppercase tracking-[0.2em] text-earth-espresso/75 pt-2">
+                <a href="#couple" class="hover:text-cherry transition-colors">The Couple</a>
+                <a href="#party" class="hover:text-cherry transition-colors">Wedding Party</a>
+                <a href="#venues" class="hover:text-cherry transition-colors">Venues &amp; Schedule</a>
+                <a href="#registry" class="hover:text-cherry transition-colors">Registry</a>
+                <button onclick="openRsvpModal()" class="hover:text-cherry transition-colors uppercase tracking-[0.2em]">RSVP</button>
             </div>
-            <p class="font-serif italic text-sm text-parchment/50 pt-4">
-                Crafted with love for our autumn celebration.
+            <p class="font-serif italic text-base text-earth-taupe pt-4">
+                Crafted with love for our autumn celebration beneath the willow.
             </p>
         </div>
     </footer>
@@ -375,8 +659,8 @@
     <!-- ==========================================
          RSVP MODAL (LIVE BACKEND READY)
          ========================================== -->
-    <div id="rsvp-modal" class="fixed inset-0 z-50 hidden bg-sage/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-parchment border border-forest/40 max-w-lg w-full p-8 sm:p-10 shadow-2xl relative">
+    <div id="rsvp-modal" class="fixed inset-0 z-50 hidden bg-earth-espresso/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-parchment border border-forest/30 max-w-lg w-full p-8 sm:p-10 shadow-xl relative">
             <button onclick="closeRsvpModal()" class="absolute top-6 right-6 text-earth-taupe hover:text-cherry transition-colors" aria-label="Close RSVP Modal">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
@@ -384,25 +668,25 @@
             </button>
 
             <div class="text-center mb-8">
-                <span class="text-[11px] uppercase tracking-[0.25em] text-forest font-medium">Kindly Reply by September 15, 2027</span>
-                <h3 class="font-serif text-4xl text-sage font-normal mt-1">RSVP</h3>
+                <span class="text-[10px] uppercase tracking-[0.28em] text-forest font-medium">Kindly Reply by September 15, 2027</span>
+                <h3 class="font-serif text-4xl text-cherry italic font-normal mt-1">RSVP</h3>
             </div>
 
             <form id="rsvp-form" onsubmit="submitRsvp(event)" class="space-y-5">
                 <div>
-                    <label class="block text-[11px] uppercase tracking-[0.2em] text-forest mb-1.5">Full Name(s)</label>
-                    <input type="text" name="names" required placeholder="e.g. Jordan & Taylor Smith" class="w-full px-3 py-2.5 bg-transparent border-b border-forest/40 focus:outline-none focus:border-cherry text-sm">
+                    <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Full Name(s)</label>
+                    <input type="text" name="names" required placeholder="e.g. Jordan & Taylor Smith" class="w-full px-3 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                 </div>
 
                 <div>
-                    <label class="block text-[11px] uppercase tracking-[0.2em] text-forest mb-1.5">Email Address</label>
-                    <input type="email" name="email" required placeholder="For confirmation details" class="w-full px-3 py-2.5 bg-transparent border-b border-forest/40 focus:outline-none focus:border-cherry text-sm">
+                    <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Email Address</label>
+                    <input type="email" name="email" required placeholder="For confirmation details" class="w-full px-3 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[11px] uppercase tracking-[0.2em] text-forest mb-1.5">Attendance</label>
-                        <select name="attendance" required class="w-full px-2 py-2.5 bg-transparent border-b border-forest/40 focus:outline-none focus:border-cherry text-sm">
+                        <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Attendance</label>
+                        <select name="attendance" required class="w-full px-2 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                             <option value="Joyfully Accepts (Both)">Joyfully Accepts</option>
                             <option value="Ceremony Only">Ceremony Only</option>
                             <option value="Reception Only">Reception Only</option>
@@ -410,8 +694,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] uppercase tracking-[0.2em] text-forest mb-1.5">Party Size</label>
-                        <select name="guests" class="w-full px-2 py-2.5 bg-transparent border-b border-forest/40 focus:outline-none focus:border-cherry text-sm">
+                        <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Party Size</label>
+                        <select name="guests" class="w-full px-2 py-2.5 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm">
                             <option value="1">1 Guest</option>
                             <option value="2" selected>2 Guests</option>
                             <option value="3">3 Guests</option>
@@ -421,15 +705,15 @@
                 </div>
 
                 <div>
-                    <label class="block text-[11px] uppercase tracking-[0.2em] text-forest mb-1.5">Dietary Notes or Song Request</label>
-                    <textarea name="notes" rows="2" placeholder="Optional notes..." class="w-full px-3 py-2 bg-transparent border-b border-forest/40 focus:outline-none focus:border-cherry text-sm"></textarea>
+                    <label class="block text-[10px] uppercase tracking-[0.22em] text-forest-dark mb-1.5">Dietary Notes or Song Request</label>
+                    <textarea name="notes" rows="2" placeholder="Optional notes..." class="w-full px-3 py-2 bg-cream/40 border-b border-forest/35 focus:outline-none focus:border-cherry text-sm"></textarea>
                 </div>
 
                 <div class="pt-4 flex justify-end space-x-4 items-center">
                     <button type="button" onclick="closeRsvpModal()" class="text-xs uppercase tracking-[0.18em] text-earth-taupe hover:text-earth-espresso">
                         Cancel
                     </button>
-                    <button type="submit" id="rsvp-submit-btn" class="px-8 py-3 rounded-full bg-forest hover:bg-cherry text-parchment text-xs uppercase tracking-[0.2em] transition-all">
+                    <button type="submit" id="rsvp-submit-btn" class="px-8 py-3 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-[11px] uppercase tracking-[0.22em] transition-all">
                         Send Reply
                     </button>
                 </div>
@@ -438,8 +722,8 @@
     </div>
 
     <!-- Custom Toast Notification Box -->
-    <div id="toast-box" class="fixed bottom-6 right-6 z-50 hidden bg-sage text-parchment px-6 py-3.5 shadow-xl border border-forest flex items-center space-x-3">
-        <span class="w-2 h-2 rounded-full bg-sage-light"></span>
+    <div id="toast-box" class="fixed bottom-6 right-6 z-50 hidden bg-parchment text-earth-espresso px-6 py-3.5 shadow-xl border border-cherry/40 flex items-center space-x-3">
+        <span class="w-2 h-2 rounded-full bg-cherry"></span>
         <span id="toast-message" class="text-xs uppercase tracking-widest">Notification</span>
     </div>
 
@@ -465,9 +749,9 @@
             }
         }
         updateCountdown();
-        setInterval(updateCountdown, 1000 * 60 * 60); // Refresh every hour
+        setInterval(updateCountdown, 1000 * 60 * 60);
 
-        // Automatic ScrollSpy for Navigation Links
+        // Automatic ScrollSpy for Light Editorial Navigation Links
         window.addEventListener('scroll', () => {
             const sections = ['couple', 'party', 'venues', 'registry'];
             let currentSection = 'couple';
@@ -484,11 +768,11 @@
 
             document.querySelectorAll('.nav-link').forEach(link => {
                 if (link.dataset.section === currentSection) {
-                    link.classList.add('active-nav', 'text-parchment', 'font-medium');
-                    link.classList.remove('text-parchment/70');
+                    link.classList.add('active-nav', 'text-cherry', 'font-medium');
+                    link.classList.remove('text-earth-espresso/70');
                 } else {
-                    link.classList.remove('active-nav', 'text-parchment', 'font-medium');
-                    link.classList.add('text-parchment/70');
+                    link.classList.remove('active-nav', 'text-cherry', 'font-medium');
+                    link.classList.add('text-earth-espresso/70');
                 }
             });
         });
