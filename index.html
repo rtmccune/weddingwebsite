@@ -67,6 +67,22 @@
         }
     </script>
 
+    <!-- Soft placeholder shown inside a picture frame until its photo file is added -->
+    <script>
+        window.frameFallback = function (img) {
+            img.onerror = null;
+            const sage = img.closest('.garden-frame--sage');
+            const bg = sage ? '#EBF0E6' : '#F7E4E6', ink = sage ? '#788E49' : '#C98591';
+            img.src = 'data:image/svg+xml,' + encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 200">' +
+                '<rect width="160" height="200" fill="' + bg + '"/>' +
+                '<g transform="translate(80 112)" fill="' + ink + '" opacity=".5">' +
+                '<path d="M0 0C-5-10-13-22-15-38C-7-28-1-14 0 0Z"/>' +
+                '<path d="M0 0C5-10 13-22 15-38C7-28 1-14 0 0Z"/>' +
+                '<path d="M0 0C-1-12-1-30 0-46C1-30 1-12 0 0Z"/></g></svg>');
+        };
+    </script>
+
     <!-- Custom CSS Styles -->
     <style>
         /* Sets global defaults for the body */
@@ -75,11 +91,56 @@
             color: #232824;
             overflow-x: hidden; /* Prevents horizontal scrolling */
         }
-        /* Rounds the top corners of the arch image specifically to create a perfect dome */
-        .arch-image {
-            border-top-left-radius: 9999px;
-            border-top-right-radius: 9999px;
+        /* =========================================================
+           GARDEN PICTURE FRAMES
+           A parchment mat inside a double hairline (willow green outside; blush inside for the
+           bride's side, sage for the groom's), finished with small botanical ornaments drawn from
+           the same willow leaves and bouquet colors as the rest of the site.
+           ========================================================= */
+        .garden-frame {
+            position: relative;
+            padding: 12px;                                   /* The mat */
+            background: #FCF9F6;
+            border: 1px solid rgba(201, 133, 145, 0.6);      /* Inner hairline (blush) */
+            box-shadow:
+                0 0 0 6px #FCF9F6,                           /* Gap between the two lines */
+                0 0 0 7px rgba(90, 110, 50, 0.55),           /* Outer hairline (willow green) */
+                0 22px 40px -24px rgba(59, 9, 24, 0.35);     /* Soft lift off the page */
         }
+        .garden-frame--sage { border-color: rgba(90, 110, 50, 0.38); }
+        .garden-frame--sm {
+            padding: 7px;
+            box-shadow:
+                0 0 0 4px #FCF9F6,
+                0 0 0 5px rgba(90, 110, 50, 0.5),
+                0 14px 24px -16px rgba(59, 9, 24, 0.3);
+        }
+        /* The photo window inside the mat (portrait 4:5) */
+        .garden-photo {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            background-color: #F7E4E6;
+            box-shadow: inset 0 0 0 1px rgba(90, 110, 50, 0.2);
+        }
+        .garden-frame--sage .garden-photo { background-color: #EBF0E6; }
+        .garden-photo > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        /* Botanical ornaments that sit over the frame edges */
+        .frame-ornament {
+            position: absolute;
+            z-index: 2;
+            overflow: visible;
+            pointer-events: none;
+            filter: drop-shadow(0 1px 1px rgba(35, 40, 36, 0.12));
+        }
+        .frame-sprig-hero { top: -7%; left: -8%; width: 48%; }
+        .frame-bloom-hero { bottom: -9%; right: -13%; width: 37%; }
+        .frame-crest { top: -5px; left: 50%; width: 74%; transform: translate(-50%, -45%); }
+        .frame-bloom-br { bottom: -9%; right: -16%; width: 46%; }
+        .frame-bloom-bl { bottom: -9%; left: -16%; width: 46%; transform: scaleX(-1); }
         /* Creates a subtle textured/painted background effect using radial gradients (sage mist + blush petals) */
         .airy-canvas {
             background-image: 
@@ -285,6 +346,121 @@
                 <path d="M191.3 96.9Q196.6 86 198.8 103M151.8 46.2Q153.5 40.6 154.5 58.2M173.8 64.1Q177 54.3 179.5 69M185.8 79.5Q191 72.9 194 85.9M167.2 57.6Q170.1 47.1 171.2 61.1M136.1 45.3Q137.9 37.6 138.6 49M127.9 42.2Q129.7 35.1 130.3 52.2M149.1 49.2Q151.8 40 152.4 59.3M160.2 52.3Q161.9 44.3 163 59.9M97.5 20.4Q97.6 15.9 97 31.9M175.8 66.6Q178.4 56 179.6 65.9M181.6 71.2Q182.8 63.8 184.1 81.9M149.9 47.6Q151.9 39.9 152.7 53.7M149.1 48.8Q151 38.4 152.2 47.7M153.4 50Q155.9 40 156.9 55.9M176 64.8Q179.4 56.9 181.9 74.9M175.2 63Q179.6 57 181.1 76M119.9 40.1Q120.9 32 121.2 47.5" stroke="#A8914A" stroke-width="0.8" stroke-linecap="round" fill="none"/>
                 <path d="M58 176.5Q114 174.5 172 176.5" stroke="#3F4F21" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.7"/>
             </symbol>
+
+            <!-- ===== GARDEN FRAME ORNAMENTS ===== -->
+            <!-- Rounded, softly notched petal (base at 0,0, pointing up) -->
+            <path id="fp" d="M 0,0 C 8,-3 12,-17 6,-27 Q 0,-23 -6,-27 C -12,-17 -8,-3 0,0 Z" />
+
+            <!-- Willow sprig that drapes over a frame's top-left corner, with a few weeping tendrils -->
+            <symbol id="frame-sprig" viewBox="0 0 170 170">
+                <g opacity="0.75">
+                    <use href="#wl-sl" transform="translate(8.4,13.8) rotate(-31.9) scale(0.5)" fill="#788E49" />
+                    <use href="#wl-sr" transform="translate(17.8,11.7) rotate(-8) scale(0.5)" fill="#788E49" />
+                    <use href="#wl-c" transform="translate(27.3,10.2) rotate(-32.7) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-l" transform="translate(46,8.9) rotate(-20.1) scale(0.5)" fill="#788E49" />
+                    <use href="#wl-r" transform="translate(53.2,8.8) rotate(-14) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-sl" transform="translate(70.9,9.7) rotate(-35.7) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-sr" transform="translate(87.6,11.8) rotate(-9.9) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-c" transform="translate(96.6,13.3) rotate(-26.3) scale(0.3)" fill="#788E49" />
+                    <use href="#wl-l" transform="translate(120.3,18.9) rotate(-27.9) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-r" transform="translate(131.5,22.3) rotate(-9.1) scale(0.3)" fill="#788E49" />
+                    <use href="#wl-sl" transform="translate(147.5,27.9) rotate(-35.2) scale(0.3)" fill="#788E49" />
+                    <use href="#wl-l" transform="translate(8.2,22.9) rotate(-14.8) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-r" transform="translate(6.9,44.2) rotate(-19.7) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-sl" transform="translate(7.1,67.1) rotate(-25.6) scale(0.4)" fill="#788E49" />
+                    <use href="#wl-sr" transform="translate(8.7,91.2) rotate(-12) scale(0.3)" fill="#788E49" />
+                    <use href="#wl-c" transform="translate(11.9,116.5) rotate(-26.1) scale(0.3)" fill="#788E49" />
+                    <use href="#wl-l" transform="translate(16.9,142.6) rotate(-18.9) scale(0.3)" fill="#788E49" />
+                </g>
+                <path d="M 4,16 C 40,4 96,6 156,30" stroke="#3F4F21" stroke-width="1.6" stroke-linecap="round" fill="none" />
+                <path d="M 10,8 C 4,48 6,100 20,156" stroke="#3F4F21" stroke-width="1.4" stroke-linecap="round" fill="none" />
+                <path d="M 47,8.9 C 53,30.6 43.4,52.3 49.4,70.9" stroke="#3F4F21" stroke-width="0.9" stroke-linecap="round" fill="none" />
+                <path d="M 83.7,10.8 C 78.7,40.9 86.7,71 81.7,96.8" stroke="#3F4F21" stroke-width="0.9" stroke-linecap="round" fill="none" />
+                <path d="M 124.1,19.1 C 128.1,35.9 121.7,52.7 125.7,67.1" stroke="#3F4F21" stroke-width="0.9" stroke-linecap="round" fill="none" />
+                <use href="#wl-c" transform="translate(11.4,14.8) rotate(21.6) scale(0.6)" fill="#3F4F21" />
+                <use href="#wl-l" transform="translate(20.8,12.7) rotate(10.7) scale(0.6)" fill="#5A6E32" />
+                <use href="#wl-r" transform="translate(30.3,11.2) rotate(-2.7) scale(0.5)" fill="#3F4F21" />
+                <use href="#wl-sl" transform="translate(49,9.9) rotate(28) scale(0.6)" fill="#5A6E32" />
+                <use href="#wl-sr" transform="translate(56.2,9.8) rotate(-3.8) scale(0.5)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(73.9,10.7) rotate(12.4) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(90.6,12.8) rotate(20.3) scale(0.5)" fill="#3F4F21" />
+                <use href="#wl-r" transform="translate(99.6,14.3) rotate(-7.6) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-sl" transform="translate(123.3,19.9) rotate(25.6) scale(0.4)" fill="#3F4F21" />
+                <use href="#wl-sr" transform="translate(134.5,23.3) rotate(4.5) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-c" transform="translate(150.5,28.9) rotate(2.4) scale(0.3)" fill="#3F4F21" />
+                <use href="#wl-r" transform="translate(8.2,22.9) rotate(30) scale(0.5)" fill="#3F4F21" />
+                <use href="#wl-sl" transform="translate(6.9,44.2) rotate(12.3) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-sr" transform="translate(7.1,67.1) rotate(21.3) scale(0.4)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(8.7,91.2) rotate(25.7) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(11.9,116.5) rotate(10.2) scale(0.4)" fill="#3F4F21" />
+                <use href="#wl-r" transform="translate(16.9,142.6) rotate(28.7) scale(0.3)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(48.9,19.8) rotate(24.3) scale(0.3)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(49,30.5) rotate(-18.4) scale(0.3)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(48.2,41.1) rotate(32) scale(0.3)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(47.5,51.4) rotate(-17.9) scale(0.2)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(47.6,61.4) rotate(25.1) scale(0.2)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(49.4,70.9) rotate(-28.6) scale(0.2)" fill="#5A6E32" />
+                <use href="#wl-r" transform="translate(82.5,20.8) rotate(18.4) scale(0.4)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(82,30.8) rotate(-32) scale(0.3)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(82.1,40.8) rotate(17.9) scale(0.3)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(82.5,50.6) rotate(-25.1) scale(0.3)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(82.9,60.2) rotate(28.6) scale(0.2)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(83.3,69.7) rotate(-16.2) scale(0.3)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(83.4,79) rotate(30.9) scale(0.3)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(82.9,88.1) rotate(-21.6) scale(0.2)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(81.7,96.8) rotate(20.6) scale(0.2)" fill="#788E49" />
+                <use href="#wl-c" transform="translate(125.4,29.2) rotate(32) scale(0.3)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(125.2,39.1) rotate(-17.9) scale(0.3)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(124.5,48.9) rotate(25.1) scale(0.2)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(124.4,58.2) rotate(-28.6) scale(0.2)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(125.7,67.1) rotate(16.2) scale(0.2)" fill="#788E49" />
+                <use href="#fp" transform="translate(70,58) rotate(200) scale(0.42)" fill="#E8B7BF" />
+                <use href="#fp" transform="translate(34,74) rotate(150) scale(0.32)" fill="#D99AA8" />
+            </symbol>
+
+            <!-- Bouquet bloom: layered blush garden rose, cherry ranunculus, small bud, willow leaves.
+                 Leaves splay up and to the left so they follow the frame edges from a bottom-right corner. -->
+            <symbol id="frame-blossom" viewBox="0 0 120 100">
+                <use href="#wl-c" transform="translate(56,46) rotate(172) scale(0.82)" fill="#3F4F21" />
+                <use href="#wl-sl" transform="translate(54,46) rotate(146) scale(0.72)" fill="#5A6E32" />
+                <use href="#wl-c" transform="translate(54,48) rotate(98) scale(0.84)" fill="#3F4F21" />
+                <use href="#wl-r" transform="translate(54,50) rotate(70) scale(0.6)" fill="#788E49" />
+                <use href="#wl-l" transform="translate(58,44) rotate(-150) scale(0.56)" fill="#788E49" />
+                <use href="#wl-sr" transform="translate(52,48) rotate(122) scale(0.6)" fill="#A3B86C" />
+                <g transform="translate(90,68)">
+                    <circle r="13" fill="#8C1430" />
+                    <circle r="9.5" fill="#A82140" />
+                    <path d="M -10,-3 A 10,10 0 0,1 8,-7 M -8,4 A 8,8 0 0,0 7,6 M -5,-1 A 5,5 0 0,1 5,0 M -2,2 A 2.5,2.5 0 0,0 3,1" stroke="#5E1A33" stroke-width="1" stroke-linecap="round" fill="none" />
+                </g>
+                <g transform="translate(24,76)"><circle r="6" fill="#E8B7BF" /><circle r="3.4" fill="#D99AA8" /><circle r="1.4" fill="#C97488" /></g>
+                <g transform="translate(54,46)" stroke="#C98591" stroke-width="0.5" stroke-opacity="0.55">
+                    <use href="#fp" transform="rotate(0) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(45) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(90) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(135) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(180) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(225) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(270) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(315) scale(1.0)" fill="#E8B7BF"/><use href="#fp" transform="rotate(22) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(73.4) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(124.9) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(176.3) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(227.7) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(279.1) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(330.6) scale(0.8)" fill="#E3AEB8"/><use href="#fp" transform="rotate(10) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(70) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(130) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(190) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(250) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(310) scale(0.6)" fill="#D99AA8"/><use href="#fp" transform="rotate(40) scale(0.4)" fill="#CC8696"/><use href="#fp" transform="rotate(112) scale(0.4)" fill="#CC8696"/><use href="#fp" transform="rotate(184) scale(0.4)" fill="#CC8696"/><use href="#fp" transform="rotate(256) scale(0.4)" fill="#CC8696"/><use href="#fp" transform="rotate(328) scale(0.4)" fill="#CC8696"/><circle r="3" fill="#8C1430" stroke="none"/>
+                </g>
+            </symbol>
+
+            <!-- Crest of crossed willow leaves for the top of each wedding-party frame -->
+            <g id="crest-leaves">
+                <use href="#wl-c" transform="translate(60,20) rotate(-80) scale(0.62)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(60,20) rotate(80) scale(0.62)" fill="#3F4F21" />
+                <use href="#wl-c" transform="translate(60,21) rotate(-100) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-c" transform="translate(60,21) rotate(100) scale(0.4)" fill="#5A6E32" />
+                <use href="#wl-l" transform="translate(60,21) rotate(-58) scale(0.42)" fill="#788E49" />
+                <use href="#wl-r" transform="translate(60,21) rotate(58) scale(0.42)" fill="#788E49" />
+            </g>
+            <!-- Bride's side: blush rose at the center -->
+            <symbol id="frame-crest" viewBox="0 0 120 44">
+                <use href="#crest-leaves" />
+                <g transform="translate(60,20)" stroke="#C98591" stroke-width="0.5" stroke-opacity="0.55">
+                    <use href="#fp" transform="rotate(0) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(60) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(120) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(180) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(240) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(300) scale(0.52)" fill="#E8B7BF"/><use href="#fp" transform="rotate(36) scale(0.34)" fill="#D99AA8"/><use href="#fp" transform="rotate(108) scale(0.34)" fill="#D99AA8"/><use href="#fp" transform="rotate(180) scale(0.34)" fill="#D99AA8"/><use href="#fp" transform="rotate(252) scale(0.34)" fill="#D99AA8"/><use href="#fp" transform="rotate(324) scale(0.34)" fill="#D99AA8"/><circle r="2.4" fill="#8C1430" stroke="none"/>
+                </g>
+            </symbol>
+            <!-- Groom's side: ivory calla-white bloom with a chartreuse center -->
+            <symbol id="frame-crest-sage" viewBox="0 0 120 44">
+                <use href="#crest-leaves" />
+                <g transform="translate(60,20)" stroke="#A3B86C" stroke-width="0.6" stroke-opacity="0.7">
+                    <use href="#fp" transform="rotate(0) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(60) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(120) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(180) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(240) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(300) scale(0.52)" fill="#F4EEE8"/><use href="#fp" transform="rotate(36) scale(0.34)" fill="#FBF8F3"/><use href="#fp" transform="rotate(108) scale(0.34)" fill="#FBF8F3"/><use href="#fp" transform="rotate(180) scale(0.34)" fill="#FBF8F3"/><use href="#fp" transform="rotate(252) scale(0.34)" fill="#FBF8F3"/><use href="#fp" transform="rotate(324) scale(0.34)" fill="#FBF8F3"/><circle r="2.6" fill="#A3B86C" stroke="none"/>
+                </g>
+            </symbol>
         </defs>
     </svg>
 
@@ -448,33 +624,35 @@
                             </div>
                         </div>
 
-                        <!-- RIGHT COLUMN: An elegant portrait photo inside an arched frame -->
+                        <!-- RIGHT COLUMN: The couple's portrait in a garden picture frame -->
                         <div class="lg:col-span-6 flex justify-center">
-                            <!-- Container controlling the size of the arch -->
+                            <!-- Container controlling the size of the frame -->
                             <div class="relative w-72 sm:w-80 md:w-[23rem]">
-                                
-                                <!-- Decorative outer border lines that create the wireframe effect (willow green outside, blush inside) -->
-                                <div class="absolute -inset-3 arch-image border border-forest/45 pointer-events-none"></div>
-                                <div class="absolute -inset-1.5 arch-image border border-blush-deep/60 pointer-events-none"></div>
-                                
-                                <!-- The actual container clipping the image into the arch shape -->
-                                <div class="arch-image overflow-hidden shadow-md bg-blush-light aspect-[3/4] relative border border-forest/20 z-10">
-                                    <!-- The photo, including an automatic fallback image via placeholder if 'couple.jpg' is missing -->
-                                    <img 
-                                        src="couple.jpg" 
-                                        onerror="this.onerror=null; this.src='https://placehold.co/600x800/F7E4E6/8C1430?text=Elizabeth+%26+Ryan'"
-                                        alt="Elizabeth Rader and Ryan McCune" 
-                                        class="w-full h-full object-cover object-center sepia-[.05] brightness-[1.02]"
-                                    >
-                                    <!-- A dark gradient overlay at the bottom so the text quote remains legible -->
-                                    <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-sage/75 via-sage/30 to-transparent"></div>
-                                    <!-- A romantic latin quote placed over the image -->
-                                    <div class="absolute bottom-5 left-0 right-0 text-center px-6">
-                                        <p class="font-serif italic text-base sm:text-lg text-parchment tracking-wide">
-                                            "Omnia vincit amor, et nos cedamus amori."
-                                        </p>
+
+                                <!-- Parchment mat and double hairline (see .garden-frame in the styles) -->
+                                <div class="garden-frame">
+                                    <div class="garden-photo">
+                                        <!-- The photo, including an automatic fallback image via placeholder if 'couple.jpg' is missing -->
+                                        <img 
+                                            src="couple.jpg" 
+                                            onerror="this.onerror=null; this.src='https://placehold.co/600x800/F7E4E6/8C1430?text=Elizabeth+%26+Ryan'"
+                                            alt="Elizabeth Rader and Ryan McCune" 
+                                            class="w-full h-full object-cover object-center sepia-[.05] brightness-[1.02]"
+                                        >
+                                        <!-- A dark gradient overlay at the bottom so the text quote remains legible -->
+                                        <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-sage/75 via-sage/30 to-transparent"></div>
+                                        <!-- A romantic latin quote placed over the image -->
+                                        <div class="absolute bottom-5 left-0 right-0 text-center px-6">
+                                            <p class="font-serif italic text-base sm:text-lg text-parchment tracking-wide">
+                                                "Omnia vincit amor, et nos cedamus amori."
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <!-- Botanical ornaments: a willow sprig over the top-left corner, a bouquet bloom at the bottom-right -->
+                                <svg class="frame-ornament frame-sprig-hero" viewBox="0 0 170 170" aria-hidden="true"><use href="#frame-sprig" /></svg>
+                                <svg class="frame-ornament frame-bloom-hero" viewBox="0 0 120 100" aria-hidden="true"><use href="#frame-blossom" /></svg>
                             </div>
                         </div>
 
@@ -544,8 +722,11 @@
                     <!-- Maid of Honor: Avery Rader -->
                     <div class="flex flex-col items-center space-y-3.5">
                         <div class="relative w-36 sm:w-44">
-                            <div class="absolute -inset-1.5 arch-image border border-blush-deep/60 pointer-events-none"></div>
-                            <img src="photos/avery.jpg" alt="Avery Rader" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-blush-light" />
+                            <div class="garden-frame garden-frame--sm">
+                                <img src="photos/avery.jpg" alt="Avery Rader" class="garden-photo" onerror="frameFallback(this)" />
+                            </div>
+                            <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest" /></svg>
+                            <svg class="frame-ornament frame-bloom-br" viewBox="0 0 120 100" aria-hidden="true"><use href="#frame-blossom" /></svg>
                         </div>
                         <div class="pt-1">
                             <span class="block text-[10px] uppercase tracking-[0.24em] text-cherry font-medium">Maid of Honor</span>
@@ -556,8 +737,11 @@
                     <!-- Best Man: Sean O'Neill -->
                     <div class="flex flex-col items-center space-y-3.5">
                         <div class="relative w-36 sm:w-44">
-                            <div class="absolute -inset-1.5 arch-image border border-forest/35 pointer-events-none"></div>
-                            <img src="photos/sean.jpg" alt="Sean O'Neill" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-sage-mist" />
+                            <div class="garden-frame garden-frame--sm garden-frame--sage">
+                                <img src="photos/sean.jpg" alt="Sean O'Neill" class="garden-photo" onerror="frameFallback(this)" />
+                            </div>
+                            <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest-sage" /></svg>
+                            <svg class="frame-ornament frame-bloom-bl" viewBox="0 0 120 100" aria-hidden="true"><use href="#frame-blossom" /></svg>
                         </div>
                         <div class="pt-1">
                             <span class="block text-[10px] uppercase tracking-[0.24em] text-forest-dark font-medium">Best Man</span>
@@ -581,8 +765,10 @@
                             <!-- Sierra Smith -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-blush-deep/45 pointer-events-none"></div>
-                                    <img src="photos/sierra.jpg" alt="Sierra Smith" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-blush-light" />
+                                    <div class="garden-frame garden-frame--sm">
+                                        <img src="photos/sierra.jpg" alt="Sierra Smith" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Sierra Smith</h4>
@@ -593,8 +779,10 @@
                             <!-- Stefanie Cravens -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-blush-deep/45 pointer-events-none"></div>
-                                    <img src="photos/stef.jpg" alt="Stefanie Cravens" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-blush-light" />
+                                    <div class="garden-frame garden-frame--sm">
+                                        <img src="photos/stef.jpg" alt="Stefanie Cravens" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Stefanie Cravens</h4>
@@ -605,8 +793,10 @@
                             <!-- Angie Poulos -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-blush-deep/45 pointer-events-none"></div>
-                                    <img src="photos/angie.jpg" alt="Angie Poulos" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-blush-light" />
+                                    <div class="garden-frame garden-frame--sm">
+                                        <img src="photos/angie.jpg" alt="Angie Poulos" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Angie Poulos</h4>
@@ -625,8 +815,10 @@
                             <!-- Geoffrey Bonnanzio -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-forest/20 pointer-events-none"></div>
-                                    <img src="photos/geoff.jpg" alt="Geoffrey Bonnanzio" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-sage-mist" />
+                                    <div class="garden-frame garden-frame--sm garden-frame--sage">
+                                        <img src="photos/geoff.jpg" alt="Geoffrey Bonnanzio" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest-sage" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Geoffrey Bonnanzio</h4>
@@ -637,8 +829,10 @@
                             <!-- Griffin Warntz -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-forest/20 pointer-events-none"></div>
-                                    <img src="photos/griffin.jpg" alt="Griffin Warntz" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-sage-mist" />
+                                    <div class="garden-frame garden-frame--sm garden-frame--sage">
+                                        <img src="photos/griffin.jpg" alt="Griffin Warntz" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest-sage" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Griffin Warntz</h4>
@@ -649,8 +843,10 @@
                             <!-- Evan Eisenhart -->
                             <div class="flex flex-col items-center space-y-2.5">
                                 <div class="relative w-full max-w-[8.5rem]">
-                                    <div class="absolute -inset-1 arch-image border border-forest/20 pointer-events-none"></div>
-                                    <img src="photos/evan.jpg" alt="Evan Eisenhart" class="arch-image aspect-[3/4] object-cover border border-forest/25 bg-sage-mist" />
+                                    <div class="garden-frame garden-frame--sm garden-frame--sage">
+                                        <img src="photos/evan.jpg" alt="Evan Eisenhart" class="garden-photo" onerror="frameFallback(this)" />
+                                    </div>
+                                    <svg class="frame-ornament frame-crest" viewBox="0 0 120 44" aria-hidden="true"><use href="#frame-crest-sage" /></svg>
                                 </div>
                                 <div class="pt-0.5">
                                     <h4 class="font-serif text-lg sm:text-xl text-earth-espresso font-normal leading-snug">Evan Eisenhart</h4>
@@ -1106,36 +1302,32 @@
         // Update the countdown once every hour
         setInterval(updateCountdown, 1000 * 60 * 60);
 
-        // Adds a scroll listener to highlight the correct nav link based on the user's scroll position
-        window.addEventListener('scroll', () => {
-            const sections = ['couple', 'party', 'venues', 'registry'];
-            let currentSection = 'couple'; // Default section
-
-            // Determine which section is currently at the top of the viewport
-            sections.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    // 180px threshold to trigger the active state before perfectly crossing the line
-                    if (rect.top <= 180) {
-                        currentSection = id;
-                    }
-                }
-            });
-
-            // Update the CSS classes on the nav links to highlight the active section
-            document.querySelectorAll('.nav-link').forEach(link => {
-                if (link.dataset.section === currentSection) {
-                    // Add 'active' classes
-                    link.classList.add('active-nav', 'text-cherry', 'font-medium');
-                    link.classList.remove('text-earth-espresso/70');
-                } else {
-                    // Remove 'active' classes
-                    link.classList.remove('active-nav', 'text-cherry', 'font-medium');
-                    link.classList.add('text-earth-espresso/70');
-                }
-            });
-        });
+        // Highlights the correct nav link based on the user's scroll position.
+        // Performance: runs at most once per frame, and only touches the menu when the section changes.
+        (function () {
+            const sections = ['couple', 'party', 'venues', 'registry']
+                .map(id => document.getElementById(id)).filter(Boolean);
+            const links = document.querySelectorAll('.nav-link');
+            let current = 'couple', queued = false;
+            function update() {
+                queued = false;
+                let next = 'couple'; // Default section
+                // 180px threshold to trigger the active state before perfectly crossing the line
+                for (const el of sections) if (el.getBoundingClientRect().top <= 180) next = el.id;
+                if (next === current) return;
+                current = next;
+                links.forEach(link => {
+                    const on = link.dataset.section === current;
+                    link.classList.toggle('active-nav', on);
+                    link.classList.toggle('text-cherry', on);
+                    link.classList.toggle('font-medium', on);
+                    link.classList.toggle('text-earth-espresso/70', !on);
+                });
+            }
+            window.addEventListener('scroll', () => {
+                if (!queued) { queued = true; requestAnimationFrame(update); }
+            }, { passive: true });
+        })();
 
         // Toggles the visibility of the mobile menu dropdown
         function toggleMobileMenu() {
@@ -1681,8 +1873,11 @@
                 }
 
                 // Vertical extent, so off-screen strands can be skipped cheaply
-                let yMin = 1e9, yMax = -1e9;
-                for (let i = 0; i < n; i++) { if (y[i] < yMin) yMin = y[i]; if (y[i] > yMax) yMax = y[i]; }
+                let yMin = 1e9, yMax = -1e9, xMin = 1e9, xMax = -1e9;
+                for (let i = 0; i < n; i++) {
+                    if (y[i] < yMin) yMin = y[i]; if (y[i] > yMax) yMax = y[i];
+                    if (x[i] < xMin) xMin = x[i]; if (x[i] > xMax) xMax = x[i];
+                }
 
                 // Generates the geometry for the leaves branching off the stem
                 const leaves = [];
@@ -1697,18 +1892,24 @@
                     const taper = 0.42 + 0.58 * Math.min(1, (len - s) / 130);
                     const r = R();
                     let c = 0; while (r > tones[c]) c++; // Pick a color based on layer weighting
+                    const off = side * (0.2 + R() * 0.42);
+                    const leafLen = (12 + R() * 9) * kk * taper;
+                    const hw = 0.085 + R() * 0.03;
+                    const ph = R() * 6.283, fr = 1.4 + R() * 1.8;
+                    const i0 = Math.floor(s / DS);
+                    // Performance: everything about a leaf that never changes is worked out once here
                     leaves.push({
-                        s: s / DS, side,
-                        off: side * (0.2 + R() * 0.42),
-                        len: (12 + R() * 9) * kk * taper,
-                        hw: 0.085 + R() * 0.03,
-                        c, ph: R() * 6.283, fr: 1.4 + R() * 1.8
+                        i0, f0: s / DS - i0,                      // Node index + fraction along the stem
+                        co: Math.cos(off), so: Math.sin(off),     // Resting angle, as cosine/sine
+                        len: leafLen, len42: leafLen * 0.42,      // Length and curve control point
+                        w: leafLen * hw * 2,                      // Half-width of the blade
+                        c, ph, fr
                     });
                 }
                 
                 return {
                     n, x, y, tx, ty, len, nm, omega, zeta, phi, q, qd, samp, norm, ampAt1,
-                    wc1, ws1, wc2, ws2, yMin, yMax,
+                    wc1, ws1, wc2, ws2, yMin, yMax, xMin, xMax,
                     leaves, layer, parent: parent || null, parentIdx: parentIdx || 0,
                     stemW: (parent ? 0.7 : 1.15) * Math.max(0.7, k), // Stem thickness
                     u: new Float32Array(n), v: new Float32Array(n)   // Displacement arrays
@@ -1732,6 +1933,27 @@
                     { p: L2, w0: 5.5 * k, w1: 1.6 * k },
                     { p: L3, w0: 4 * k, w1: 1.3 * k }
                 ];
+
+                // Performance: the thick limbs never move, so their outlines are traced once here
+                const limbPath = new Path2D();
+                let limbBottom = 0;
+                for (const lb of limbs) {
+                    const left = [], right = [];
+                    for (let i = 0; i <= 24; i++) {
+                        const tt = i / 24, a = bez(lb.p, tt), b = bez(lb.p, Math.min(1, tt + 0.01)), c = bez(lb.p, Math.max(0, tt - 0.01));
+                        let nx = -(b[1] - c[1]), ny = b[0] - c[0];
+                        const nl = Math.sqrt(nx * nx + ny * ny) || 1; nx /= nl; ny /= nl;
+                        const w = (lb.w0 + (lb.w1 - lb.w0) * Math.pow(tt, 0.8)) / 2;
+                        left.push([a[0] + nx * w, a[1] + ny * w]); right.push([a[0] - nx * w, a[1] - ny * w]);
+                        limbBottom = Math.max(limbBottom, a[1] + w);
+                    }
+                    limbPath.moveTo(left[0][0], left[0][1]);
+                    for (const p of left) limbPath.lineTo(p[0], p[1]);
+                    for (let i = right.length - 1; i >= 0; i--) limbPath.lineTo(right[i][0], right[i][1]);
+                    limbPath.closePath();
+                }
+                tree.limbPath = limbPath;
+                tree.limbBottom = limbBottom + 4;
 
                 const strands = [];
                 const kc = Math.max(0.7, k);
@@ -1873,10 +2095,10 @@
             // Reused temporary memory buffers (prevents Garbage Collection lag)
             const tmpF = new Float32Array(64), tmpU = new Float32Array(64);
             
-            // Runs physics integration step for one "tick" of time on both trees.
+            // Runs one physics tick for one tree.
             // With `all` false, strands far outside the screen are paused (they resume exactly where
             // they left off when scrolled back into view), which saves most of the work on long pages.
-            function step(dt, t, all) {
+            function stepTree(tree, dt, t, all) {
                 const pv = Math.max(-1, Math.min(1, pointer.vx / 1400));
                 // Time-only parts of the breeze, computed once per tick instead of per point
                 const base = 0.16 + 0.55 * Math.sin(0.23 * t) + 0.3 * Math.sin(0.51 * t + 1.3) + 0.15 * Math.sin(1.13 * t + 0.4);
@@ -1884,55 +2106,56 @@
                 const sb = 0.2 * Math.sin(1.7 * t + 2), cb = 0.2 * Math.cos(1.7 * t + 2);
                 const scrollY = window.scrollY;
 
-                for (const tree of trees) {
-                    // The right tree lives in mirrored coordinates, so wind and pointer are flipped
-                    // for it; on screen, both willows sway the same way in the same breeze.
-                    const dir = tree.dir;
-                    const pvx = pv * dir;
-                    const pxLocal = dir === 1 ? pointer.x : BW - pointer.x;
-                    const pyLocal = pointer.docY - tree.top;
-                    const lo = scrollY - tree.top - 700, hi = scrollY - tree.top + window.innerHeight + 700;
+                // The right tree lives in mirrored coordinates, so wind and pointer are flipped
+                // for it; on screen, both willows sway the same way in the same breeze.
+                const dir = tree.dir;
+                const pvx = pv * dir;
+                const gust = pointer.active && Math.abs(pvx) > 0.002; // Cursor only matters while moving
+                const pxLocal = dir === 1 ? pointer.x : BW - pointer.x;
+                const pyLocal = pointer.docY - tree.top;
+                const lo = scrollY - tree.top - 700, hi = scrollY - tree.top + window.innerHeight + 700;
 
-                    for (const st of tree.strands) {
-                        if (!all && (st.yMax < lo || st.yMin > hi)) continue; // Off-screen: pause
-                        const sm = st.samp, ns = sm.length;
-                        const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
-                        const wc1 = st.wc1, ws1 = st.ws1, wc2 = st.wc2, ws2 = st.ws2;
+                for (const st of tree.strands) {
+                    if (!all && (st.yMax < lo || st.yMin > hi)) continue; // Off-screen: pause
+                    const sm = st.samp, ns = sm.length;
+                    const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
+                    const wc1 = st.wc1, ws1 = st.ws1, wc2 = st.wc2, ws2 = st.ws2;
+                    // Skip the cursor-gust math for strands nowhere near the cursor
+                    const near = gust && pxLocal > st.xMin - 300 && pxLocal < st.xMax + 300 &&
+                        pyLocal > st.yMin - 300 && pyLocal < st.yMax + 300;
 
-                        // Sample forces (wind + mouse movement) affecting the strand.
-                        // Same breeze() as below, expanded with sin(a - b) = sin a cos b - cos a sin b.
-                        for (let j = 0; j < ns; j++) {
-                            let f = dir * (base + sa * wc1[j] - ca * ws1[j] + sb * wc2[j] - cb * ws2[j]);
-                            // Add mouse gust force
-                            if (pointer.active) {
-                                const i = sm[j];
-                                const dx = st.x[i] + ox - pxLocal, dy = st.y[i] - pyLocal;
-                                f += pvx * 5 * Math.exp(-(dx * dx + dy * dy) / 9000);
-                            }
-                            tmpF[j] = f;
+                    // Sample forces (wind + mouse movement) affecting the strand.
+                    // Same as breeze(), expanded with sin(a - b) = sin a cos b - cos a sin b.
+                    for (let j = 0; j < ns; j++) {
+                        let f = dir * (base + sa * wc1[j] - ca * ws1[j] + sb * wc2[j] - cb * ws2[j]);
+                        if (near) {
+                            const i = sm[j];
+                            const dx = st.x[i] + ox - pxLocal, dy = st.y[i] - pyLocal;
+                            f += pvx * 5 * Math.exp(-(dx * dx + dy * dy) / 9000);
                         }
-                        
-                        // Integrate forces down the chain to compute bending moments
-                        let acc = 0;
-                        for (let j = ns - 1; j >= 0; j--) { acc += tmpF[j]; tmpF[j] = acc / (ns - j); }
-                        let u = 0;
-                        for (let j = 0; j < ns; j++) {
-                            const segLen = j === 0 ? 0 : (sm[j] - sm[j - 1]) * DS;
-                            u += tmpF[j] * segLen;
-                            tmpU[j] = u * st.ampAt1;
-                        }
-                        
-                        // Solve equations of motion using Semi-Implicit Euler
-                        for (let m = 0; m < st.nm; m++) {
-                            const f = st.phi[m];
-                            let proj = 0;
-                            for (let j = 0; j < ns; j++) proj += tmpU[j] * f[sm[j]];
-                            proj /= st.norm[m];
-                            const w = st.omega[m];
-                            const acc2 = w * w * (proj - st.q[m]) - 2 * st.zeta[m] * w * st.qd[m];
-                            st.qd[m] += acc2 * dt;           
-                            st.q[m] += st.qd[m] * dt;
-                        }
+                        tmpF[j] = f;
+                    }
+
+                    // Integrate forces down the chain to compute bending moments
+                    let acc = 0;
+                    for (let j = ns - 1; j >= 0; j--) { acc += tmpF[j]; tmpF[j] = acc / (ns - j); }
+                    let u = 0;
+                    for (let j = 0; j < ns; j++) {
+                        const segLen = j === 0 ? 0 : (sm[j] - sm[j - 1]) * DS;
+                        u += tmpF[j] * segLen;
+                        tmpU[j] = u * st.ampAt1;
+                    }
+
+                    // Solve equations of motion using Semi-Implicit Euler
+                    for (let m = 0; m < st.nm; m++) {
+                        const f = st.phi[m];
+                        let proj = 0;
+                        for (let j = 0; j < ns; j++) proj += tmpU[j] * f[sm[j]];
+                        proj /= st.norm[m];
+                        const w = st.omega[m];
+                        const acc2 = w * w * (proj - st.q[m]) - 2 * st.zeta[m] * w * st.qd[m];
+                        st.qd[m] += acc2 * dt;
+                        st.q[m] += st.qd[m] * dt;
                     }
                 }
             }
@@ -1956,23 +2179,8 @@
                 ctx.beginPath(); ctx.rect(0, y0, W, y1 - y0); ctx.clip();
                 ctx.clearRect(0, y0, W, y1 - y0);
 
-                // Render thick background boughs
-                ctx.fillStyle = '#3F4F21';
-                for (const lb of tree.limbs) {
-                    const left = [], right = [];
-                    for (let i = 0; i <= 24; i++) {
-                        const tt = i / 24, a = bez(lb.p, tt), b = bez(lb.p, Math.min(1, tt + 0.01)), c = bez(lb.p, Math.max(0, tt - 0.01));
-                        let nx = -(b[1] - c[1]), ny = b[0] - c[0];
-                        const nl = Math.hypot(nx, ny) || 1; nx /= nl; ny /= nl;
-                        const w = (lb.w0 + (lb.w1 - lb.w0) * Math.pow(tt, 0.8)) / 2;
-                        left.push([a[0] + nx * w, a[1] + ny * w]); right.push([a[0] - nx * w, a[1] - ny * w]);
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(left[0][0], left[0][1]);
-                    for (const p of left) ctx.lineTo(p[0], p[1]);
-                    for (let i = right.length - 1; i >= 0; i--) ctx.lineTo(right[i][0], right[i][1]);
-                    ctx.closePath(); ctx.fill();
-                }
+                // Render thick background boughs (outline precomputed when the tree was grown)
+                if (y0 < tree.limbBottom) { ctx.fillStyle = '#3F4F21'; ctx.fill(tree.limbPath); }
 
                 const lo = y0 - 30, hi = y1 + 30; // Padding to prevent leaves popping in at edges
                 ctx.strokeStyle = '#3F4F21';
@@ -1996,21 +2204,26 @@
                         }
                         const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
                         const { x, y, tx, ty, u, v, n, nm, q, qd, phi } = st;
-                        
-                        // Discover which nodes of this strand are currently visible on screen
+
+                        // Find the visible run of nodes. Neighboring nodes are at most DS apart
+                        // vertically, so far-away stretches are skipped in big jumps, not node by node.
                         let iA = -1, iB = -1;
-                        for (let i = 0; i < n; i++) {
-                            if (y[i] >= lo && y[i] <= hi) { if (iA < 0) iA = i; iB = i; }
+                        for (let i = 0; i < n; ) {
+                            const yi = y[i];
+                            if (yi < lo) { i += Math.max(1, ((lo - yi) / DS) | 0); continue; }
+                            if (yi > hi) { i += Math.max(1, ((yi - hi) / DS) | 0); continue; }
+                            if (iA < 0) iA = i;
+                            iB = i++;
                         }
                         if (iA < 0) continue; // Skip if fully off-screen
                         iA = Math.max(0, iA - 1); iB = Math.min(n - 1, iB + 1);
-                        
+
                         for (let i = iA; i <= iB; i++) {
                             let uu = 0, vv = 0;
                             for (let m = 0; m < nm; m++) { uu += q[m] * phi[m][i]; vv += qd[m] * phi[m][i]; }
                             u[i] = uu + ox; v[i] = vv;
                         }
-                        
+
                         // Draw Stem Lines
                         const run = 30;
                         for (let a = iA; a < iB; a += run) {
@@ -2022,31 +2235,36 @@
                             for (let i = a + 1; i <= b; i++) ctx.lineTo(x[i] + u[i], y[i]);
                             ctx.stroke();
                         }
-                        
-                        // Draw Leaves along the visible stem section
+
+                        // Draw Leaves along the visible stem section (leaves are stored top to bottom)
+                        const P = paths;
                         for (const lf of st.leaves) {
-                            const i = Math.floor(lf.s);
-                            if (i < iA || i >= iB) continue;
-                            const fr = lf.s - i;
+                            const i = lf.i0;
+                            if (i < iA) continue;
+                            if (i >= iB) break;
+                            const fr = lf.f0;
                             const px = x[i] + u[i] + (x[i + 1] + u[i + 1] - x[i] - u[i]) * fr;
                             const py = y[i] + (y[i + 1] - y[i]) * fr;
-                            const ip = Math.max(iA, i - 1), inx = Math.min(iB, i + 2);
-                            let dx = tx[i] + (u[inx] - u[ip]) / ((inx - ip) * DS) - v[i] * 0.0035;
-                            let dy = ty[i];
-                            // Apply micro-fluttering rotation based on wind/time unless reduced-motion is requested
-                            const ang = lf.off + (reduceMotion ? 0 : 0.11 * Math.sin(t * lf.fr + lf.ph));
-                            const ca = Math.cos(ang), sa = Math.sin(ang);
+                            const ip = i > iA ? i - 1 : iA, inx = i + 2 < iB ? i + 2 : iB;
+                            const dx = tx[i] + (u[inx] - u[ip]) / ((inx - ip) * DS) - v[i] * 0.0035;
+                            const dy = ty[i];
+                            // Resting angle (precomputed) plus a tiny flutter. For angles this small,
+                            // cos d is about 1 - d*d/2 and sin d is about d, saving two trig calls per leaf.
+                            const d = reduceMotion ? 0 : 0.11 * Math.sin(t * lf.fr + lf.ph);
+                            const cd = 1 - d * d * 0.5;
+                            const ca = lf.co * cd - lf.so * d, sa = lf.so * cd + lf.co * d;
                             let ex = dx * ca - dy * sa, ey = dx * sa + dy * ca;
-                            const el = Math.hypot(ex, ey) || 1; ex /= el; ey /= el;
-                            const L = lf.len, hw = L * lf.hw * 2;
-                            const nx = -ey, ny = ex;
-                            const cx = px + ex * L * 0.42, cy = py + ey * L * 0.42;
-                            
+                            const inv = 1 / Math.sqrt(ex * ex + ey * ey);
+                            ex *= inv; ey *= inv;
+                            const L = lf.len, hw = lf.w, L42 = lf.len42;
+                            const cx = px + ex * L42, cy = py + ey * L42;
+                            // Normal to the blade is (-ey, ex)
+
                             // Map the curve commands into the Path2D object matching its designated color
-                            const p = paths[lf.c];
+                            const p = P[lf.c];
                             p.moveTo(px, py);
-                            p.quadraticCurveTo(cx + nx * hw, cy + ny * hw, px + ex * L, py + ey * L);
-                            p.quadraticCurveTo(cx - nx * hw, cy - ny * hw, px, py);
+                            p.quadraticCurveTo(cx - ey * hw, cy + ex * hw, px + ex * L, py + ey * L);
+                            p.quadraticCurveTo(cx + ey * hw, cy - ex * hw, px, py);
                         }
                     }
                 }
@@ -2066,56 +2284,109 @@
 
             // Figure out which horizontal slice of a tree's canvas needs updating
             function visibleBand(tree) {
-                const a = window.scrollY - tree.top - 160; // Include a 160px buffer above
-                return [Math.max(0, a), Math.min(tree.H, a + window.innerHeight + 320)]; // Include a 320px buffer below
+                const a = window.scrollY - tree.top - 200; // Include a 200px buffer above
+                return [Math.max(0, a), Math.min(tree.H, a + window.innerHeight + 400)]; // Include a 400px buffer below
             }
 
-            // Wipes the existing geometry and recreates it (useful for window resizing)
+            // Regrows the willows, but only when the page layout actually changed.
+            // (Phones change the window height constantly while scrolling as the address bar slides
+            // in and out; that now only resizes the leaf layer, which is cheap, instead of regrowing
+            // both trees mid-scroll, which caused visible hitches.)
+            let lastLeafSig = '', buildGen = 0;
             function rebuild(force) {
-                const sig = window.innerWidth + 'x' + window.innerHeight + 'x' +
+                const leafSig = window.innerWidth + 'x' + window.innerHeight;
+                const sig = window.innerWidth + 'x' +
                     Math.round(hero.getBoundingClientRect().top + window.scrollY) + 'x' +
                     Math.round(partySection.getBoundingClientRect().top + window.scrollY) + 'x' +
                     Math.round(footer.getBoundingClientRect().bottom + window.scrollY);
-                if (!force && sig === lastSig) return; // Prevent rebuilding if bounds haven't shifted
-                lastSig = sig;
+                if (!force && sig === lastSig) {
+                    if (leafSig !== lastLeafSig) { lastLeafSig = leafSig; initFallingLeaves(); renderFallingLeaves(); }
+                    return;
+                }
+                lastSig = sig; lastLeafSig = leafSig;
                 build();
-                
-                const t = performance.now() / 1000;
+                const gen = ++buildGen;
+
+                const now = performance.now(), t = now / 1000;
                 // Run the physics forward invisibly to let the breeze settle so it doesn't "snap" on load
-                for (let i = 0; i < 240; i++) step(1 / 60, t - 4 + i / 60, true);
+                for (let i = 0; i < 150; i++) for (const tree of trees) stepTree(tree, 1 / 60, t - 2.5 + i / 60, true);
                 // Zero out motion completely if accessibility settings request it
                 if (reduceMotion) for (const tree of trees) for (const st of tree.strands) { st.q.fill(0); st.qd.fill(0); }
 
-                for (const tree of trees) render(tree, 0, tree.H, t); // Initial render of both cascades
+                // Paint what's on screen right away; with reduced motion there's no animation loop,
+                // so paint everything now
+                for (const tree of trees) {
+                    tree.lastNow = now;
+                    if (reduceMotion) { render(tree, 0, tree.H, t); continue; }
+                    const [a, b] = visibleBand(tree);
+                    if (b > a) render(tree, a, b, t);
+                }
                 renderFallingLeaves(); // Initial render of drifting leaves & petals
+                if (!reduceMotion) paintRestWhenIdle(gen);
             }
 
-            // Main rendering loop requested by the browser at 60fps
-            let last = performance.now();
+            // Paints the rest of each willow in small slices whenever the browser is idle, so the
+            // page loads quickly and a fast scroll never reveals an unpainted stretch
+            function paintRestWhenIdle(gen) {
+                const idle = window.requestIdleCallback || ((fn) => setTimeout(() => fn({ timeRemaining: () => 8 }), 50));
+                // Small slices, at most one per idle moment, so this never delays a frame
+                const SLICE = 260;
+                const jobs = [];
+                for (const tree of trees) for (let y = 0; y < tree.H; y += SLICE) jobs.push([tree, y]);
+                const work = (deadline) => {
+                    if (gen !== buildGen) return; // A newer rebuild took over
+                    while (jobs.length) {
+                        const [tree, y] = jobs.shift();
+                        const [a, b] = visibleBand(tree);
+                        if (y + SLICE >= a && y <= b) continue; // Already being drawn live
+                        if (deadline.timeRemaining() > 8) render(tree, y, Math.min(tree.H, y + SLICE), performance.now() / 1000);
+                        else jobs.unshift([tree, y]);
+                        break;
+                    }
+                    if (jobs.length) idle(work);
+                };
+                idle(work);
+            }
+
+            // Main animation loop.
+            // Performance: 120Hz screens (most newer laptops and phones) ask for twice as many frames;
+            // the animation is capped at ~60fps. Leaves and petals update every frame, while the two
+            // willows take turns (each sways ~30 times a second, plenty for their slow motion). When
+            // only one willow is on screen, it gets every frame.
+            let last = performance.now(), turn = 0;
             function frame(now) {
-                const dt = Math.min(0.05, (now - last) / 1000); // Cap max delta time to prevent physics explosions on lag
+                requestAnimationFrame(frame); // Request the next frame first
+                if (now - last < 12) return; // Skip every other frame on 120Hz+ displays
+                const dt = Math.min(0.05, (now - last) / 1000); // Cap delta time after a lag
                 last = now;
                 const t = now / 1000;
-                
+
                 // Exponential decay on mouse wind velocity
-                pointer.vx *= Math.pow(0.04, dt);   
-                
-                // Sub-stepping physics resolution for stability (one step per 60th of a second is
-                // plenty for these gentle swings; it only sub-steps when the browser drops frames)
-                const sub = Math.ceil(dt / (1 / 60) - 0.01);
-                for (let i = 0; i < sub; i++) step(dt / sub, t - dt + (i + 1) * dt / sub, false);
+                pointer.vx *= Math.pow(0.04, dt);
 
                 // Step and render the ambient falling leaves & petals
                 stepFallingLeaves(dt, t);
                 renderFallingLeaves();
 
-                // Request rendering only for the on-screen portion of each willow cascade
-                for (const tree of trees) {
-                    const [a, b] = visibleBand(tree);
-                    if (b > a) render(tree, a, b, t);
+                // Pick which on-screen willow updates this frame
+                let tree = null, live = 0;
+                for (const tr of trees) {
+                    const [a, b] = visibleBand(tr);
+                    if (b > a) { live++; tr.live = true; } else tr.live = false;
                 }
-                
-                requestAnimationFrame(frame); // Recursively request next frame
+                if (!live) return;
+                const order = turn++ % 2 === 0 ? trees : [trees[1], trees[0]];
+                for (const tr of order) if (tr.live) { tree = tr; break; }
+
+                // Physics catches up on the time since this tree last updated (stable at 30 steps/s)
+                const tdt = Math.min(0.08, (now - tree.lastNow) / 1000);
+                tree.lastNow = now;
+                const sub = Math.max(1, Math.ceil(tdt / (1 / 30) - 0.01));
+                for (let i = 0; i < sub; i++) stepTree(tree, tdt / sub, t - tdt + (i + 1) * tdt / sub, false);
+
+                // Render only the on-screen portion of this willow
+                const [a, b] = visibleBand(tree);
+                render(tree, a, b, t);
             }
 
             // Event Listeners tracking mouse movements for the cursor "breeze" effect
