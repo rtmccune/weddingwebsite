@@ -122,15 +122,16 @@
         section {
             scroll-margin-top: 5.5rem;
         }
-        /* Styles the canvas element that runs the JavaScript physics engine for the interactive willow */
-        #willow-cascade {
+        /* Styles the two canvas elements that run the JavaScript physics engine for the interactive willows */
+        .willow-cascade {
             position: absolute;
-            left: 0;
             z-index: 5;
             pointer-events: none;
             user-select: none;
             opacity: 0.88;
         }
+        #willow-cascade-left { left: 0; }
+        #willow-cascade-right { right: 0; }
         /* Styles the ambient falling leaves background canvas */
         #willow-leaves {
             position: fixed;
@@ -140,14 +141,19 @@
             user-select: none;
             opacity: 0.85;
         }
-        /* Fades the interactive canvases slightly on medium screens */
+        /* Fades the interactive canvases slightly on medium screens
+           (each willow's inner edge is also faded on the canvas itself, in the script below) */
         @media (max-width: 1359px) {
-            #willow-cascade { opacity: 0.68; }
+            .willow-cascade { opacity: 0.68; }
             #willow-leaves { opacity: 0.72; }
         }
-        /* Fades the interactive canvases further on mobile screens to maintain legibility */
+        /* Tablets: fainter willows keep the reading column clear */
+        @media (max-width: 1023px) {
+            .willow-cascade { opacity: 0.55; }
+        }
+        /* Phones: each willow becomes a slim, faint lane at the screen edge so text stays readable */
         @media (max-width: 639px) {
-            #willow-cascade { opacity: 0.45; }
+            .willow-cascade { opacity: 0.4; }
             #willow-leaves { opacity: 0.55; }
         }
     </style>
@@ -287,8 +293,9 @@
         <span>October 23, 2027 &bull; We're getting married!</span>
     </div>
 
-    <!-- Main Sticky Navigation Bar: Stays at the top of the screen as the user scrolls -->
-    <header class="sticky top-0 z-40 bg-parchment/95 backdrop-blur-md text-earth-espresso border-b border-forest/15 transition-all">
+    <!-- Main Sticky Navigation Bar: Stays at the top of the screen as the user scrolls
+         (solid rather than frosted-glass blur: blurring the animated willows behind it every frame is costly) -->
+    <header class="sticky top-0 z-40 bg-parchment/[0.97] text-earth-espresso border-b border-forest/15 transition-all">
         <!-- Container controlling maximum width and side paddings -->
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Flexbox to arrange the nav content horizontally with vertical centering -->
@@ -374,13 +381,7 @@
         <!-- 'relative' allows absolute elements inside; 'airy-canvas' provides the background texture -->
         <section id="couple" class="relative airy-canvas overflow-hidden">
             
-            <!-- Decorative Static Willow Bough tucked in the top right corner -->
-            <!-- We reference the full SVG path drawn inside the <defs> at the top of the file -->
-            <div class="pointer-events-none select-none hidden xl:block absolute -top-4 right-4 w-60 opacity-45 willow-sway-reverse">
-                <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
-                    <use href="#willow-bough-cascade" />
-                </svg>
-            </div>
+            <!-- The right-hand willow is now drawn live on its own canvas (see the script at the bottom) -->
 
             <!-- 
                 Hero Content Wrapper
@@ -502,7 +503,7 @@
                     </div>
                     <!-- Column 4: Attire -->
                     <div class="space-y-0.5 md:border-l md:border-blush-deep/40">
-                        <span class="block font-serif italic text-2xl sm:text-3xl text-cherry">Formal</span>
+                        <span class="block font-serif italic text-2xl sm:text-3xl text-cherry">Cocktail</span>
                         <span class="block text-[10px] uppercase tracking-[0.22em] text-forest">Autumnal Attire</span>
                     </div>
                 </div>
@@ -736,8 +737,8 @@
                     <!-- Card 2: Reception (The Yorktowne Hotel) -->
                     <div class="bg-parchment/90 border border-blush-deep/40 p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6">
                         <div class="space-y-3">
-                            <span class="inline-block text-[10px] uppercase tracking-[0.26em] text-cherry font-medium px-3.5 py-1 rounded-full bg-blush-light border border-blush-deep/40">
-                                The Reception &amp; Accommodations
+                            <span class="inline-block text-[10px] uppercase tracking-[0.26em] text-forest-dark font-medium px-3.5 py-1 rounded-full bg-sage-mist border border-forest/20">
+                                The Reception
                             </span>
                             <h3 class="font-serif text-3xl sm:text-4xl text-earth-espresso font-normal pt-1">
                                 The Yorktowne Hotel
@@ -765,7 +766,7 @@
                             <a href="https://www.google.com/maps/search/?api=1&query=The+Yorktowne+Hotel+48+E+Market+St+York+PA+17401" 
                                target="_blank" 
                                rel="noopener noreferrer" 
-                               class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-cherry hover:bg-cherry-light text-parchment text-[10px] uppercase tracking-[0.2em] transition-all">
+                               class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-full bg-forest hover:bg-forest-dark text-parchment text-[10px] uppercase tracking-[0.2em] transition-all">
                                 <span>Google Maps</span>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -894,13 +895,6 @@
     <!-- Footer Area -->
     <footer class="bg-blush-light text-earth-espresso py-16 px-4 border-t border-blush-deep/40 relative overflow-hidden">
         
-        <!-- Another decorative branch SVG on the right side of the footer -->
-        <div class="pointer-events-none select-none hidden sm:block absolute -top-3 right-0 w-40 opacity-35">
-            <svg viewBox="0 0 260 490" class="w-full h-auto -scale-x-100">
-                <use href="#willow-bough-cascade" />
-            </svg>
-        </div>
-
         <div class="max-w-4xl mx-auto text-center space-y-5 relative z-10">
             
             <!-- Tree logo crowning the footer -->
@@ -917,7 +911,7 @@
             
             <!-- Final reminder of date and location -->
             <p class="text-[11px] uppercase tracking-[0.28em] text-forest-dark">
-                October 23, 2027 &bull; Yorktowne Farms &bull; York, PA
+                October 23, 2027 &bull; Ceremony: Yorktowne Farms &bull; Reception: The Yorktowne Hotel &bull; York, PA
             </p>
             
             <!-- Small dividing line -->
@@ -932,10 +926,6 @@
                 <button onclick="openRsvpModal()" class="hover:text-cherry transition-colors uppercase tracking-[0.2em]">RSVP</button>
             </div>
             
-            <!-- Closing sign-off note -->
-            <p class="font-serif italic text-base text-earth-taupe pt-4">
-                Crafted with love for our autumn celebration beneath the willow.
-            </p>
         </div>
     </footer>
 
@@ -1222,28 +1212,58 @@
         }
 
         // =================================================================
-        // FULL-PAGE WEEPING WILLOW CASCADE & DRIFTING LEAVES ANIMATION
+        // FULL-PAGE WEEPING WILLOWS (LEFT & RIGHT), DRIFTING LEAVES & BOUQUET PETALS
         // Wrapped in an IIFE (Immediately Invoked Function Expression) to keep variables scoped
         // =================================================================
         (function () {
-            // Locate bounding elements to figure out how large the canvas should be
+            // Locate bounding elements to figure out how large the canvases should be
             const hero = document.getElementById('couple');
             const footer = document.querySelector('footer');
             if (!hero || !footer) return; // Exit if elements are missing
 
-            // Create and inject the ambient drifting leaves `<canvas>` into the body
+            // Create and inject the ambient drifting leaves & petals `<canvas>` into the body
             const leafCanvas = document.createElement('canvas');
             leafCanvas.id = 'willow-leaves';
             leafCanvas.setAttribute('aria-hidden', 'true');
             document.body.appendChild(leafCanvas);
             const lctx = leafCanvas.getContext('2d');
 
-            // Create and inject the left cascading willow `<canvas>` element into the body
-            const canvas = document.createElement('canvas');
-            canvas.id = 'willow-cascade';
-            canvas.setAttribute('aria-hidden', 'true'); // Hide from screen readers
-            document.body.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
+            // Creates one cascading willow canvas.
+            // dir = 1 draws the tree as-is along the left edge; dir = -1 mirrors it along the right edge.
+            // `anchor` is the section the willow starts growing from.
+            function makeTree(side, dir, seed, anchor, longPlan) {
+                const c = document.createElement('canvas');
+                c.id = 'willow-cascade-' + side;
+                c.className = 'willow-cascade';
+                c.setAttribute('aria-hidden', 'true'); // Hide from screen readers
+                document.body.appendChild(c);
+                return {
+                    side, dir, seed, anchor, longPlan, canvas: c, ctx: c.getContext('2d'),
+                    strands: [], limbs: [], top: 0, H: 0
+                };
+            }
+
+            // Each willow gets its own seed and drape plan so the two sides are siblings, not mirror-image twins.
+            // The left willow starts at the top of the page; the right one starts at the Wedding Party section.
+            const partySection = document.getElementById('party') || hero;
+            const trees = [
+                makeTree('left', 1, 20271023, hero, [
+                    { li: 1, t: 0.78, f: 1.0, th: -0.55 },
+                    { li: 0, t: 0.97, f: 0.94, th: 0.5 },
+                    { li: 1, t: 0.52, f: 0.82, th: -0.9 },
+                    { li: 0, t: 0.82, f: 0.66, th: 0.75 },
+                    { li: 1, t: 0.95, f: 0.5, th: -0.4 },
+                    { li: 2, t: 0.7, f: 0.36, th: 0.6 }
+                ]),
+                makeTree('right', -1, 20271107, partySection, [
+                    { li: 0, t: 0.95, f: 1.0, th: 0.45 },
+                    { li: 1, t: 0.74, f: 0.9, th: -0.6 },
+                    { li: 1, t: 0.56, f: 0.72, th: -0.85 },
+                    { li: 0, t: 0.85, f: 0.58, th: 0.7 },
+                    { li: 1, t: 0.92, f: 0.44, th: -0.45 },
+                    { li: 2, t: 0.66, f: 0.3, th: 0.55 }
+                ])
+            ];
 
             // Detect if the user has requested OS-level "reduced motion" for accessibility
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1260,16 +1280,25 @@
             ];
             const LAYER_ALPHA = [0.72, 0.88, 1]; // Opacities per layer depth
 
-            // State variables tracking canvas dimensions and simulation data
-            let W = 0, H = 0, top = 0, k = 1, dpr = 1;
-            let LW = 0, LH = 0, ldpr = 1;
-            let strands = [], limbs = [], fallingLeaves = [], built = false, lastSig = '';
-            let lastScrollY = window.scrollY;
-            
-            // Mouse pointer state for the "cursor breeze" interaction
-            const pointer = { x: -1e4, y: -1e4, vx: 0, active: false };
+            // Bouquet petal palette: blush hydrangea, dusty rose, cherry ranunculus, black-cherry plum,
+            // ivory calla lily and chartreuse hydrangea
+            const PETAL_COLORS = ['#E8B7BF', '#D99AA8', '#8C1430', '#5E1A33', '#F4EEE8', '#B9C97E'];
+            const PETAL_TONES = [0.30, 0.50, 0.68, 0.80, 0.90, 1.0]; // Cumulative weights (blush-heavy, like the arrangement)
+            const IVORY = 4; // Index of the ivory petal, which gets a fine rose edge so it shows on the parchment
 
-            // Pseudo-random number generator ensuring the tree grows exactly the same way every refresh
+            // State variables tracking canvas dimensions and simulation data
+            // (`top` is the top of the hero; each tree also keeps its own top and height)
+            let W = 0, top = 0, k = 1, dpr = 1, BW = 0, isMobile = false;
+            let fadeStart = 1;   // Where each willow starts fading toward the page center (1 = no fade)
+            let windYOff = 0;    // Offset so both willows share one continuous wind field down the page
+            let LW = 0, LH = 0, ldpr = 1;
+            let fallingLeaves = [], lastSig = '';
+            let lastScrollY = window.scrollY;
+
+            // Mouse pointer state for the "cursor breeze" interaction (x in viewport px, docY in page px)
+            const pointer = { x: -1e4, docY: -1e4, vx: 0, active: false };
+
+            // Pseudo-random number generator ensuring the trees grow exactly the same way every refresh
             function rng(seed) {
                 return function () {
                     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -1301,7 +1330,7 @@
             }
 
             // =================================================================
-            // AMBIENT DRIFTING & FALLING WILLOW LEAVES LOGIC
+            // AMBIENT DRIFTING WILLOW LEAVES & FALLING BOUQUET PETALS
             // =================================================================
             const leafRng = rng(20271024);
             const DRIFT_TONES = [0.22, 0.54, 0.84, 0.93, 1.0]; // Matches branch color distribution
@@ -1310,15 +1339,21 @@
                 const r = leafRng();
                 let c = 0; while (r > DRIFT_TONES[c]) c++;
 
-                // 65% of leaves detach from the left weeping willow cascade; 35% drift in from the upper canopy
-                const fromLeftBranch = leafRng() < 0.65;
+                // 70% of leaves detach from one of the two willows; 30% drift in from the upper canopy
+                const fromBranch = leafRng() < 0.7;
+                const fromRight = leafRng() < 0.5;
+                const reach = Math.min(W * 0.85, LW * 0.3);
                 let x, y;
                 if (initialSpread) {
                     x = leafRng() * LW;
                     y = leafRng() * LH;
-                } else if (fromLeftBranch) {
-                    x = -12 + leafRng() * Math.min(W * 0.85, LW * 0.35);
-                    y = -15 + leafRng() * (LH * 0.72);
+                } else if (fromBranch) {
+                    // The right willow only sheds leaves once it has scrolled into view
+                    const rightTop = trees[1].top - window.scrollY;
+                    const useRight = fromRight && rightTop < LH * 0.6;
+                    const yMin = useRight ? Math.max(-15, rightTop) : -15;
+                    x = useRight ? LW + 12 - leafRng() * reach : -12 + leafRng() * reach;
+                    y = yMin + leafRng() * Math.max(20, LH * 0.72 - yMin);
                 } else {
                     x = leafRng() * (LW * 0.88);
                     y = -24 - leafRng() * 45;
@@ -1328,6 +1363,7 @@
                 const kk = Math.max(0.75, Math.min(1, k));
 
                 return {
+                    kind: 'leaf',
                     x,
                     y,
                     vx: 10 + leafRng() * 14,
@@ -1349,23 +1385,63 @@
                 };
             }
 
+            // Petals float in from above (as if carried off the bouquets) and tumble slowly as they fall
+            function spawnPetal(initialSpread) {
+                const r = leafRng();
+                let c = 0; while (r > PETAL_TONES[c]) c++;
+
+                let x, y;
+                if (initialSpread) {
+                    x = leafRng() * LW;
+                    y = leafRng() * LH;
+                } else {
+                    x = -30 + leafRng() * (LW * 0.95);
+                    y = -20 - leafRng() * 60;
+                }
+
+                const depth = 0.6 + leafRng() * 0.6;
+                const kk = isMobile ? 0.8 : 1; // Slightly smaller petals on phones
+
+                return {
+                    kind: 'petal',
+                    x,
+                    y,
+                    vx: 6 + leafRng() * 10,
+                    vy: (12 + leafRng() * 10) * depth,
+                    len: (8.5 + leafRng() * 5.5) * kk * (0.8 + 0.25 * depth),
+                    wide: 0.36 + leafRng() * 0.14,  // Half-width as a fraction of petal length
+                    c,
+                    depth,
+                    alpha: 0.42 + leafRng() * 0.3,
+                    age: initialSpread ? 5 : 0,
+                    angle: leafRng() * 6.283,
+                    spin: (leafRng() < 0.5 ? -1 : 1) * (0.5 + leafRng() * 1.3), // Slow tumble
+                    flutterPhase: leafRng() * 6.283,
+                    flutterFreq: 0.9 + leafRng() * 0.9,
+                    rollPhase: leafRng() * 6.283,
+                    rollFreq: 0.9 + leafRng() * 1.4,
+                    seedOffset: leafRng() * 400
+                };
+            }
+
             function initFallingLeaves() {
                 LW = window.innerWidth;
                 LH = window.innerHeight;
-                ldpr = Math.min(window.devicePixelRatio || 1, 2);
+                // Performance: leaves and petals are small and soft, so 1.5x resolution is plenty on retina screens
+                ldpr = Math.min(window.devicePixelRatio || 1, 1.5);
                 leafCanvas.width = Math.round(LW * ldpr);
                 leafCanvas.height = Math.round(LH * ldpr);
 
-                // Keep leaf count sparse and whimsical (6 on mobile up to 11 on wide desktop)
-                const targetCount = LW < 640 ? 6 : LW < 1024 ? 8 : 11;
-                if (fallingLeaves.length === 0) {
-                    for (let i = 0; i < targetCount; i++) {
-                        fallingLeaves.push(spawnFallingLeaf(true));
-                    }
-                } else {
-                    while (fallingLeaves.length < targetCount) fallingLeaves.push(spawnFallingLeaf(true));
-                    if (fallingLeaves.length > targetCount) fallingLeaves.length = targetCount;
-                }
+                // Keep things sparse and whimsical: fewer leaves and petals on small screens
+                const nLeaves = LW < 640 ? 5 : LW < 1024 ? 7 : 10;
+                const nPetals = LW < 640 ? 4 : LW < 1024 ? 6 : 9;
+                const leaves = fallingLeaves.filter(f => f.kind === 'leaf');
+                const petals = fallingLeaves.filter(f => f.kind === 'petal');
+                while (leaves.length < nLeaves) leaves.push(spawnFallingLeaf(true));
+                while (petals.length < nPetals) petals.push(spawnPetal(true));
+                leaves.length = nLeaves;
+                petals.length = nPetals;
+                fallingLeaves = leaves.concat(petals);
             }
 
             function stepFallingLeaves(dt, t) {
@@ -1377,14 +1453,15 @@
 
                 for (let i = 0; i < fallingLeaves.length; i++) {
                     const lf = fallingLeaves[i];
+                    const isPetal = lf.kind === 'petal';
                     lf.age += dt;
 
-                    // Gentle vertical parallax so leaves feel suspended in the page air when scrolling
+                    // Gentle vertical parallax so leaves and petals feel suspended in the page air when scrolling
                     if (Math.abs(dScroll) < 180) {
                         lf.y -= dScroll * (0.28 + lf.depth * 0.22);
                     }
 
-                    // Sample the same ambient breeze that drives the weeping willow branch
+                    // Sample the same ambient breeze that drives the weeping willow branches
                     const docY = lf.y + scrollY - top + lf.seedOffset;
                     const wind = breeze(docY, t);
 
@@ -1395,13 +1472,20 @@
                     const flutter = Math.sin(lf.flutterPhase);
                     const swoop = Math.cos(lf.flutterPhase);
 
-                    // Target horizontal and vertical velocities with phugoid leaf-glide coupling
-                    let targetVx = (wind * 26 + 11 + swoop * 10) * (0.75 + 0.25 * lf.depth);
-                    let targetVy = (21 - Math.abs(swoop) * 5.5 + Math.sin(lf.flutterPhase * 0.5) * 3) * lf.depth;
+                    // Target horizontal and vertical velocities with phugoid glide coupling
+                    // (petals are lighter: they fall slower and sway wider than leaves)
+                    let targetVx, targetVy;
+                    if (isPetal) {
+                        targetVx = (wind * 22 + 8 + swoop * 13) * (0.75 + 0.25 * lf.depth);
+                        targetVy = (15 - Math.abs(swoop) * 4 + Math.sin(lf.flutterPhase * 0.5) * 2.5) * lf.depth;
+                    } else {
+                        targetVx = (wind * 26 + 11 + swoop * 10) * (0.75 + 0.25 * lf.depth);
+                        targetVy = (21 - Math.abs(swoop) * 5.5 + Math.sin(lf.flutterPhase * 0.5) * 3) * lf.depth;
+                    }
 
-                    // Subtle interaction if cursor sweeps past a falling leaf
+                    // Subtle interaction if cursor sweeps past a falling leaf or petal
                     if (pointer.active) {
-                        const ptrScreenY = pointer.y - (scrollY - top);
+                        const ptrScreenY = pointer.docY - scrollY;
                         const dx = lf.x - pointer.x;
                         const dy = lf.y - ptrScreenY;
                         const distSq = dx * dx + dy * dy;
@@ -1420,18 +1504,66 @@
                     lf.x += lf.vx * dt;
                     lf.y += lf.vy * dt;
 
-                    // Align leaf blade softly with its flight trajectory plus natural flutter rock
-                    const flightAngle = Math.atan2(lf.vx * 0.48, Math.max(8, lf.vy));
-                    const targetAngle = flightAngle + flutter * lf.flutterAmp;
-                    lf.angle += (targetAngle - lf.angle) * (1 - Math.exp(-5 * dt));
+                    if (isPetal) {
+                        // Petals tumble end over end with a little extra wobble from the flutter
+                        lf.angle += (lf.spin + flutter * 0.8) * dt;
+                    } else {
+                        // Align leaf blade softly with its flight trajectory plus natural flutter rock
+                        const flightAngle = Math.atan2(lf.vx * 0.48, Math.max(8, lf.vy));
+                        const targetAngle = flightAngle + flutter * lf.flutterAmp;
+                        lf.angle += (targetAngle - lf.angle) * (1 - Math.exp(-5 * dt));
+                    }
 
-                    // Wrap or respawn when drifting out of viewport bounds
+                    // Respawn when drifting out of viewport bounds
                     if (lf.y > LH + 36 || lf.x > LW + 48 || lf.x < -60) {
-                        fallingLeaves[i] = spawnFallingLeaf(false);
+                        fallingLeaves[i] = isPetal ? spawnPetal(false) : spawnFallingLeaf(false);
                     } else if (lf.y < -65 && dScroll < 0) {
                         lf.y = LH + 25;
                     }
                 }
+            }
+
+            // Draws one rounded, softly notched petal (like a loose hydrangea or ranunculus petal)
+            function drawPetal(lf, alpha) {
+                const L = lf.len;
+                const h = L * lf.wide;
+                // The petal flips in 3D as it tumbles, so its apparent width breathes in and out
+                const roll = Math.cos(lf.rollPhase);
+                const sx = 0.3 + 0.7 * Math.abs(roll);
+
+                lctx.save();
+                lctx.translate(lf.x, lf.y);
+                lctx.rotate(lf.angle);
+                lctx.scale(sx, 1);
+
+                // Petal outline centered on its midpoint so it spins naturally
+                lctx.beginPath();
+                lctx.moveTo(0, -L * 0.5);
+                lctx.bezierCurveTo(h * 0.95, -L * 0.36, h * 1.15, L * 0.28, h * 0.28, L * 0.48);
+                lctx.quadraticCurveTo(0, L * 0.38, -h * 0.28, L * 0.48);
+                lctx.bezierCurveTo(-h * 1.15, L * 0.28, -h * 0.95, -L * 0.36, 0, -L * 0.5);
+                lctx.closePath();
+
+                lctx.globalAlpha = alpha;
+                lctx.fillStyle = PETAL_COLORS[lf.c];
+                lctx.fill();
+
+                // Ivory calla petals get a whisper of rose edging so they don't vanish on the parchment
+                if (lf.c === IVORY) {
+                    lctx.globalAlpha = alpha * 0.55;
+                    lctx.strokeStyle = '#C98591';
+                    lctx.lineWidth = 0.6;
+                    lctx.stroke();
+                }
+
+                // Soft sheen on whichever face is turned toward the light
+                lctx.globalAlpha = alpha * (roll > 0 ? 0.3 : 0.1);
+                lctx.fillStyle = '#FFFFFF';
+                lctx.beginPath();
+                lctx.ellipse(0, -L * 0.06, h * 0.32, L * 0.26, 0, 0, Math.PI * 2);
+                lctx.fill();
+
+                lctx.restore();
             }
 
             function renderFallingLeaves() {
@@ -1444,6 +1576,11 @@
                     const fadeOut = lf.y > LH - 70 ? Math.max(0, (LH + 30 - lf.y) / 100) : 1;
                     const alpha = lf.alpha * fadeIn * fadeOut;
                     if (alpha <= 0.01) continue;
+
+                    if (lf.kind === 'petal') {
+                        drawPetal(lf, alpha);
+                        continue;
+                    }
 
                     lctx.globalAlpha = alpha;
                     lctx.fillStyle = COLORS[lf.c];
@@ -1474,7 +1611,7 @@
                     lctx.lineTo(px, py);
                     lctx.stroke();
 
-                    // Slender lanceolate willow leaf blade matching the left cascade geometry
+                    // Slender lanceolate willow leaf blade matching the cascade geometry
                     lctx.beginPath();
                     lctx.moveTo(px, py);
                     lctx.quadraticCurveTo(cx + nx * hw, cy + ny * hw, tipX, tipY);
@@ -1485,7 +1622,8 @@
             }
 
             // =================================================================
-            // LEFT WEEPING WILLOW CASCADE LOGIC
+            // LEFT & RIGHT WEEPING WILLOW CASCADE LOGIC
+            // Both trees are built in the same local coordinates; the right one is mirrored when drawn.
             // =================================================================
             // Constructor for individual hanging strands (stems + leaves)
             function makeStrand(R, opts) {
@@ -1531,6 +1669,21 @@
                 const norm = phi.map(f => samp.reduce((a, i) => a + f[i] * f[i], 0));
                 const ampAt1 = (3 + 11 * Math.sqrt(len / 3000)) / len;
 
+                // Performance: the wind depends on each sample's height, which never changes, so its
+                // sine/cosine parts are computed once here instead of on every frame
+                const ns = samp.length;
+                const wc1 = new Float32Array(ns), ws1 = new Float32Array(ns);
+                const wc2 = new Float32Array(ns), ws2 = new Float32Array(ns);
+                for (let j = 0; j < ns; j++) {
+                    const yy = y[samp[j]] + windYOff;
+                    wc1[j] = Math.cos(yy / 420); ws1[j] = Math.sin(yy / 420);
+                    wc2[j] = Math.cos(yy / 190); ws2[j] = Math.sin(yy / 190);
+                }
+
+                // Vertical extent, so off-screen strands can be skipped cheaply
+                let yMin = 1e9, yMax = -1e9;
+                for (let i = 0; i < n; i++) { if (y[i] < yMin) yMin = y[i]; if (y[i] > yMax) yMax = y[i]; }
+
                 // Generates the geometry for the leaves branching off the stem
                 const leaves = [];
                 const kk = Math.max(0.62, Math.min(1, k));
@@ -1555,53 +1708,40 @@
                 
                 return {
                     n, x, y, tx, ty, len, nm, omega, zeta, phi, q, qd, samp, norm, ampAt1,
+                    wc1, ws1, wc2, ws2, yMin, yMax,
                     leaves, layer, parent: parent || null, parentIdx: parentIdx || 0,
                     stemW: (parent ? 0.7 : 1.15) * Math.max(0.7, k), // Stem thickness
                     u: new Float32Array(n), v: new Float32Array(n)   // Displacement arrays
                 };
             }
 
-            // Orchestrates the generation of the entire tree framework and configures the canvas
-            function build() {
-                // Calculate display metrics
-                const vw = window.innerWidth;
-                W = vw < 640 ? 150 : vw < 1024 ? 180 : vw < 1360 ? 220 : 300; // Left offset width
-                k = W / 300; // Scaling factor
-                top = hero.getBoundingClientRect().top + window.scrollY; // Top Y coord
-                H = Math.ceil(footer.getBoundingClientRect().bottom + window.scrollY - top); // Total scrollable height
-                dpr = Math.min(window.devicePixelRatio || 1, 2); // Handles retina screens safely
-                while (H * dpr > 30000 && dpr > 1) dpr -= 0.25; // Prevents massive canvas memory crashes on long pages
-
-                // Apply CSS styles and attributes to the Canvas
-                canvas.style.top = top + 'px';
-                canvas.style.width = W + 'px';
-                canvas.style.height = H + 'px';
-                canvas.width = Math.round(W * dpr);
-                canvas.height = Math.round(H * dpr);
-
-                // Configure the full-viewport falling leaves canvas
-                initFallingLeaves();
-
-                const R = rng(20271023); // Seed for deterministic tree generation
+            // Grows one willow (limbs, canopy strands, long drapes and sprigs) from its own seed
+            function buildTree(tree) {
+                const R = rng(tree.seed); // Seed for deterministic tree generation
                 const S = (pt) => [pt[0] * k, pt[1] * k];
+                const H = tree.H;
+                windYOff = tree.top - top; // Lets makeStrand place this tree in the shared wind field
                 
-                // Calculate the thick main branch limbs curving from the top left corner
+                // Calculate the thick main branch limbs curving from the top corner
                 const L1 = [[276, -16], [222, 28], [166, 60], [96, 156]].map(S);
                 const a2 = bez(L1, 0.34), a3 = bez(L1, 0.62);
                 const L2 = [a2, [a2[0] - 40 * k, a2[1] + 6 * k], [70 * k, 74 * k], [24 * k, 118 * k]];
                 const L3 = [a3, [a3[0] + 18 * k, a3[1] + 16 * k], [176 * k, 112 * k], [186 * k, 168 * k]];
-                limbs = [
+                const limbs = [
                     { p: L1, w0: 11 * k, w1: 2.6 * k },
                     { p: L2, w0: 5.5 * k, w1: 1.6 * k },
                     { p: L3, w0: 4 * k, w1: 1.3 * k }
                 ];
 
-                strands = [];
+                const strands = [];
                 const kc = Math.max(0.7, k);
+                // Phones get a lighter canopy so the corners don't feel crowded
+                const density = isMobile ? 0.7 : 1;
                 
-                // Spawn hundreds of short/medium strands filling out the top canopy
+                // Spawn many short/medium strands filling out the top canopy
                 const limbPlan = [[0, 0.16, 1, 22], [1, 0.12, 1, 13], [2, 0.12, 1, 10]];
-                for (const [li, t0, t1, count] of limbPlan) {
+                for (const [li, t0, t1, baseCount] of limbPlan) {
+                    const count = Math.round(baseCount * density);
                     for (let j = 0; j < count; j++) {
                         const t = t0 + (t1 - t0) * (j + R() * 0.8) / count;
                         const [ax, ay] = bez(limbs[li].p, t);
@@ -1612,7 +1752,7 @@
                         const wob = { a: 0.02 + R() * 0.03, p: 300 + R() * 400, ph: R() * 6.28 };
                         
                         let st;
-                        // Brute force logic ensuring strands do not obscure text on narrow screens
+                        // Brute force logic ensuring strands stay inside the willow's lane and away from the text
                         for (let tries = 0; tries < 6; tries++) {
                             st = makeStrand(R, { ax, ay, L, theta0: out * theta, lambda: lam, layer, wobble: wob });
                             let bad = -1;
@@ -1628,15 +1768,9 @@
                     }
                 }
                 
-                // Spawn 6 massive strands that drape all the way down to the footer
-                const longPlan = [
-                    { li: 1, t: 0.78, f: 1.0, th: -0.55 },
-                    { li: 0, t: 0.97, f: 0.94, th: 0.5 },
-                    { li: 1, t: 0.52, f: 0.82, th: -0.9 },
-                    { li: 0, t: 0.82, f: 0.66, th: 0.75 },
-                    { li: 1, t: 0.95, f: 0.5, th: -0.4 },
-                    { li: 2, t: 0.7, f: 0.36, th: 0.6 }
-                ];
+                // Spawn the long strands that drape all the way down toward the footer
+                // (four instead of six on phones, to keep the reading column calm)
+                const longPlan = isMobile ? tree.longPlan.slice(0, 4) : tree.longPlan;
                 const longs = [];
                 for (const lp of longPlan) {
                     const [ax, ay] = bez(limbs[lp.li].p, lp.t);
@@ -1672,13 +1806,61 @@
                             parent: p, parentIdx: idx,
                             wobble: { a: 0.03, p: 260, ph: R() * 6.28 }
                         }));
-                        s += 140 + R() * 210;
+                        s += (isMobile ? 220 : 140) + R() * 210;
                     }
                 }
                 
                 // Sort array to draw background strands first, foreground strands last
                 strands.sort((a, b) => a.layer - b.layer);
-                built = true;
+                tree.limbs = limbs;
+                tree.strands = strands;
+            }
+
+            // Sizes both willow canvases and regrows the trees
+            function build() {
+                // Calculate display metrics. On phones each willow is a slim ~20% lane at the edge,
+                // so the centered text column stays clear.
+                const vw = window.innerWidth;
+                isMobile = vw < 640;
+                W = isMobile ? Math.round(Math.min(96, Math.max(72, vw * 0.22)))
+                    : vw < 1024 ? 150 : vw < 1360 ? 200 : 300;
+                k = W / 300; // Scaling factor
+                // Each willow fades out toward the page center on narrower screens, so its drapes
+                // melt away before reaching the text (drawn on the canvas itself, which is much
+                // cheaper for the browser than a CSS mask on a page-tall canvas)
+                fadeStart = vw < 1024 ? 0.4 : vw < 1360 ? 0.55 : 1;
+                top = hero.getBoundingClientRect().top + window.scrollY; // Top Y coord of the hero
+                const bottom = footer.getBoundingClientRect().bottom + window.scrollY;
+                for (const tree of trees) {
+                    tree.top = tree.anchor.getBoundingClientRect().top + window.scrollY;
+                    tree.H = Math.ceil(bottom - tree.top); // Each willow runs from its section to the footer
+                }
+                BW = document.body.clientWidth; // Page width (used to map the pointer onto the mirrored right tree)
+                // Performance: the willows are soft and semi-transparent, so 1.5x resolution looks the same
+                // as full retina while drawing roughly half the pixels every frame
+                dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+                while (trees[0].H * dpr > 30000 && dpr > 1) dpr -= 0.25; // Prevents massive canvas memory crashes on long pages
+
+                for (const tree of trees) {
+                    const c = tree.canvas;
+                    c.style.top = tree.top + 'px';
+                    c.style.width = W + 'px';
+                    c.style.height = tree.H + 'px';
+                    c.width = Math.round(W * dpr);
+                    c.height = Math.round(tree.H * dpr);
+                    // Inner-edge fade (local x = W is the side facing the page center for both trees)
+                    tree.fade = null;
+                    if (fadeStart < 1) {
+                        const g = tree.ctx.createLinearGradient(W * fadeStart, 0, W, 0);
+                        g.addColorStop(0, 'rgba(0,0,0,0)');
+                        g.addColorStop(1, 'rgba(0,0,0,1)');
+                        tree.fade = g;
+                    }
+                    buildTree(tree);
+                }
+
+                // Configure the full-viewport falling leaves & petals canvas
+                initFallingLeaves();
             }
 
             // Function generating continuous Perlin-like noise waves to represent wind
@@ -1691,45 +1873,66 @@
             // Reused temporary memory buffers (prevents Garbage Collection lag)
             const tmpF = new Float32Array(64), tmpU = new Float32Array(64);
             
-            // Runs physics integration step for one "tick" of time
-            function step(dt, t) {
-                const pvx = Math.max(-1, Math.min(1, pointer.vx / 1400));
-                for (const st of strands) {
-                    const sm = st.samp, ns = sm.length;
-                    const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
-                    
-                    // Sample forces (wind + mouse movement) affecting the strand
-                    for (let j = 0; j < ns; j++) {
-                        const i = sm[j];
-                        let f = breeze(st.y[i], t);
-                        // Add mouse gust force
-                        if (pointer.active) {
-                            const dx = st.x[i] + ox - pointer.x, dy = st.y[i] - pointer.y;
-                            f += pvx * 5 * Math.exp(-(dx * dx + dy * dy) / 9000);
+            // Runs physics integration step for one "tick" of time on both trees.
+            // With `all` false, strands far outside the screen are paused (they resume exactly where
+            // they left off when scrolled back into view), which saves most of the work on long pages.
+            function step(dt, t, all) {
+                const pv = Math.max(-1, Math.min(1, pointer.vx / 1400));
+                // Time-only parts of the breeze, computed once per tick instead of per point
+                const base = 0.16 + 0.55 * Math.sin(0.23 * t) + 0.3 * Math.sin(0.51 * t + 1.3) + 0.15 * Math.sin(1.13 * t + 0.4);
+                const sa = 0.38 * Math.sin(0.9 * t), ca = 0.38 * Math.cos(0.9 * t);
+                const sb = 0.2 * Math.sin(1.7 * t + 2), cb = 0.2 * Math.cos(1.7 * t + 2);
+                const scrollY = window.scrollY;
+
+                for (const tree of trees) {
+                    // The right tree lives in mirrored coordinates, so wind and pointer are flipped
+                    // for it; on screen, both willows sway the same way in the same breeze.
+                    const dir = tree.dir;
+                    const pvx = pv * dir;
+                    const pxLocal = dir === 1 ? pointer.x : BW - pointer.x;
+                    const pyLocal = pointer.docY - tree.top;
+                    const lo = scrollY - tree.top - 700, hi = scrollY - tree.top + window.innerHeight + 700;
+
+                    for (const st of tree.strands) {
+                        if (!all && (st.yMax < lo || st.yMin > hi)) continue; // Off-screen: pause
+                        const sm = st.samp, ns = sm.length;
+                        const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
+                        const wc1 = st.wc1, ws1 = st.ws1, wc2 = st.wc2, ws2 = st.ws2;
+
+                        // Sample forces (wind + mouse movement) affecting the strand.
+                        // Same breeze() as below, expanded with sin(a - b) = sin a cos b - cos a sin b.
+                        for (let j = 0; j < ns; j++) {
+                            let f = dir * (base + sa * wc1[j] - ca * ws1[j] + sb * wc2[j] - cb * ws2[j]);
+                            // Add mouse gust force
+                            if (pointer.active) {
+                                const i = sm[j];
+                                const dx = st.x[i] + ox - pxLocal, dy = st.y[i] - pyLocal;
+                                f += pvx * 5 * Math.exp(-(dx * dx + dy * dy) / 9000);
+                            }
+                            tmpF[j] = f;
                         }
-                        tmpF[j] = f;
-                    }
-                    
-                    // Integrate forces down the chain to compute bending moments
-                    let acc = 0;
-                    for (let j = ns - 1; j >= 0; j--) { acc += tmpF[j]; tmpF[j] = acc / (ns - j); }
-                    let u = 0;
-                    for (let j = 0; j < ns; j++) {
-                        const segLen = j === 0 ? 0 : (sm[j] - sm[j - 1]) * DS;
-                        u += tmpF[j] * segLen;
-                        tmpU[j] = u * st.ampAt1;
-                    }
-                    
-                    // Solve equations of motion using Semi-Implicit Euler
-                    for (let m = 0; m < st.nm; m++) {
-                        const f = st.phi[m];
-                        let proj = 0;
-                        for (let j = 0; j < ns; j++) proj += tmpU[j] * f[sm[j]];
-                        proj /= st.norm[m];
-                        const w = st.omega[m];
-                        const acc2 = w * w * (proj - st.q[m]) - 2 * st.zeta[m] * w * st.qd[m];
-                        st.qd[m] += acc2 * dt;           
-                        st.q[m] += st.qd[m] * dt;
+                        
+                        // Integrate forces down the chain to compute bending moments
+                        let acc = 0;
+                        for (let j = ns - 1; j >= 0; j--) { acc += tmpF[j]; tmpF[j] = acc / (ns - j); }
+                        let u = 0;
+                        for (let j = 0; j < ns; j++) {
+                            const segLen = j === 0 ? 0 : (sm[j] - sm[j - 1]) * DS;
+                            u += tmpF[j] * segLen;
+                            tmpU[j] = u * st.ampAt1;
+                        }
+                        
+                        // Solve equations of motion using Semi-Implicit Euler
+                        for (let m = 0; m < st.nm; m++) {
+                            const f = st.phi[m];
+                            let proj = 0;
+                            for (let j = 0; j < ns; j++) proj += tmpU[j] * f[sm[j]];
+                            proj /= st.norm[m];
+                            const w = st.omega[m];
+                            const acc2 = w * w * (proj - st.q[m]) - 2 * st.zeta[m] * w * st.qd[m];
+                            st.qd[m] += acc2 * dt;           
+                            st.q[m] += st.qd[m] * dt;
+                        }
                     }
                 }
             }
@@ -1741,9 +1944,12 @@
                 return s;
             }
 
-            // Draw the current state of the physics engine onto the canvas 
-            function render(y0, y1, t) {
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // Scale for high-res displays
+            // Draw the current state of one tree onto its canvas
+            function render(tree, y0, y1, t) {
+                const ctx = tree.ctx;
+                // Scale for high-res displays; the right tree is flipped horizontally
+                if (tree.dir === 1) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                else ctx.setTransform(-dpr, 0, 0, dpr, W * dpr, 0);
                 ctx.save();
                 
                 // Clip rendering strictly to the viewport area for performance
@@ -1752,7 +1958,7 @@
 
                 // Render thick background boughs
                 ctx.fillStyle = '#3F4F21';
-                for (const lb of limbs) {
+                for (const lb of tree.limbs) {
                     const left = [], right = [];
                     for (let i = 0; i <= 24; i++) {
                         const tt = i / 24, a = bez(lb.p, tt), b = bez(lb.p, Math.min(1, tt + 0.01)), c = bez(lb.p, Math.max(0, tt - 0.01));
@@ -1769,15 +1975,25 @@
                 }
 
                 const lo = y0 - 30, hi = y1 + 30; // Padding to prevent leaves popping in at edges
-                // Iterate through the three Z-layers (background -> foreground)
-                for (let layer = 0; layer < 3; layer++) {
-                    ctx.globalAlpha = LAYER_ALPHA[layer];
-                    const paths = COLORS.map(() => new Path2D());
-                    ctx.strokeStyle = '#3F4F21';
-                    ctx.lineCap = 'round';
-                    
-                    for (const st of strands) {
-                        if (st.layer !== layer) continue;
+                ctx.strokeStyle = '#3F4F21';
+                ctx.lineCap = 'round';
+
+                // Strands are pre-sorted by Z-layer (background -> foreground), so a single pass works:
+                // leaves are batched per color and flushed whenever the layer changes
+                let layer = -1, paths = null;
+                const flush = () => {
+                    if (!paths) return;
+                    for (let c = 0; c < COLORS.length; c++) { ctx.fillStyle = COLORS[c]; ctx.fill(paths[c]); }
+                };
+                {
+                    for (const st of tree.strands) {
+                        if (st.yMax < lo || st.yMin > hi) continue; // Fully off-screen: skip
+                        if (st.layer !== layer) {
+                            flush();
+                            layer = st.layer;
+                            ctx.globalAlpha = LAYER_ALPHA[layer];
+                            paths = COLORS.map(() => new Path2D());
+                        }
                         const ox = st.parent ? modeU(st.parent, st.parentIdx) : 0;
                         const { x, y, tx, ty, u, v, n, nm, q, qd, phi } = st;
                         
@@ -1833,23 +2049,32 @@
                             p.quadraticCurveTo(cx - nx * hw, cy - ny * hw, px, py);
                         }
                     }
-                    // Efficiently blast out the accumulated geometry data grouped by color
-                    for (let c = 0; c < COLORS.length; c++) { ctx.fillStyle = COLORS[c]; ctx.fill(paths[c]); }
                 }
+                // Efficiently blast out the last layer's geometry grouped by color
+                flush();
                 ctx.globalAlpha = 1;
+
+                // Fade the willow's inner edge so it dissolves before it reaches the page content
+                if (tree.fade) {
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.fillStyle = tree.fade;
+                    ctx.fillRect(W * fadeStart, y0, W * (1 - fadeStart) + 1, y1 - y0);
+                    ctx.globalCompositeOperation = 'source-over';
+                }
                 ctx.restore();
             }
 
-            // Figure out which horizontal slice of the canvas needs updating
-            function visibleBand() {
-                const a = window.scrollY - top - 160; // Include a 160px buffer above
-                return [Math.max(0, a), Math.min(H, a + window.innerHeight + 320)]; // Include a 320px buffer below
+            // Figure out which horizontal slice of a tree's canvas needs updating
+            function visibleBand(tree) {
+                const a = window.scrollY - tree.top - 160; // Include a 160px buffer above
+                return [Math.max(0, a), Math.min(tree.H, a + window.innerHeight + 320)]; // Include a 320px buffer below
             }
 
             // Wipes the existing geometry and recreates it (useful for window resizing)
             function rebuild(force) {
                 const sig = window.innerWidth + 'x' + window.innerHeight + 'x' +
                     Math.round(hero.getBoundingClientRect().top + window.scrollY) + 'x' +
+                    Math.round(partySection.getBoundingClientRect().top + window.scrollY) + 'x' +
                     Math.round(footer.getBoundingClientRect().bottom + window.scrollY);
                 if (!force && sig === lastSig) return; // Prevent rebuilding if bounds haven't shifted
                 lastSig = sig;
@@ -1857,12 +2082,12 @@
                 
                 const t = performance.now() / 1000;
                 // Run the physics forward invisibly to let the breeze settle so it doesn't "snap" on load
-                for (let i = 0; i < 240; i++) step(1 / 60, t - 4 + i / 60);
+                for (let i = 0; i < 240; i++) step(1 / 60, t - 4 + i / 60, true);
                 // Zero out motion completely if accessibility settings request it
-                if (reduceMotion) for (const st of strands) { st.q.fill(0); st.qd.fill(0); }
-                
-                render(0, H, t); // Initial render of cascade
-                renderFallingLeaves(); // Initial render of drifting leaves
+                if (reduceMotion) for (const tree of trees) for (const st of tree.strands) { st.q.fill(0); st.qd.fill(0); }
+
+                for (const tree of trees) render(tree, 0, tree.H, t); // Initial render of both cascades
+                renderFallingLeaves(); // Initial render of drifting leaves & petals
             }
 
             // Main rendering loop requested by the browser at 60fps
@@ -1875,17 +2100,20 @@
                 // Exponential decay on mouse wind velocity
                 pointer.vx *= Math.pow(0.04, dt);   
                 
-                // Sub-stepping physics resolution for stability
-                const sub = Math.ceil(dt / (1 / 120));
-                for (let i = 0; i < sub; i++) step(dt / sub, t - dt + (i + 1) * dt / sub);
-                
-                // Step and render the ambient falling leaves
+                // Sub-stepping physics resolution for stability (one step per 60th of a second is
+                // plenty for these gentle swings; it only sub-steps when the browser drops frames)
+                const sub = Math.ceil(dt / (1 / 60) - 0.01);
+                for (let i = 0; i < sub; i++) step(dt / sub, t - dt + (i + 1) * dt / sub, false);
+
+                // Step and render the ambient falling leaves & petals
                 stepFallingLeaves(dt, t);
                 renderFallingLeaves();
-                
-                // Request rendering only for the on-screen portion of the left willow cascade
-                const [a, b] = visibleBand();
-                if (b > a) render(a, b, t);
+
+                // Request rendering only for the on-screen portion of each willow cascade
+                for (const tree of trees) {
+                    const [a, b] = visibleBand(tree);
+                    if (b > a) render(tree, a, b, t);
+                }
                 
                 requestAnimationFrame(frame); // Recursively request next frame
             }
@@ -1894,14 +2122,14 @@
             let lastPX = null, lastPT = 0;
             window.addEventListener('pointermove', (e) => {
                 const now = performance.now();
-                const docX = e.clientX, docY = e.clientY + window.scrollY - top;
+                const docX = e.clientX, docY = e.clientY + window.scrollY;
                 if (lastPX !== null && now > lastPT) {
                     // Compute instantaneous mouse velocity
                     const inst = (docX - lastPX) / ((now - lastPT) / 1000);
                     pointer.vx = pointer.vx * 0.6 + inst * 0.4; // Smooth it out slightly
                 }
                 lastPX = docX; lastPT = now;
-                pointer.x = docX; pointer.y = docY; pointer.active = true;
+                pointer.x = docX; pointer.docY = docY; pointer.active = true;
             }, { passive: true });
             
             // Disable wind effect when mouse leaves window
